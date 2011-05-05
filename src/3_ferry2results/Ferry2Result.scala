@@ -18,7 +18,7 @@ trait IFerry2Result extends ISIQ2Ferry with IResults
   def fromdb[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m).fromdb
 }
 trait Ferry2Result extends IFerry2Result with SIQ2Ferry with Results{
-  val debug = false
+  val debug = true
   def query[R]( r:Exp[R] ) = {
     //val wd = new java.io.File("D:\\documents\\studies\\Diplomarbeit\\tom schreiber")
     val wd = new java.io.File("D:\\documents\\studies\\Diplomarbeit\\tom schreiber")//\\FerryDB\\FerryDB\\_distribution.jar\\ferrydb")
@@ -54,7 +54,7 @@ trait Ferry2Result extends IFerry2Result with SIQ2Ferry with Results{
     }
     val cmds = List(
       "ferryc -o1 -o2 -o3 -groupByAsMacro +RTS -K256000000 -RTS",
-      "\"C:\\Program Files\\MonetDB\\MonetDB4\\bin\\pf.exe\" -lIS",// -o _",
+      "\"C:\\Program Files\\MonetDB\\MonetDB4\\bin\\pf.exe\" -lIS -o _",
       "cmd /c ferrydb.bat",
       "cmd /c jsonify.bat"
     )
@@ -126,7 +126,8 @@ in for i1691174601 in q1691174601
           in for i28995049 in q28995049
           return (i6613606.2,i28995049.2)
     ))"""
-    val json = pipe(ferryQuery, cmds)
+    val ferryQueryABC = """let e = table employee (id int, name string, workgroup_id int) with keys ((id)) in (e,e)"""
+    val json = pipe(ferryQueryABC, cmds)
 
     // the list stuff works around the scala json parser not being able to parse "3", but ["3"]
     val Some(rawRawResults) = scala.util.parsing.json.JSON.parseFull("["+json+"]").asInstanceOf[Option[_]]
