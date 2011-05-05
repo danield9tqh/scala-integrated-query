@@ -26,7 +26,7 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery with Schema with SIQ2Fe
     if(debug){
       println("-"*80)
       println("SIQ:")
-      println(rep2def(r))
+      println(r)
       println("-"*80)
       println("Ferry Core:")
       println(ferrycore)
