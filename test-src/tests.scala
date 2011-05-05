@@ -8,7 +8,7 @@ object tests {
       import dsl.dsl.implicits._
       employee.fromdb(debug=true)
     }
-    return ()
+    return ();
     println("old ferryc based tests")
     import dsl.dsl_old._
     import dsl.dsl_old.tables._
