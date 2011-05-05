@@ -28,7 +28,7 @@ class Project(info: ProjectInfo) extends DefaultProject(info)
 //  val scala = "org.scala-lang" % "scala-library" % "2.8.0" % "test"
 
   lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "1.4.1"
-
+  lazy val postgresql = "postgresql" % "postgresql" % "8.4-701.jdbc4"
   val gen_classpath = " -classpath .;generator-bin;lib/scalate-1.4.1/lib/scalate-core-1.4.1.jar;lib/scalate-1.4.1/lib/scalate-util-1.4.1.jar;lib/scalate-1.4.1/lib/slf4j-nop-1.6.1.jar;lib/scalate-1.4.1/lib/slf4j-api-1.6.1.jar "
 	lazy val genCompile = task {
     import Process._

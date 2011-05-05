@@ -1,10 +1,23 @@
 package siq
 import Predef.{any2stringadd => _, _} // prohibit automatic toString conversion of objects when + method is used
 object tests {
-  import dsl.dsl._
-  import dsl.dsl.tables._
-  import dsl.dsl.implicits._
   def main( args:Array[String] ) {
+    {
+      import dsl.dsl._
+      import dsl.dsl.tables._
+      import dsl.dsl.implicits._
+      employee.fromdb(debug=true)
+    }
+    return ()
+    println("old ferryc based tests")
+    import dsl.dsl_old._
+    import dsl.dsl_old.tables._
+    import dsl.dsl_old.implicits._
+    {
+      fromdb(Tuple2( employee, employee ));
+      // fails: Tuple2( employee, employee ).fromdb;
+    }
+
     {
       val q = for( e <- employee; w <- workgroup;if e.workgroup_id == w.id ) yield (e.name,w.name)
       q.fromdb.foreach( println(_) )
@@ -17,7 +30,6 @@ object tests {
       val q = for( e <- employee; w <- workgroup ) yield (e.id,w)
       q.fromdb.foreach( println(_) )
     }
-
     {
       val q = for( c <- CUSTOMER.orderBy(_.C_NATIONKEY).groupBy(_.C_NATIONKEY) ) yield {
         val country_orders =  for( o <- ORDERS; x <- zip(c.C_CUSTKEY, c.C_MKTSEGMENT); if o.O_CUSTKEY == x._1 ) yield (x._2,o.O_TOTALPRICE)

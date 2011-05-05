@@ -66,7 +66,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   }
 
   // as convenience for internal use
-  implicit def rep2generator[T]( r: Rep[Iterable[T]] ) : Generator[T] = rep2igenerator(r).asInstanceOf[Generator[T]]
+  def rep2generator[T]( r: Rep[Iterable[T]] ) : Generator[T] = rep2igenerator(r).asInstanceOf[Generator[T]]
 
   // Node to represent a comprehensions
   case class Comprehension[R] (
