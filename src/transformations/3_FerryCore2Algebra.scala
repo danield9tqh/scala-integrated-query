@@ -9,11 +9,22 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
                         ) : Nested = {
     def itapp( left: Map[String,Nested], right: Map[String,Nested] ) = left ++ right // FIXME
     def colum2position( str: String ) = str.drop(4).toInt // called ord in Tom's Ferry Thesis
+    // transformation closure
     def t( from:ferry.Expression,
            loop_ : Relation = loop,
            scope_ : Map[String,Nested] = scope
           ) = ferrycore2algebra(from,loop_,scope_)
     from match {
+      case ferry.Box( boxee ) =>
+        Nested(
+          Attach( 1, "pos", Projection( ("iter", "iter"->"item1"), loop ) ),
+          Map( "item1" -> t(boxee) )
+        )
+      case ferry.Unbox( unboxee ) => {
+        val Nested( relation, itbls ) = t(unboxee)
+        assert( relation.data_columns.size == 1, relation.data_columns )
+        itbls( relation.data_columns(0) )
+      }
       case ferry.Literal(value) =>
         Nested(
           Attach(

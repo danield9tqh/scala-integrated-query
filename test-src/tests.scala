@@ -17,6 +17,7 @@ object tests {
       println( (for( x <- List(1,2,3).todb ) yield x).fromdb(debug=true) )
       employee.fromdb(debug=true)
       (for( e <- employee ) yield e.name).fromdb(debug=true)
+      (for( x <- List(1,2,3).todb ) yield List(1,2,3).todb).fromdb(debug=true)
     }
   }
   return ();
