@@ -131,7 +131,7 @@ trait RelationalAlgebra{
       value : Any,
       as : String,
       relation : Relation
-    ) extends Relation( relation.schema :+ as  ) with UnaryRelationOperator{
+    ) extends Relation( as :: relation.schema ) with UnaryRelationOperator{
       require( !relation.schema.contains(as) )
     }
 

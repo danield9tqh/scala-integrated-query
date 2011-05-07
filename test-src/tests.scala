@@ -16,9 +16,10 @@ object tests {
     {
       println( (for( x <- List(1,2,3).todb ) yield x).fromdb(debug=true) )
       employee.fromdb(debug=true)
-//      (for( e <- employee ) yield e.name).fromdb(debug=true)
+      (for( e <- employee ) yield e.name).fromdb(debug=true)
     }
   }
+  return ();
   {
     import dsl.dsl_old._
     import dsl.dsl_old.tables._
