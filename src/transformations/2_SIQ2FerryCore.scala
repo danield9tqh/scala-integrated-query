@@ -59,7 +59,7 @@ trait SIQ2FerryCore extends FerryCore with Modules{
                 )
             }
           }
-          case LiteralTable( values ) => values.map( x => FerryList(Some(x)) ).reduceRight[Expression]( Append(_,_) )
+          case LiteralTable( values ) => FerryList(values.toList)//.map( x => FerryList(Some(x)) ).reduceRight[Expression]( Append(_,_) )
           //case LiteralTable( values ) => FerryList( values.map(t(_,ROW)) )
           /*
           case _:[_] => {

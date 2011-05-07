@@ -55,8 +55,9 @@ trait FerryCore{
 //    ) extends Expression( tuple(values.map(_.type_)), ROW )
 
     case class FerryList[T]( ///  <: Expression
-      items : Option[T] // FerryCore lists have only one or zero elements. Really, no kiddin.
-    ) extends Expression( if(items.isDefined) list(atomic) else list(variable), TABLE ) // TODO: allow not only flat lists
+      values : List[T], // FerryCore lists have only one or zero elements. Really, no kiddin.
+      element_type : FerryCoreType = atomic
+    ) extends Expression( if(values.size > 0) list(element_type) else list(variable), TABLE )
 //    ) extends Expression( if(items.isDefined) items.get.type_ else variable, TABLE )
 
     case class TableReference(
