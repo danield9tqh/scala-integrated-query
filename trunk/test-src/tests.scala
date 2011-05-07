@@ -2,17 +2,33 @@ package siq
 import Predef.{any2stringadd => _, _} // prohibit automatic toString conversion of objects when + method is used
 object tests {
   def main( args:Array[String] ) {
+  {
+    import dsl.dsl._
+    import dsl.dsl.tables._
+    import dsl.dsl.implicits._
     {
-      import dsl.dsl._
-      import dsl.dsl.tables._
-      import dsl.dsl.implicits._
-      employee.fromdb(debug=true)
+      // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
+      // these lines just test if it compiles
+      def conv[T <% Rep[_ >: T]]( t:T ) = ()
+      conv( 5 )
+      conv( List(1,2,3) )
     }
-    return ();
-    println("old ferryc based tests")
+    {
+      println( (for( x <- List(1,2,3).todb ) yield x).fromdb(debug=true) )
+      employee.fromdb(debug=true)
+//      (for( e <- employee ) yield e.name).fromdb(debug=true)
+    }
+  }
+  {
     import dsl.dsl_old._
     import dsl.dsl_old.tables._
     import dsl.dsl_old.implicits._
+    println("old ferryc based tests");
+    {
+      println((for( x <- List(1,2,3).todb ) yield x).fromdb)
+      println(employee.fromdb)
+      println((for( e <- employee ) yield e.name).fromdb)
+    }
     {
       fromdb(Tuple2( employee, employee ));
       // fails: Tuple2( employee, employee ).fromdb;
@@ -132,7 +148,7 @@ object tests {
     {
       println( query(for( p <- employee; if p._1 == 3 ) yield p) : Iterable[_] )
       println( query( amounts ) : Iterable[_] )
-      println( query( ship(List((1,"test"),(2,"aloha"))) ) : Iterable[_] )
+      println( query( todb(List((1,"test"),(2,"aloha"))) ) : Iterable[_] )
     }
     {
       println( query( for( a <- amounts; e<-employee ) yield(a,e) ) : Iterable[_] )
@@ -217,11 +233,11 @@ object tests {
     ).map( x => println(x) )
 
     query(
-        for( i <- ship(List(1,2)) ) yield ( i, for(e <- employee) yield (i,e.name) )
+        for( i <- todb(List(1,2)) ) yield ( i, for(e <- employee) yield (i,e.name) )
     ).map( x => println(x) )
     query(
       for( x <-
-          for( i <- ship(List(1,2)); e <- employee/*; if e.id == i*/ ) yield ( i, e )
+          for( i <- todb(List(1,2)); e <- employee/*; if e.id == i*/ ) yield ( i, e )
       ) yield x._2.name
     ).map( x => println(x) )
 
@@ -239,7 +255,7 @@ object tests {
 
     query(
       for( x <- (
-        for( e <- employee; i <- ship(List(1,2,3,4)) ) yield T( T(i,e._2,T(i,e._2)), e._2,T(T(i,e._2),e._2) )
+        for( e <- employee; i <- todb(List(1,2,3,4)) ) yield T( T(i,e._2,T(i,e._2)), e._2,T(T(i,e._2),e._2) )
       )) yield (x, unitAnyVal(5))
     ).map( x =>println(x) )
 
@@ -251,7 +267,7 @@ object tests {
 
 
     val names_ids = for(
-      x <- ship(List(1,2,3,4));
+      x <- todb(List(1,2,3,4));
       e <- employee
     ) yield ( x, e.id, e.id, e.name )
 
@@ -349,7 +365,7 @@ object tests {
     printDsl( people.age == 5 )
     printDsl( 27 - people.age == 0 )
 */*/
-  }
+  }}
   /*
   def printInternals( query : Rep[Any] ){
     println( "symbol: " + query)

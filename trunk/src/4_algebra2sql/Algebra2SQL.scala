@@ -2,88 +2,83 @@ package siq
 trait Algebra2SQL extends RelationalAlgebra{
   import algebra._
 //  val t = algebra2sql _
-  def algebra2sql( from:Node ) : String = {
+  def algebra2sql( from:Nested ) : String = {
     def flatten( relation:Relation ) : List[Relation] = (relation match{
         case bin:BinaryRelationOperator => relation :: flatten(bin.left) ::: flatten(bin.right)
         case un:UnaryRelationOperator => relation :: flatten(un.relation)
+        case _:LiteralTable[_] => List(relation)
         case _:Table => List()
       })
+
+    val relations = flatten(from.relation)
+
+    // put together complete sql query from component queries
+    "WITH\n\n"+
+    // distinct is needed to kill multiple occurence of LOOP relation
+    relations.reverse.distinct.map( relation => "-- " + relation.getOperatorName + "\n" +
+    "%s(%s) AS\n(%s)".format(
+      relation.name
+      ,relation.schema.mkString(",")
+      ,relation2sql(relation)
+    )).mkString(",\n\n") +
+    "\n\n"+
+    "SELECT * FROM "+from.relation.name
+//    throw new Exception(from.toString)
+  }
+  def expression2sql( from:Expression ) : String = {
+    def t = expression2sql _
     from match {
-//FIXME: where to place this? //       case Constant( value ) => value.toString // FIXME: escape Strings
-      case relation:Relation =>
-        val relations = flatten(relation)
-          "WITH\n\n%s\n\n%s".format(
-            relations.tail.map( relation => "%s(%s) AS\n(%s)".format(
-              relation.name
-              ,relation.schema.mkString(",")
-              ,relation2sql(relation)
-            )).mkString(",\n\n")
-            ,relation2sql( relations.head )
-          )
+      case Variable( name ) => name
+      case Operator( symbol, left, right ) => t(left) + " " + symbol + " " + t(right)
     }
   }
 
   def relation2sql( from: Relation ) : String = {
-    from match {
-      case Projection( relation, new_column_names ) => "SELECT %s FROM %s".format(
-                                (relation.qualified_columns,new_column_names).zipped.map{case(from,to) => from+" AS "+to}.mkString(", ")
-                                , relation.name
+    def escape( value: Any ) : String = value match {
+      case i:Int => i.toString
+      case s:String   => '"' + s.replace("\\","\\\\").replace("\"","\\\"") + '"'
+      case s:Char   => escape (s.toString)
+      case b:Boolean => (if(b) 1 else 0).toString
+    }
+    (from match {
+      case p@Projection( _, relation ) => "SELECT %s FROM %s".format(
+        ( relation.qualify_columns(p.renames.keys), p.renames.values ).zipped.map{
+            case( from, to ) => from + " AS " + to
+        }.mkString(", ")
+        , relation.name
       )
-      case RowNumber(relation,column_name,partitionByColumns,orderByColumns) =>
-        "SELECT %s, ROW_NUMBER() OVER (PARTITION BY %s) AS %s FROM %s".format(
-          relation.qualified_columns.mkString(","),
-          partitionByColumns.mkString(",") + (orderByColumns match {
-            case Some(x) => " ORDER BY "+x+" ASC"
+      case CartesianProduct( left, right ) => "SELECT %s FROM %s".format(
+        (left.qualified_schema ++ right.qualified_schema).mkString(","),
+        left.name + "," + right.name
+      )
+      case Join( predicate, left, right ) => "SELECT * FROM " + left.name +","+ right.name + " WHERE " + expression2sql( predicate )
+      case DisjointUnion( left, right ) => "SELECT * FROM " + left.name + " UNION ALL SELECT * FROM " + right.name
+      case Attach( value, as, relation ) => "SELECT %s FROM %s".format(
+        escape(value) +" AS "+ as + "," + relation.qualified_schema.mkString(",")
+        , relation.name
+      )
+      case RowRank( as, orderBy, relation ) => // TODO: check this, not sure if right in Kaichaun Wen's Thesis
+        "SELECT DENSE_RANK() OVER (ORDER BY %s) AS %s, %s FROM %s".format(
+          orderBy.mkString(","),
+          as,
+          relation.qualify_columns(relation.schema).mkString(","),
+          relation.name
+        )
+      case RowNumber( as, orderBy, relation, partitionBy ) => // TODO: check this, not sure if right in Kaichaun Wen's Thesis
+        "SELECT ROW_NUMBER() OVER (%sORDER BY %s) AS %s, %s FROM %s".format(
+          (partitionBy match {
+            case Some(x) => "PARTITION BY "+x.mkString(",")+" "
             case _ => ""
           }),
-          column_name,
+          orderBy.mkString(","),
+          as,
+          relation.qualify_columns(relation.schema).mkString(","),
           relation.name
-       )
-/*
-              var temp = (name + " (" + rn.schema.mkString(", ") + ") AS\n" +
-        "(SELECT " + getQualNames(resLeft, rn.schema.dropRight(1)) + ", ROW_NUMBER() OVER (PARTITION BY " + grouping)
-      if (key != null)
-        temp += " ORDER BY " + key
-      temp += ") AS " + newName + " FROM " + resLeft + ")"
-*/
-/*            TableReference(
-              columns = table.columns.map( c => (c.name,c.type_.toLowerCase) ).toList,
-              keys    = List( table.keys.map( _.name ).toList ),
-              order   = table.columns.map( _.name ).toList
-            )
-          }
-          case _:Comprehension[_] => {
-            val comprehension = def_.asInstanceOf[Comprehension[_]]
-            For(
-              'i'+comprehension.key,
-              t( comprehension.tables(0) ),
-              t( comprehension.element )
-            )
-          }
-          case _:FieldReference => {
-            val ref = def_.asInstanceOf[FieldReference]
-            PositionalAccess(
-              Variable( "i"+{
-                val it = ref.asInstanceOf[FieldReference].iterable
-                rep2def(it) match {
-                  case _:Generator[_] => rep2def(it).asInstanceOf[Generator[_]].key
-                  case _ => t(it)//"<"+rep2def(it).toString+">"
-                }
-              })
-              , ref.position
-            )
-
-
-          }
-          /*
-          case _:[_] => {
-            val  = def_.asInstanceOf[[_]]
-
-          }
-          */
-        }
-      }
- */
-    }
+        )
+      case LiteralTable( data, schema ) => "VALUES %s".format( data.map( x => x match {
+        case p:Product => "(%)".format( p.productIterator.mkString(",") )
+        case _ => "("+x+")"
+      }).mkString(", "))
+    })
   }
 }
