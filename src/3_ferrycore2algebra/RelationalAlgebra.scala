@@ -9,6 +9,27 @@ trait RelationalAlgebra{
     object freshTableName extends freshName{
       def apply() = 't'+next.toString
     }
+    private def listify( tuple_or_list : Any ) : Iterable[_] =
+      (tuple_or_list match {
+          case l:Iterable[_] => l
+          case p:Product => p.productIterator
+        }).toList
+
+    /**
+     * allows short hand notation for projection using list or tuple
+     */
+    private def make_shorthand_explicit( shorthand_renames : Any ) = {
+      listify(shorthand_renames).flatMap{
+        case t@(_,_) => t match{
+          case (a:Iterable[String],b:Iterable[String]) => (a,b).zipped.toMap
+          case (a:String,b:Iterable[String]) => b.map( (a,_) )
+          case (a:String,b:String)=> List( (a,b) )
+        }
+        case i:Iterable[String] => (i,i).zipped.toMap
+        case x:String => List( (x,x) )
+      }.toMap
+    }
+
     // the AST only implements a pragmatic subset of the real requirements to ease debugging during development
     def require_schemata_disjoint(left:List[String],right:List[String]) = require(
       List() == (left intersect right)
@@ -21,24 +42,32 @@ trait RelationalAlgebra{
     )
 */
 
-/*    /**
+    /**
      * Tabelleninformationsknoten (q, cols, itbls) as called in Tom's Thesis
      * not part of relational algebra, but in here for pragmatic reasons
+     * cols is actually not placed in here, but in every Relation as val data_columns
      */
-    case class NestedRelations(
-      result_type : ResultType,
-      inner_relations : Map[String,NestedRelation],
-      relation : Relation
-    ) extends Node*/
+    case class Nested(
+      relation : Relation,
+      itbls : Map[String,Nested]
+    )
 
      // AST
     trait Node
     abstract class Relation(
       // unqualified column names
       val schema : List[String],
+      data_columns_ : Option[List[String]] = None,
       val name : String = freshTableName()
     ) extends Node{
-      val qualified_columns = schema.map( name+"."+_ )
+      def qualify_columns( columns : Iterable[String] ) = columns.map( name+"."+_ ).toList
+      val qualified_schema = qualify_columns( schema ).toList
+      val data_columns = data_columns_.getOrElse( schema.filter(_.startsWith("item")) ).toList
+      val getOperatorName = getClass.toString.reverse.takeWhile(_!='$').reverse
+      override def equals(other: Any) = other match {
+        case a:AnyRef => this eq a
+        case _ => false
+      }
     }
     trait UnaryRelationOperator{
       val relation:Relation
@@ -53,21 +82,16 @@ trait RelationalAlgebra{
     object TupleResult extends ResultType
     object ListResult extends ResultType
 
-
-    case class Constant[T](
-      value : T
-    ) extends Expression
-
     case class Projection( // including rename
-      relation : Relation,
-      new_column_names : List[String]
-    ) extends Relation( new_column_names ) with UnaryRelationOperator{
-      require( relation.schema.size == new_column_names.size )
+      shorthand_renames : Any,
+      relation : Relation
+    ) extends Relation( make_shorthand_explicit(shorthand_renames).values.toList ) with UnaryRelationOperator{
+      val renames : Map[String,String] = make_shorthand_explicit(shorthand_renames)
     }
 
     case class Filter(
-      relation : Relation,
-      predicate : Expression
+      predicate : Expression,
+      relation : Relation
     ) extends Relation( relation.schema ) with UnaryRelationOperator
 
     case class CartesianProduct(
@@ -78,9 +102,9 @@ trait RelationalAlgebra{
     }
 
     case class Join(
+      predicate : Expression,
       left : Relation,
-      right : Relation,
-      predicate : Expression
+      right : Relation
     ) extends Relation( left.schema ::: right.schema ) with BinaryRelationOperator{
       require_schemata_disjoint( left.schema, right.schema )
     }
@@ -104,34 +128,39 @@ trait RelationalAlgebra{
     ) extends Relation( relation.schema ) with UnaryRelationOperator
 
     case class Attach(
-      relation : Relation,
-      column_name : String,
-      value : Constant[_]
-    ) extends Relation( column_name :: relation.schema ) with UnaryRelationOperator{
-      require( !relation.schema.contains(column_name) )
+      value : Any,
+      as : String,
+      relation : Relation
+    ) extends Relation( relation.schema :+ as  ) with UnaryRelationOperator{
+      require( !relation.schema.contains(as) )
     }
 
     case class RowRank(
-      relation : Relation,
-      column_name : String
-    ) extends Relation( column_name :: relation.schema ) with UnaryRelationOperator{
-      require( !relation.schema.contains(column_name) )
+      as : String,
+      orderBy : List[String],
+      relation : Relation
+    ) extends Relation( as :: relation.schema ) with UnaryRelationOperator{
+      require( !relation.schema.contains(as) )
     }
 
     case class RowNumber(
+      as : String,
+      orderBy : List[String],
       relation : Relation,
-      column_name : String,
-      partinionByColumns : List[String],
-      orderByColumns : Option[List[String]] = None
-    ) extends Relation( column_name +: relation.schema ) with UnaryRelationOperator{
-      require( !relation.schema.contains(column_name) )
+      partintionBy : Option[List[String]] = None
+    ) extends Relation( as :: relation.schema ) with UnaryRelationOperator{
+      require( !relation.schema.contains(as) )
     }
 
     case class Operator(
+      symbol : String,
       left : Expression,
       right : Expression
     ) extends Expression
 
+    case class Variable(
+      name : String
+    ) extends Expression
 /*    case class Aggregation(
       relation : Relation
     ) extends Relation*/
@@ -140,11 +169,13 @@ trait RelationalAlgebra{
       schema_ : List[String],
       name_ : String,
       keys     : List[List[String]]
-    ) extends Relation(schema_,name_)
+    ) extends Relation(schema_,Some(schema_),name_)
 
-/*    case class LiteralTable(
+    case class LiteralTable[T](
+      data : Iterable[T],
+      schema_ : List[String]
+    ) extends Relation(schema_)
 
-    ) extends Relation
-*/
+
  }
 }

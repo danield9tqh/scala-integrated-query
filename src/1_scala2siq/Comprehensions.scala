@@ -16,7 +16,8 @@ trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base
   object descending extends Order
 
   // transfer scala iterable into literal db table
-  def ship[T]( i:Iterable[T] ) : Rep[Iterable[T]] // FIXME make postfix and rename to todb()
+//  def todb[T <% Rep[_ >: T]]( i:Iterable[T] ) : Rep[Iterable[T]]
+  implicit def liftIterable[T]( i:Iterable[T] ) : Rep[Iterable[T]]
 
   // base stuff for db schema
   trait SchemaBase extends Product
@@ -79,7 +80,9 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   ) extends Generator[R]
 
 
-  def ship[T]( i:Iterable[T] ) = toAtom(LiteralTable[T](i)) // FIXME: restrict to only list of values and list of tuples of values with viewbounds
+  implicit def liftIterable[T]( i:Iterable[T] ) = toAtom(LiteralTable[T](
+    i
+  )) // FIXME: restrict to only list of values and list of tuples of values with viewbounds
   case class Reference[T]( generator:Generator[_] ) extends Def[T]
   case class LiteralTable[T]( i: Iterable[T] ) extends Generator[T]{
     val element = toAtom(Reference[T](this) )
