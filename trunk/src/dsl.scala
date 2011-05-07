@@ -58,7 +58,7 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery
       println("")
       println(relational_data)
     }
-    val ferry_data = relationaldata2ferrydata( relational_data, ferrycore )
+    val ferry_data = relationaldata2ferrydata( relational_data, ferrycore.type_ )
     if(debug){
       println("-"*80)
       println("Ferry Result:")

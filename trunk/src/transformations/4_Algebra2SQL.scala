@@ -2,7 +2,8 @@ package siq
 trait Algebra2SQL extends RelationalAlgebra{
   import algebra._
 //  val t = algebra2sql _
-  def algebra2sql( from:Nested ) : String = {
+  case class NestedSQL( sql:String, data_columns:List[String], nested:Map[String,NestedSQL] )
+  def algebra2sql( from:Nested ) : NestedSQL = {
     def flatten( relation:Relation ) : List[Relation] = (relation match{
         case bin:BinaryRelationOperator => relation :: flatten(bin.left) ::: flatten(bin.right)
         case un:UnaryRelationOperator => relation :: flatten(un.relation)
@@ -13,7 +14,7 @@ trait Algebra2SQL extends RelationalAlgebra{
     val relations = flatten(from.relation)
 
     // put together complete sql query from component queries
-    "WITH\n\n"+
+    val sql = "\nWITH\n\n"+
     // distinct is needed to kill multiple occurence of LOOP relation
     relations.reverse.distinct.map( relation => "-- " + relation.getOperatorName + "\n" +
     "%s(%s) AS\n(%s)".format(
@@ -22,8 +23,9 @@ trait Algebra2SQL extends RelationalAlgebra{
       ,relation2sql(relation)
     )).mkString(",\n\n") +
     "\n\n"+
-    "SELECT * FROM "+from.relation.name
+    "SELECT * FROM "+from.relation.name+"\n-- "+("-"*77)+"\n"
 //    throw new Exception(from.toString)
+    NestedSQL( sql, from.relation.data_columns, from.itbls.keys zip from.itbls.values.map(algebra2sql _) toMap )
   }
   def expression2sql( from:Expression ) : String = {
     def t = expression2sql _
@@ -42,7 +44,7 @@ trait Algebra2SQL extends RelationalAlgebra{
     }
     (from match {
       case p@Projection( _, relation ) => "SELECT %s FROM %s".format(
-        ( relation.qualify_columns(p.renames.keys), p.renames.values ).zipped.map{
+        ( relation.qualify_columns(p.renames.map(_._1)), p.renames.map(_._2) ).zipped.map{
             case( from, to ) => from + " AS " + to
         }.mkString(", ")
         , relation.name

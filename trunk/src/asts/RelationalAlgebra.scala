@@ -27,7 +27,7 @@ trait RelationalAlgebra{
         }
         case i:Iterable[String] => (i,i).zipped.toMap
         case x:String => List( (x,x) )
-      }.toMap
+      }.toList
     }
 
     // the AST only implements a pragmatic subset of the real requirements to ease debugging during development
@@ -85,8 +85,8 @@ trait RelationalAlgebra{
     case class Projection( // including rename
       shorthand_renames : Any,
       relation : Relation
-    ) extends Relation( make_shorthand_explicit(shorthand_renames).values.toList ) with UnaryRelationOperator{
-      val renames : Map[String,String] = make_shorthand_explicit(shorthand_renames)
+    ) extends Relation( make_shorthand_explicit(shorthand_renames).map(_._2) ) with UnaryRelationOperator{
+      val renames : List[(String,String)] = make_shorthand_explicit(shorthand_renames)
     }
 
     case class Filter(
