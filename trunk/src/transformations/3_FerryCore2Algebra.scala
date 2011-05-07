@@ -22,10 +22,24 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
           ),
           Map()
         )
-      case l@ferry.FerryList( value ) => l.type_ match {
-        case ferry.FerryCoreTypes.list(atomic) =>
-          if(value.isDefined) t(ferry.Literal(value.get)) else Nested(LiteralTable(List(),List("iter","pos")),Map())
-      }
+      case l@ferry.FerryList( values, element_type ) =>
+        Nested(
+          l.type_ match {
+            case ferry.FerryCoreTypes.list(atomic) =>
+              if(values.size == 0){
+                LiteralTable(List(),List("iter","pos"))
+              } else {
+                val positional_names = List("item0")
+                  CartesianProduct(
+                    LOOP,
+                    RowNumber( "pos", positional_names,
+                      LiteralTable( values, List("item0") )
+                    )
+                  )
+              }
+          },
+          Map()
+        )
       case ferry.TableReference(name,columns,keys,order) => {
         val column_positional_names = columns.map(_._1)
                                              .zipWithIndex.map( name_index => ( name_index._1, position2column(name_index._2)) )

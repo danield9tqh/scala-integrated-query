@@ -16,9 +16,17 @@ trait IScalaIntegratedQuery extends ISchema with IModules{
   implicit def query_enable[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m)
   def fromdb[T]( r:Rep[T], debug:Boolean=false )( implicit m: Manifest[T] ) = Queryable(r)(m).fromdb(debug)
 }
-class ScalaIntegratedQuery extends IScalaIntegratedQuery with Schema with SIQ2FerryCore with FerryCore2Algebra with Algebra2SQL with SQL2RelationalData/* with Results*/{
+class ScalaIntegratedQuery extends IScalaIntegratedQuery
+    with Schema
+    with SIQ2FerryCore
+    with FerryCore2Algebra
+    with Algebra2SQL
+    with SQL2RelationalData
+    with RelationalData2FerryData
+    with FerryData2Scala
+    /* with Results*/{
   var debug : Boolean = false
-  protected def query[T]( r:Rep[T], debug:Boolean = false )( implicit manifest: Manifest[T] )/* : T*/ = {
+  protected def query[T]( r:Rep[T], debug:Boolean = false )( implicit manifest: Manifest[T] ) : T = {
     this.debug = debug
     if(debug){
       println("-"*80)
@@ -49,9 +57,23 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery with Schema with SIQ2Fe
       println("Result (via postgres jdbc):")
       println("")
       println(relational_data)
+    }
+    val ferry_data = relationaldata2ferrydata( relational_data, ferrycore )
+    if(debug){
+      println("-"*80)
+      println("Ferry Result:")
+      println("")
+      println(ferry_data)
+    }
+    val data = ferrydata2scala[T]( ferry_data )(manifest)
+    if(debug){
+      println("-"*80)
+      println("Scala Result:")
+      println("")
+      println(data)
       println("-"*80)
     }
-    relational_data
+    data
 /*    val result_data = result.map(_.drop(2))
     val data = if( algebra.relation.type_.asInstanceOf[ferry.FerryCoreTypes.list].element == ferry.FerryCoreTypes.atomic ) result_data.flatten else result_data
     extract( new Result( data ) )*/
