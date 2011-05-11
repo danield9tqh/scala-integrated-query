@@ -752,7 +752,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ SUPPLIERGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new SUPPLIERSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7) )
+          , groupBy = Some(f( new SUPPLIERSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7) ))
         )
     }
   }
@@ -769,7 +769,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ EmployeeGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new EmployeeSchema(cols._1,cols._2,cols._3) )
+          , groupBy = Some(f( new EmployeeSchema(cols._1,cols._2,cols._3) ))
         )
     }
   }
@@ -786,7 +786,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ REGIONGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new REGIONSchema(cols._1,cols._2,cols._3) )
+          , groupBy = Some(f( new REGIONSchema(cols._1,cols._2,cols._3) ))
         )
     }
   }
@@ -808,7 +808,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ CUSTOMERGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new CUSTOMERSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8) )
+          , groupBy = Some(f( new CUSTOMERSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8) ))
         )
     }
   }
@@ -831,7 +831,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ ORDERSGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new ORDERSSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9) )
+          , groupBy = Some(f( new ORDERSSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9) ))
         )
     }
   }
@@ -850,7 +850,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ PARTSUPPGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new PARTSUPPSchema(cols._1,cols._2,cols._3,cols._4,cols._5) )
+          , groupBy = Some(f( new PARTSUPPSchema(cols._1,cols._2,cols._3,cols._4,cols._5) ))
         )
     }
   }
@@ -866,7 +866,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ WorkgroupGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new WorkgroupSchema(cols._1,cols._2) )
+          , groupBy = Some(f( new WorkgroupSchema(cols._1,cols._2) ))
         )
     }
   }
@@ -884,7 +884,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ NATIONGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new NATIONSchema(cols._1,cols._2,cols._3,cols._4) )
+          , groupBy = Some(f( new NATIONSchema(cols._1,cols._2,cols._3,cols._4) ))
         )
     }
   }
@@ -914,7 +914,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ LINEITEMGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new LINEITEMSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9,cols._10,cols._11,cols._12,cols._13,cols._14,cols._15,cols._16) )
+          , groupBy = Some(f( new LINEITEMSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9,cols._10,cols._11,cols._12,cols._13,cols._14,cols._15,cols._16) ))
         )
     }
   }
@@ -937,7 +937,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ PARTGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new PARTSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9) )
+          , groupBy = Some(f( new PARTSchema(cols._1,cols._2,cols._3,cols._4,cols._5,cols._6,cols._7,cols._8,cols._9) ))
         )
     }
   }
@@ -954,7 +954,7 @@ trait Schema extends ISchema with Comprehensions{
         new Comprehension[ AmountsGrouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new AmountsSchema(cols._1,cols._2,cols._3) )
+          , groupBy = Some(f( new AmountsSchema(cols._1,cols._2,cols._3) ))
         )
     }
   }

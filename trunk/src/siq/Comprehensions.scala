@@ -17,7 +17,9 @@ trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base
 
   // transfer scala iterable into literal db table
 //  def todb[T <% Rep[_ >: T]]( i:Iterable[T] ) : Rep[Iterable[T]]
-  implicit def liftIterable[T]( i:Iterable[T] ) : Rep[Iterable[T]]
+  //implicit def liftIterableOfReps[T]( i:Iterable[Rep[T]] ) : Rep[Iterable[T]]
+  implicit def liftIterable[T/* <% Rep[T]*/]( i:Iterable[T] ) : Rep[Iterable[T]]
+  //implicit def liftOther[T,I <: Iterable[T]]( i:I ) : Rep[I] = liftIterable(i).asInstanceOf[Rep[I]]
 
   // base stuff for db schema
   trait SchemaBase extends Product
@@ -37,14 +39,15 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     case _:FieldReference => rep2def(rep2def(r).asInstanceOf[FieldReference].referree.asInstanceOf[Rep[Iterable[T]]])
     case _ => rep2def(r)
   }).asInstanceOf[IGenerator[T]]
+  protected var _query_counter = 0
   trait Generator[+T] extends Def[Iterable[T]] with IGenerator[T]{
     val element : Rep[T]
-    val key = (if (this.hashCode > 0) this.hashCode else (this.hashCode * -1)).toString
+    val key = {_query_counter = _query_counter + 1;_query_counter}.toString
     def orderBy( f : Rep[T] => Rep[Any], order : Order = ascending ) = {
       new Comprehension[T](
         List[Rep[Iterable[_]]](this)//replace_with_references(toAtom(this),this),
         , element = replace_with_references(element,this)
-        , orderBy = f( replace_with_references(element,this) )
+        , orderBy = Some(f( replace_with_references(element,this) ))
         , order = order
       )
     }
@@ -61,7 +64,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
       new Comprehension[T](
         List[Rep[Iterable[_]]](this)
         , element = replace_with_references(element,this)
-        , filter = f( replace_with_references(element,this) )
+        , filter = Some(f( replace_with_references(element,this) ))
       )
     }
   }
@@ -73,19 +76,32 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   case class Comprehension[R] (
     var tables : List[Rep[Iterable[_]]],
     val element : Rep[R],
-    val filter : Rep[Boolean] = unit(true),
-    val orderBy : Rep[_] = unit(""),
+    val filter : Option[Rep[Boolean]] = None,
+    val orderBy : Option[Rep[_]] = None,
     val order : Order = ascending,
-    val groupBy : Rep[_] = unit("")
+    val groupBy : Option[Rep[_]] = None
   ) extends Generator[R]
 
 
-  implicit def liftIterable[T]( i:Iterable[T] ) = toAtom(LiteralTable[T](
+  //implicit def liftIterableOfReps[T](i:Iterable[Rep[T]]) =
+  implicit def liftIterable[T/* <% Rep[T]*/]( i:Iterable[T] ) = toAtom(LiteralTable[T](
     i
   )) // FIXME: restrict to only list of values and list of tuples of values with viewbounds
-  case class Reference[T]( generator:Generator[_] ) extends Def[T]
-  case class LiteralTable[T]( i: Iterable[T] ) extends Generator[T]{
-    val element = toAtom(Reference[T](this) )
+//  case class Reference[T]( generator:Generator[_] ) extends Def[T]
+  case class LiteralTable[T/* <% Rep[T]*/]( i: Iterable[T] ) extends Generator[T]{
+    val values = i.toList
+    val element = replace_with_references[T]((
+      // FIXME: this is very VERY hacky
+      if(values.size > 0 && values(0).isInstanceOf[Product]) toAtom(
+        new LiftedTuple(new Product{
+          val list = values(0).asInstanceOf[Product].productIterator.map(x => toAtom(new Def[T]{})).toList
+          def productElement(n: Int) = list(n)
+          def productArity = list.size
+          def canEqual( that:Any ) = false
+        })
+      ) else new Def[T]{}
+    ),this)
+    def unapply( a:Any ) = Some(Tuple1(values))
   }
 
   // base stuff for db schema

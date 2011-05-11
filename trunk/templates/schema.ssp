@@ -100,7 +100,7 @@ val (table,meta) = table_meta
         new Comprehension[ ${table.capitalize}Grouped ](
           List[Rep[Iterable[_]]](toAtom(g))
           , replace_with_references(groups, g)
-          , groupBy = f( new ${table.capitalize}Schema(${1.to(meta.fields.size).map("cols._"+_).mkString(",")}) )
+          , groupBy = Some(f( new ${table.capitalize}Schema(${1.to(meta.fields.size).map("cols._"+_).mkString(",")}) ))
         )
     }
   }

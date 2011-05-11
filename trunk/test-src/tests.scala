@@ -2,10 +2,11 @@ package siq
 import Predef.{any2stringadd => _, _} // prohibit automatic toString conversion of objects when + method is used
 object tests {
   def main( args:Array[String] ) {
-  {
+ {
     import dsl.dsl._
     import dsl.dsl.tables._
     import dsl.dsl.implicits._
+    //implicit def tupleize[T1 <% Rep[T1],T2 <% Rep[T2]]( t:(T1,T2) ) : Rep[(T1,T2)] = tuple2rep2((t._1,t._2));
     {
       // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
       // these lines just test if it compiles
@@ -14,10 +15,39 @@ object tests {
       conv( List(1,2,3) )
     }
     {
-      println( (for( x <- List(1,2,3).todb ) yield x).fromdb(debug=true) )
-      employee.fromdb(debug=true)
-      (for( e <- employee ) yield e.name).fromdb(debug=true)
-      (for( x <- List(1,2,3).todb ) yield List(1,2,3).todb).fromdb(debug=true)
+
+        println(( for( x <- List(1,2,3).todb ) yield x).fromdb() )
+        println( employee.fromdb() )
+        println(( for( e <- employee ) yield e.name).fromdb() )
+        println(( for( e <- employee ) yield e).fromdb() )
+        println(( for( w <- workgroup ) yield employee.map(_.name)).fromdb() )
+        println(( for( w <- workgroup ) yield employee.map( e=> (tuple(e.id,e.name),e.workgroup_id) )).fromdb() )
+        println(( for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)).fromdb() )
+        println(( for( w <- workgroup ) yield employee.withFilter(x => 1 == w.id)).fromdb() )
+        println(( for( x <- List("d","e","f").todb ) yield
+                   (for (z <- List("a","b","c")) yield z)).fromdb() )
+        println(( for( x <- List("d","e","f").todb ) yield
+                   (for (z <- List("a","b","c").todb) yield x)).fromdb() )
+
+        println(( for( x <- List("b","a").todb ) yield
+                 (for (z <- List("a","b").todb; if z == x ) yield z)).fromdb() )
+
+        // only implemented hackishly
+        println(( for( x <- List(("a","b"),("b","a")).todb ) yield x).fromdb(/*debug=true*/) )
+        println(( for( x <- List(("a","b"),("b","a")).todb ) yield x._2).fromdb(/*debug=true*/) )
+        println(( for( w <- workgroup; e<-employee; if e.workgroup_id == w.id) yield e).fromdb() )
+        println(( for( w <- workgroup; e<-employee; if e.workgroup_id == w.id) yield (w,e)).fromdb() )
+        println(( for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)).fromdb() )
+
+        // test viral positional access
+        println(( employee.map( e => (tuple(e.id,e.name),e.workgroup_id) ).map( x => (x._1,x._1._2,x._2)) ).fromdb())
+
+        // CURRENTLY NOT SUPPORTED: heterogeneous tuple (mixed Reps and normal types)
+        //println(( for( e <- employee ) yield (1,e.name)).fromdb() )
+
+      //(for( x <- List(1,2,3).todb ) yield liftOther(List(1,2,3)))
+      //(for( x <- List(1,2,3).todb ) yield tupleize((1,List(1,2,3):Iterable[Int])))
+
     }
   }
   return ();
@@ -27,6 +57,8 @@ object tests {
     import dsl.dsl_old.implicits._
     println("old ferryc based tests");
     {
+      (for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id) ).fromdb
+      return ();
       println((for( x <- List(1,2,3).todb ) yield x).fromdb)
       println(employee.fromdb)
       println((for( e <- employee ) yield e.name).fromdb)
@@ -41,7 +73,7 @@ object tests {
       q.fromdb.foreach( println(_) )
     }
     {
-      val q = for( e <- employee; w <- workgroup ) yield (e,w)
+      val q = for( e <- employee; w <- workgroup ) yield tuple2rep2(e,w)
       q.fromdb.foreach( println(_) )
     }
     {
@@ -257,7 +289,7 @@ object tests {
 
     query(
       for( x <- (
-        for( e <- employee; i <- todb(List(1,2,3,4)) ) yield T( T(i,e._2,T(i,e._2)), e._2,T(T(i,e._2),e._2) )
+        for( e <- employee; i <- todb(List(1,2,3,4)) ) yield tuple( tuple(i,e._2,tuple(i,e._2)), e._2,tuple(tuple(i,e._2),e._2) )
       )) yield (x, unitAnyVal(5))
     ).map( x =>println(x) )
 

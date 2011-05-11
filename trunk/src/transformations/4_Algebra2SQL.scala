@@ -1,31 +1,53 @@
 package siq
-trait Algebra2SQL extends RelationalAlgebra{
+trait Algebra2SQL extends FerryCore2Algebra{
   import algebra._
+  val debug_ferrycore_algebra_association: scala.collection.mutable.ListMap[Relation,ferry.Expression] // for better debug info in sql
 //  val t = algebra2sql _
-  case class NestedSQL( sql:String, data_columns:List[String], nested:Map[String,NestedSQL] )
-  def algebra2sql( from:Nested ) : NestedSQL = {
-    def flatten( relation:Relation ) : List[Relation] = (relation match{
-        case bin:BinaryRelationOperator => relation :: flatten(bin.left) ::: flatten(bin.right)
-        case un:UnaryRelationOperator => relation :: flatten(un.relation)
-        case _:LiteralTable[_] => List(relation)
-        case _:Table => List()
-      })
+  case class NestedSQL( sql:String, data_columns:List[String], nested:List[(String,NestedSQL)] )
+/*  def flatten_algebra( relation:Relation ) : List[Relation] = (relation match{
+    case bin:BinaryRelationOperator => relation :: flatten_algebra(bin.left) ::: flatten_algebra(bin.right)
+    case un:UnaryRelationOperator => relation :: flatten_algebra(un.relation)
+    case _:LiteralTable[_] => List(relation)
+    case _:Table => List(relation)
+  })*/
+  def flatten_algebra( relation:Relation ) : List[Relation] = relation :: relation_children(relation).map(flatten_algebra _).flatten
+  def relation_children( relation:Relation ) = relation match{
+    case bin:BinaryRelationOperator => List( bin.left, bin.right)
+    case un:UnaryRelationOperator => List(un.relation)
+    case _:LiteralTable[_] => List()
+    case _:Table => List()
+  }
 
-    val relations = flatten(from.relation)
+  def algebra2sql( from:Nested ) : NestedSQL = {
+    val relations = flatten_algebra(from.relation)
+
+    // complete gaps of unregistered relations which were subexpressions when transformin a ferry expression
+    def complete_debug_ferrycore_algebra_association( parent:Relation ){
+      relation_children(parent).foreach( child =>
+        if( !debug_ferrycore_algebra_association.isDefinedAt(child) ){
+          debug_ferrycore_algebra_association.update(child, debug_ferrycore_algebra_association(parent) )
+          complete_debug_ferrycore_algebra_association( child )
+        }
+      )
+    }
+    relations.map( complete_debug_ferrycore_algebra_association _ )
 
     // put together complete sql query from component queries
-    val sql = "\nWITH\n\n"+
+    val sql = "\nWITH\n\ntdummy(x) AS (Values (1),(2))"+
     // distinct is needed to kill multiple occurence of LOOP relation
-    relations.reverse.distinct.map( relation => "-- " + relation.getOperatorName + "\n" +
+    relations.reverse.distinct.map{
+      case _:Table => ""
+      case relation =>
+    ",\n\n-- " + relation.getOperatorName + " (created for ferry "+ debug_ferrycore_algebra_association(relation).getExpressionName +")\n" + //debug line
     "%s(%s) AS\n(%s)".format(
       relation.name
       ,relation.schema.mkString(",")
       ,relation2sql(relation)
-    )).mkString(",\n\n") +
+    )}.filter( s => !(s=="") ).mkString("") +
     "\n\n"+
     "SELECT * FROM "+from.relation.name+"\n-- "+("-"*77)+"\n"
 //    throw new Exception(from.toString)
-    NestedSQL( sql, from.relation.data_columns, from.itbls.keys zip from.itbls.values.map(algebra2sql _) toMap )
+    NestedSQL( sql, from.relation.data_columns, from.itbls.map(_._1) zip from.itbls.map(_._2).map(algebra2sql _) )
   }
   def expression2sql( from:Expression ) : String = {
     def t = expression2sql _
@@ -38,7 +60,7 @@ trait Algebra2SQL extends RelationalAlgebra{
   def relation2sql( from: Relation ) : String = {
     def escape( value: Any ) : String = value match {
       case i:Int => i.toString
-      case s:String   => '"' + s.replace("\\","\\\\").replace("\"","\\\"") + '"'
+      case s:String   => "'" + s.replace("\\","\\\\").replace("'","\\'") + "'"
       case s:Char   => escape (s.toString)
       case b:Boolean => (if(b) 1 else 0).toString
     }
@@ -48,6 +70,14 @@ trait Algebra2SQL extends RelationalAlgebra{
             case( from, to ) => from + " AS " + to
         }.mkString(", ")
         , relation.name
+      )
+      case Filter( predicate, relation ) => "SELECT * FROM %s WHERE %s".format(
+        relation.name,
+        expression2sql(predicate)
+      )
+      case OperatorApplication( as, symbol, left, right, relation ) => "SELECT *,%s FROM %s".format(
+        left+" "+symbol+" "+right+" AS "+as,
+        relation.name
       )
       case CartesianProduct( left, right ) => "SELECT %s FROM %s".format(
         (left.qualified_schema ++ right.qualified_schema).mkString(","),
@@ -78,9 +108,10 @@ trait Algebra2SQL extends RelationalAlgebra{
           relation.name
         )
       case LiteralTable( data, schema ) => "VALUES %s".format( data.map( x => x match {
-        case p:Product => "(%)".format( p.productIterator.mkString(",") )
-        case _ => "("+x+")"
+        case p:Product => "(%s)".format( p.productIterator.map(escape _).mkString(",") )
+        case _ => "("+escape(x)+")"
       }).mkString(", "))
+      case t:Table => t.name
     })
   }
 }

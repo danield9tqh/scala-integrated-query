@@ -1,5 +1,5 @@
 package siq
-
+<% escapeMarkup = false %>
 <%
   val max_tuple_size = 20
   def p( max : Int, template: String ) = Range( 1, max+1 ).map( i=>template.format(i,i) ).mkString(",")
@@ -25,7 +25,7 @@ trait ITuples extends IModuleBase with OverloadHack{
   // This turns tuples into Reps (which is required, as we only want the outer most element to officially have type Rep[...])
 #for (i <- 1 to max_tuple_size)
   implicit def tuple2rep${i}[${p(i,"T%s")}]( t:Tuple${i}[${p(i,"Rep[T%s]")}] ) : Rep[Tuple${i}[${p(i,"T%s")}]]
-  def T[${p(i,"T%s")}]( t:Tuple${i}[${p(i,"Rep[T%s]")}] ) = tuple2rep${i}(t)
+  def tuple[${p(i,"T%s")}]( ${p(i," t%s:Rep[T%s]")} ) = tuple2rep${i}( Tuple${i}(${p(i,"t%s")}) )
 #end
 
 // enables tuples for groupBy
@@ -83,20 +83,21 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple${i}[${p(i,"Iterable[T%s]")}] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
   implicit def rep2groupable${i}[${p(i,"T%s")}]( r: Rep[Iterable[(${p(i,"T%s")})]] ) = Groupable${i}[${p(i,"T%s")}](rep2generator(r))
 #end
 
-    def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(1) ) : Rep[R]= {
+    def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(0) ) : Rep[R]= {
+      // note: when thinking about changing when counter is incremented, consider what happens when replacing nested tuples like ((a,b),c), as they should still get number ((1,2),3)
       val ref = rep2def(r) match{
         case _:FieldReference => rep2def(r).asInstanceOf[FieldReference]
         case _ => FieldReference(g,counter.count,r)
       }
       val referree = rep2def(ref.referree)
-      toAtom(FieldReference(g,counter.count,referree match{
+      (referree match{
         //case _:SchemaBase => replace_with_references_schema( referree, f )
         case _:LiftedTuple[_] => {
           val p = referree.asInstanceOf[LiftedTuple[_]].p
@@ -126,10 +127,11 @@ trait Tuples extends ITuples with ModuleBase{
           ))
         }
         case _ => {
-          counter.count+=1
+          counter.count += 1
+          val ref = FieldReference(g,counter.count,r)
           toAtom(ref)
         }
-      })).asInstanceOf[Rep[R]]
+      }).asInstanceOf[Rep[R]]
     }
 /*
     class Synthetic[T] extends Def[T]

@@ -2,7 +2,6 @@
 
 package siq
 
-
 // FIXME: move overloadhack to its own file
 trait OverloadHack{
   class Overloaded0
@@ -85,45 +84,45 @@ trait ITuples extends IModuleBase with OverloadHack{
 
   // This turns tuples into Reps (which is required, as we only want the outer most element to officially have type Rep[...])
   implicit def tuple2rep1[T1]( t:Tuple1[Rep[T1]] ) : Rep[Tuple1[T1]]
-  def T[T1]( t:Tuple1[Rep[T1]] ) = tuple2rep1(t)
+  def tuple[T1](  t1:Rep[T1] ) = tuple2rep1( Tuple1(t1) )
   implicit def tuple2rep2[T1,T2]( t:Tuple2[Rep[T1],Rep[T2]] ) : Rep[Tuple2[T1,T2]]
-  def T[T1,T2]( t:Tuple2[Rep[T1],Rep[T2]] ) = tuple2rep2(t)
+  def tuple[T1,T2](  t1:Rep[T1], t2:Rep[T2] ) = tuple2rep2( Tuple2(t1,t2) )
   implicit def tuple2rep3[T1,T2,T3]( t:Tuple3[Rep[T1],Rep[T2],Rep[T3]] ) : Rep[Tuple3[T1,T2,T3]]
-  def T[T1,T2,T3]( t:Tuple3[Rep[T1],Rep[T2],Rep[T3]] ) = tuple2rep3(t)
+  def tuple[T1,T2,T3](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3] ) = tuple2rep3( Tuple3(t1,t2,t3) )
   implicit def tuple2rep4[T1,T2,T3,T4]( t:Tuple4[Rep[T1],Rep[T2],Rep[T3],Rep[T4]] ) : Rep[Tuple4[T1,T2,T3,T4]]
-  def T[T1,T2,T3,T4]( t:Tuple4[Rep[T1],Rep[T2],Rep[T3],Rep[T4]] ) = tuple2rep4(t)
+  def tuple[T1,T2,T3,T4](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4] ) = tuple2rep4( Tuple4(t1,t2,t3,t4) )
   implicit def tuple2rep5[T1,T2,T3,T4,T5]( t:Tuple5[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5]] ) : Rep[Tuple5[T1,T2,T3,T4,T5]]
-  def T[T1,T2,T3,T4,T5]( t:Tuple5[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5]] ) = tuple2rep5(t)
+  def tuple[T1,T2,T3,T4,T5](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5] ) = tuple2rep5( Tuple5(t1,t2,t3,t4,t5) )
   implicit def tuple2rep6[T1,T2,T3,T4,T5,T6]( t:Tuple6[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6]] ) : Rep[Tuple6[T1,T2,T3,T4,T5,T6]]
-  def T[T1,T2,T3,T4,T5,T6]( t:Tuple6[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6]] ) = tuple2rep6(t)
+  def tuple[T1,T2,T3,T4,T5,T6](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6] ) = tuple2rep6( Tuple6(t1,t2,t3,t4,t5,t6) )
   implicit def tuple2rep7[T1,T2,T3,T4,T5,T6,T7]( t:Tuple7[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7]] ) : Rep[Tuple7[T1,T2,T3,T4,T5,T6,T7]]
-  def T[T1,T2,T3,T4,T5,T6,T7]( t:Tuple7[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7]] ) = tuple2rep7(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7] ) = tuple2rep7( Tuple7(t1,t2,t3,t4,t5,t6,t7) )
   implicit def tuple2rep8[T1,T2,T3,T4,T5,T6,T7,T8]( t:Tuple8[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8]] ) : Rep[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8]( t:Tuple8[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8]] ) = tuple2rep8(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8] ) = tuple2rep8( Tuple8(t1,t2,t3,t4,t5,t6,t7,t8) )
   implicit def tuple2rep9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( t:Tuple9[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9]] ) : Rep[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9]( t:Tuple9[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9]] ) = tuple2rep9(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9] ) = tuple2rep9( Tuple9(t1,t2,t3,t4,t5,t6,t7,t8,t9) )
   implicit def tuple2rep10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( t:Tuple10[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10]] ) : Rep[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( t:Tuple10[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10]] ) = tuple2rep10(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10] ) = tuple2rep10( Tuple10(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10) )
   implicit def tuple2rep11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( t:Tuple11[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11]] ) : Rep[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( t:Tuple11[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11]] ) = tuple2rep11(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11] ) = tuple2rep11( Tuple11(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11) )
   implicit def tuple2rep12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( t:Tuple12[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12]] ) : Rep[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( t:Tuple12[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12]] ) = tuple2rep12(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12] ) = tuple2rep12( Tuple12(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12) )
   implicit def tuple2rep13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( t:Tuple13[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13]] ) : Rep[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( t:Tuple13[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13]] ) = tuple2rep13(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13] ) = tuple2rep13( Tuple13(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13) )
   implicit def tuple2rep14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( t:Tuple14[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14]] ) : Rep[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( t:Tuple14[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14]] ) = tuple2rep14(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14] ) = tuple2rep14( Tuple14(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14) )
   implicit def tuple2rep15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( t:Tuple15[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15]] ) : Rep[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( t:Tuple15[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15]] ) = tuple2rep15(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15] ) = tuple2rep15( Tuple15(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15) )
   implicit def tuple2rep16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( t:Tuple16[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16]] ) : Rep[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( t:Tuple16[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16]] ) = tuple2rep16(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15], t16:Rep[T16] ) = tuple2rep16( Tuple16(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16) )
   implicit def tuple2rep17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( t:Tuple17[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17]] ) : Rep[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( t:Tuple17[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17]] ) = tuple2rep17(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15], t16:Rep[T16], t17:Rep[T17] ) = tuple2rep17( Tuple17(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17) )
   implicit def tuple2rep18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( t:Tuple18[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18]] ) : Rep[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( t:Tuple18[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18]] ) = tuple2rep18(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15], t16:Rep[T16], t17:Rep[T17], t18:Rep[T18] ) = tuple2rep18( Tuple18(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18) )
   implicit def tuple2rep19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( t:Tuple19[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19]] ) : Rep[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( t:Tuple19[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19]] ) = tuple2rep19(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15], t16:Rep[T16], t17:Rep[T17], t18:Rep[T18], t19:Rep[T19] ) = tuple2rep19( Tuple19(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19) )
   implicit def tuple2rep20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( t:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] ) : Rep[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]]
-  def T[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( t:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] ) = tuple2rep20(t)
+  def tuple[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20](  t1:Rep[T1], t2:Rep[T2], t3:Rep[T3], t4:Rep[T4], t5:Rep[T5], t6:Rep[T6], t7:Rep[T7], t8:Rep[T8], t9:Rep[T9], t10:Rep[T10], t11:Rep[T11], t12:Rep[T12], t13:Rep[T13], t14:Rep[T14], t15:Rep[T15], t16:Rep[T16], t17:Rep[T17], t18:Rep[T18], t19:Rep[T19], t20:Rep[T20] ) = tuple2rep20( Tuple20(t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20) )
 
 // enables tuples for groupBy
   trait IGroupable1[T1]{
@@ -541,7 +540,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple1[Iterable[T1]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -556,7 +555,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple2[Iterable[T1],Iterable[T2]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -572,7 +571,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -589,7 +588,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -607,7 +606,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -626,7 +625,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -646,7 +645,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -667,7 +666,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -689,7 +688,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -712,7 +711,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -736,7 +735,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -761,7 +760,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -787,7 +786,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -814,7 +813,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -842,7 +841,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -871,7 +870,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -901,7 +900,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -932,7 +931,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -964,7 +963,7 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
@@ -997,19 +996,20 @@ trait Tuples extends ITuples with ModuleBase{
       new Comprehension[ Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]] ](
         List[Rep[Iterable[_]]](toAtom(g))
         , replace_with_references(groups, g)
-        , groupBy = f(cols) // not: groupBy = replace_with_references(f(cols),g) ???
+        , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
   implicit def rep2groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20)]] ) = Groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20](rep2generator(r))
 
-    def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(1) ) : Rep[R]= {
+    def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(0) ) : Rep[R]= {
+      // note: when thinking about changing when counter is incremented, consider what happens when replacing nested tuples like ((a,b),c), as they should still get number ((1,2),3)
       val ref = rep2def(r) match{
         case _:FieldReference => rep2def(r).asInstanceOf[FieldReference]
         case _ => FieldReference(g,counter.count,r)
       }
       val referree = rep2def(ref.referree)
-      toAtom(FieldReference(g,counter.count,referree match{
+      (referree match{
         //case _:SchemaBase => replace_with_references_schema( referree, f )
         case _:LiftedTuple[_] => {
           val p = referree.asInstanceOf[LiftedTuple[_]].p
@@ -1055,10 +1055,11 @@ trait Tuples extends ITuples with ModuleBase{
           ))
         }
         case _ => {
-          counter.count+=1
+          counter.count += 1
+          val ref = FieldReference(g,counter.count,r)
           toAtom(ref)
         }
-      })).asInstanceOf[Rep[R]]
+      }).asInstanceOf[Rep[R]]
     }
 /*
     class Synthetic[T] extends Def[T]

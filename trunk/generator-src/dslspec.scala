@@ -21,8 +21,8 @@ object DslSpec{
         List(
           Operator( "<", "Int", "Int", "Boolean" ),
           Operator( ">", "Int", "Int", "Boolean" )
-//          ,Operator( "<=", "Int", "Int", "Boolean" ),
-//          Operator( ">=", "Int", "Int", "Boolean" )
+          ,Operator( "<=", "Int", "Int", "Boolean" ),
+          Operator( ">=", "Int", "Int", "Boolean" )
         )
     ),
 /*    Module( "Iterable", List(
@@ -34,8 +34,8 @@ object DslSpec{
     Module( "String", List(
       Operator( "<", "String", "String", "Boolean" ),
       Operator( ">", "String", "String", "Boolean" ),
-//      Operator( "<=", "String", "String", "Boolean" ),
-//      Operator( ">=", "String", "String", "Boolean" ),
+      Operator( "<=", "String", "String", "Boolean" ),
+      Operator( ">=", "String", "String", "Boolean" ),
       Operator( "+", "String", "AnyVal", "String" ),
       Operator( "+", "AnyVal", "String", "String" ),
       Operator( "+", "String", "String", "String" )

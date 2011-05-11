@@ -11,6 +11,7 @@ trait RelationalAlgebra{
     }
     private def listify( tuple_or_list : Any ) : Iterable[_] =
       (tuple_or_list match {
+          case s:String => List(s)
           case l:Iterable[_] => l
           case p:Product => p.productIterator
         }).toList
@@ -21,11 +22,11 @@ trait RelationalAlgebra{
     private def make_shorthand_explicit( shorthand_renames : Any ) = {
       listify(shorthand_renames).flatMap{
         case t@(_,_) => t match{
-          case (a:Iterable[String],b:Iterable[String]) => (a,b).zipped.toMap
+          case (a:Iterable[String],b:Iterable[String]) => (a,b).zipped.toList
           case (a:String,b:Iterable[String]) => b.map( (a,_) )
           case (a:String,b:String)=> List( (a,b) )
         }
-        case i:Iterable[String] => (i,i).zipped.toMap
+        case i:Iterable[String] => (i,i).zipped.toList
         case x:String => List( (x,x) )
       }.toList
     }
@@ -49,7 +50,7 @@ trait RelationalAlgebra{
      */
     case class Nested(
       relation : Relation,
-      itbls : Map[String,Nested]
+      itbls : List[(String,Nested)] = List()
     )
 
      // AST
@@ -83,7 +84,7 @@ trait RelationalAlgebra{
     object ListResult extends ResultType
 
     case class Projection( // including rename
-      shorthand_renames : Any,
+      shorthand_renames : Any, // !! beware of accidentally passing (a->b), which results NOT in a rename, but projection of two columns
       relation : Relation
     ) extends Relation( make_shorthand_explicit(shorthand_renames).map(_._2) ) with UnaryRelationOperator{
       val renames : List[(String,String)] = make_shorthand_explicit(shorthand_renames)
@@ -149,7 +150,7 @@ trait RelationalAlgebra{
       relation : Relation,
       partintionBy : Option[List[String]] = None
     ) extends Relation( as :: relation.schema ) with UnaryRelationOperator{
-      require( !relation.schema.contains(as) )
+      require( !relation.schema.contains(as), "!" + relation.schema.toString + " contains " + as )
     }
 
     case class Operator(
@@ -157,6 +158,14 @@ trait RelationalAlgebra{
       left : Expression,
       right : Expression
     ) extends Expression
+
+    case class OperatorApplication( // this thing seems so verbose (see trans rules). Can't we realize this smarter?
+      as : String,
+      symbol : String,
+      left : String,
+      right : String,
+      relation : Relation
+    ) extends Relation( relation.schema :+ as ) with UnaryRelationOperator
 
     case class Variable(
       name : String
