@@ -1,60 +1,125 @@
 package siq
+import scala.collection.immutable.ListMap
 trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
+  import scala.collection.immutable.ListMap
   import algebra._
-
+  val debug_ferrycore_algebra_association = scala.collection.mutable.ListMap[Relation,ferry.Expression]() // for better debug info in sql
   def position2column( i: Int ) = "item"+i // called cid in Tom's Ferry Thesis
+  def rename_second( first:List[String], second:List[String] ) =
+    ListMap((second zip
+      ((first ++ second).zipWithIndex.map(_._2+1)
+                        .map( position2column _ )
+                        .drop( first.size )
+      )
+    ):_*)
+  def itsel( q_0:Relation, itbls :  List[(String,Nested)] ) :  List[(String,Nested)] = {
+    itbls.map{
+      case (key, Nested(q,itbls) ) => {
+        val q_ = Projection(
+          ("iter","pos",q.data_columns),
+          Join(
+            Operator( "=", Variable(key+"_"), Variable("iter") ),
+            Projection( (key->key+"_"), q_0 ),
+            q
+          )
+        )
+        (key -> Nested(q_, itsel(q_,itbls) ))
+      }
+    }
+  }
+  val loop_initial = LiteralTable(List(1), List("iter"))
+  debug_ferrycore_algebra_association.update( loop_initial, ferry.FerryList(List(1)) )
   def ferrycore2algebra( from:ferry.Expression,
-                         loop : Relation = LiteralTable(List(1), List("iter")),
-                         scope : Map[String,Nested] = Map()
+                         loop : Relation = loop_initial,
+                         scope :  List[(String,Nested)] = List()
                         ) : Nested = {
-    def itapp( left: Map[String,Nested], right: Map[String,Nested] ) = left ++ right // FIXME
+    def itapp( left:  List[(String,Nested)], right:  List[(String,Nested)] ) = left ++ right // FIXME
     def colum2position( str: String ) = str.drop(4).toInt // called ord in Tom's Ferry Thesis
     // transformation closure
     def t( from:ferry.Expression,
            loop_ : Relation = loop,
-           scope_ : Map[String,Nested] = scope
+           scope_ :  List[(String,Nested)] = scope
           ) = ferrycore2algebra(from,loop_,scope_)
-    from match {
+    val result_ast = from match {
       case ferry.Box( boxee ) =>
         Nested(
           Attach( 1, "pos", Projection( ("iter", "iter"->"item1"), loop ) ),
-          Map( "item1" -> t(boxee) )
+          List( "item1" -> t(boxee) )
         )
       case ferry.Unbox( unboxee ) => {
         val Nested( relation, itbls ) = t(unboxee)
         assert( relation.data_columns.size == 1, relation.data_columns )
-        itbls( relation.data_columns(0) )
+        ListMap(itbls:_*)( relation.data_columns(0) )
       }
       case ferry.Literal(value) =>
         Nested(
           Attach(
-            value, position2column(1),
+            value, "item1",
             Attach( 1, "pos", loop )
-          ),
-          Map()
+          )
         )
+      case ferry.OperatorApplication( symbol, left, right ) => {
+        val Nested( q_left, itbls_left ) = t(left)
+        val Nested( q_right, itbls_right ) = t(right)
+        require( q_left.data_columns  == List("item1") )
+        require( q_right.data_columns  == List("item1") )
+        require( itbls_left.size == 0,  itbls_left)
+        require( itbls_right.size == 0, itbls_right)
+        Nested(
+          Projection(
+            ("iter","pos","res" -> "item1"),
+            OperatorApplication( "res", symbol, "item1", "item2",
+              Join(
+                Operator( "=", Variable("iter"), Variable("iter_") ),
+                q_left,
+                Projection( ("iter" -> "iter_","item1" -> "item2"), q_right )
+              )
+            )
+          )
+        )
+      }
+      case ferry.FerryTuple( List(element) ) => t(element)
+      case ferry.FerryTuple( head :: tail ) => {
+        val Nested( q_e1, itbls_e1 ) = t(head)
+        val Nested( q_e2, itbls_e2 ) = t(ferry.FerryTuple(tail))
+        val renames_e2 = rename_second( q_e1.data_columns, q_e2.data_columns )
+        Nested(
+          Projection(
+            List("iter","pos") ++ q_e1.data_columns ++ renames_e2.values
+            ,
+            Join(
+              Operator("=",Variable("iter"),Variable("iter_")),
+              q_e1,
+              Projection( List("iter"->"iter_") ++ renames_e2, q_e2 )
+            )
+          ),
+          itbls_e1 ++ (itbls_e2.map(_._1).map(renames_e2) zip itbls_e2.map(_._2))
+        )
+      }
       case l@ferry.FerryList( values, element_type ) =>
         Nested(
           l.type_ match {
-            case ferry.FerryCoreTypes.list(atomic) =>
-              if(values.size == 0){
+            case ferry.FerryCoreTypes.list(a) =>
+/*              if(values.size == 0){
                 LiteralTable(List(),List("iter","pos"))
               } else {
-                val positional_names = List("item1")
+*/                val positional_names = a match{
+                    case ferry.FerryCoreTypes.atomic => List("item1")
+                    case ferry.FerryCoreTypes.tuple(elements) => elements.zipWithIndex.map(_._2+1).map( position2column _ ).toList
+                  }
                   CartesianProduct(
                     loop,
                     RowNumber( "pos", positional_names,
-                      LiteralTable( values, List("item1") )
+                      LiteralTable( values, positional_names )
                     )
                   )
-              }
-          },
-          Map()
+//              }
+          }
         )
       case ferry.TableReference(name,columns,keys,order) => {
-        val column_positional_names = columns.map(_._1)
+        val column_positional_names = ListMap( columns.map(_._1)
                                              .zipWithIndex.map( name_index => ( name_index._1, position2column(name_index._2+1)) )
-                                             .toMap
+                                             :_*)
         Nested(
           CartesianProduct(
             loop,
@@ -64,8 +129,7 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
                 Table( columns.map(_._1), name, keys )
               )
             )
-          ),
-          Map()
+          )
         )
       }
       case ferry.PositionalAccess( tuple, position ) => {
@@ -76,13 +140,48 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
             ("iter","pos",c_old -> "item1"),
             q_e
           ),
-          if( itbls_e.contains(c_old) ) Map( "item0" -> itbls_e(c_old) ) else Map()
+          if( itbls_e.contains(c_old) ) List( "item0" -> ListMap(itbls_e:_*)(c_old) ) else List() //FIXME: is this item0 thing correct?
         )
       }
-      case ferry.VariableAccess( name, _, _ ) => scope(name)
+      case ferry.VariableAccess( name, _, _ ) => ListMap(scope:_*)(name)
+      case ferry.If( predicate, then_, else_ ) => {
+        // TODO: implement else part
+        val Nested( q_predicate, _ ) = t(predicate)
+        require( q_predicate.data_columns == List("item1"), q_predicate.data_columns )
+        val loop_then = Projection( "iter", Filter( Variable(q_predicate.data_columns(0)), q_predicate ) )
+        val scope_then = scope.map{
+          case (v, Nested(q_v,itbls_v)) => (
+            v -> Nested(
+              Projection( ("iter","pos", q_v.data_columns),
+                Join(
+                  Operator( "=", Variable("iter"), Variable("iter_") ),
+                  q_v, Projection( List("iter"->"iter_"), loop_then )
+                )
+              ),
+              itsel( q_v, itbls_v )
+            )
+          )
+        }
+        val Nested( q_then, itbls_then ) = t(
+          then_,
+          loop_then,
+          scope_then
+        )
+        val q = RowNumber( "item_", List("iter","ord","pos"),
+          Attach( 1, "ord", q_then )
+        )
+        val q_ = Projection(
+          ("iter","pos",q_then.data_columns.diff(itbls_then.map(_._1).toList),"item_"->itbls_then.map(_._1)),
+          q
+        )
+        val itbls_ = itbls_then // TODO change this (and more) when allowing else part
+/*        println("\n"*30)
+        println(scope_then)
+        println("\n"*30)*/
+        Nested( q_, itbls_ )
+      }
       case ferry.For( name, in_, return_, orderBy ) => {
-        val nested_e1 = t(in_)
-        val q_e1 = nested_e1.relation
+        val Nested( q_e1, itbls_e1 ) = t(in_)
         val q_v = Attach(
           1, "pos",
           Projection(
@@ -90,15 +189,28 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
             RowNumber( "inner_", List("iter","pos"), q_e1 )
           )
         )
-        val loop_v = Projection( List("iter"), q_v )
+        val loop_v = Projection( "iter", q_v )
         
         val map = Projection(
-          ( "iter" -> "outer_", "inner_"  ),
+          ( "iter" -> "outer_", "inner_" ),
           RowNumber( "inner_", List("iter","pos"), t(in_).relation ) // inner is already a reserved SQL keyword
         )
-        val Nested( q_e2, itbls_e2 ) = t( return_, loop_v, scope+(name -> Nested(q_v,nested_e1.itbls) ) )
+        assert( !scope.map(_._1).contains(name) )
+        val new_itbls = scope.map{ case (v_i,Nested(q_vi,itbls_vi)) =>
+          v_i ->
+          Nested(
+            Projection(
+              ("inner_"->"iter","pos",q_vi.data_columns),
+              Join( Operator( "=", Variable("iter"), Variable("outer_") ),
+                q_vi, map
+              )
+            ),
+            itbls_vi
+          )
+        }
+        val Nested( q_e2, itbls_e2 ) = t( return_, loop_v, (name, Nested(q_v,itbls_e1) ) :: new_itbls )
         val q_e2_ = Projection(
-          ("outer_"->"inner_", "pos_"->"pos", q_e2.data_columns),
+          ("outer_"->"iter", "pos_"->"pos", q_e2.data_columns),
           RowNumber( "pos_", List("iter","pos"),
             Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map ),
             Some(List("outer_"))
@@ -117,11 +229,38 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
           )
         )
         val q_ = Projection(
-          ( "iter", "pos_" -> "pos", left_relation.data_columns.diff( left_itbls.keys.toList ), "item_" -> left_itbls.keys ),
+          ( "iter", "pos_" -> "pos", left_relation.data_columns.diff( left_itbls.map(_._1).toList ), "item_" -> left_itbls.map(_._1) ),
           RowRank("pos_",List("ord","pos"), q)
         )
         val itbls_ = itapp( left_itbls, right_itbls )
         Nested( q_, itbls_ )
+
+      case ferry.Concat( lists ) =>
+        val Nested( q_e, itbls_e ) = t(lists)
+        require( q_e.data_columns == List("item1") )
+        require( itbls_e.map(_._1).toList == List("item1") )
+        val Nested( q_i, itbls_i ) = ListMap(itbls_e:_*)("item1")
+        Nested(
+          Projection(
+            ("iter_"->"iter", "pos__"->"pos", q_i.data_columns),
+            RowRank( "pos__", List("pos_","pos"),
+              Join(
+                Operator( "=", Variable("item1_"), Variable("iter") ),
+                Projection(
+                  ("iter"->"iter_","pos"->"pos_","item1"->"item1_"),
+                  q_e
+                ),
+                q_i
+              )
+            )
+          ),
+          itbls_i
+        )
     }
+    debug_ferrycore_algebra_association.update( result_ast.relation, from )
+    if( !debug_ferrycore_algebra_association.isDefinedAt(loop) ) {
+      debug_ferrycore_algebra_association.updated( loop, from ) // this is actually wrong for the inital loop
+    }
+    result_ast
   }
 }

@@ -8,8 +8,12 @@ trait FerryCore{
   object ferry{
     object FerryCoreTypes{
       abstract class FerryCoreType
-      object atomic extends FerryCoreType
-      object variable extends FerryCoreType
+      object atomic extends FerryCoreType{
+        override def toString = "atomic"
+      }
+      object variable extends FerryCoreType{
+        override def toString = "variable"
+      }
       case class list ( element: FerryCoreType ) extends FerryCoreType
       case class tuple( elements: List[FerryCoreType] ) extends FerryCoreType
     }
@@ -25,6 +29,11 @@ trait FerryCore{
       val implementation_type : ImplementationType
     ){
       val both_types = (type_,implementation_type)
+      val getExpressionName = getClass.toString.reverse.takeWhile(_!='$').reverse
+      override def equals(other: Any) = other match {
+        case a:AnyRef => this eq a
+        case _ => false
+      }
     }
 
     case class Box( boxee:Expression ) extends Expression( boxee.type_, ROW )
@@ -49,9 +58,8 @@ trait FerryCore{
 */
 
     case class FerryTuple(
-      values : List[Any], // <: Expression
-      types  : List[FerryCoreType]
-    ) extends Expression( tuple(types), ROW )
+      values : List[Expression]
+    ) extends Expression( tuple(values.map(_.type_)), ROW )
 //    ) extends Expression( tuple(values.map(_.type_)), ROW )
 
     case class FerryList[T]( ///  <: Expression
@@ -84,9 +92,9 @@ trait FerryCore{
     ) extends Expression( type__, implementation_type_ )
 
     case class If(
-      if_ : Expression,
+      predicate : Expression,
       then_ : Expression,
-      else_ : Expression
+      else_ : Option[Expression] = None
     ) extends Expression( then_.type_ , then_.implementation_type )
 
     case class For(
@@ -105,7 +113,7 @@ trait FerryCore{
 
     case class Concat(
       lists : Expression
-    ) extends BuiltInFunction( list( lists.type_.asInstanceOf[list].element ), TABLE )
+    ) extends BuiltInFunction(lists.type_.asInstanceOf[list].element, TABLE )
 
     case class Take(
       n : Int,
