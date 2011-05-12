@@ -26,7 +26,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
       }}).mkString(", ") +
           (if(q.filter.isDefined)" where "+ mapper(q.filter.get) else "") +
           (if(q.groupBy.isDefined) " group by " + mapper(q.groupBy.get) else "") +
-          (if(q.orderBy.isDefined) " order by " + mapper(q.orderBy.get) + " " + (if( q.order == ascending ) "ascending" else "descending")  else "") +
+          //(if(q.orderBy.isDefined) " order by " + mapper(q.orderBy.get) + " " /*+ FIXME: (if( q.order == ascending ) "ascending" else "descending")*/  else "") +
           "\nreturn "+ render_projection( q.element, tables, mapper )
   }
   def table2string( table: TableExp[_] )

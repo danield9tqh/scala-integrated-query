@@ -15,14 +15,45 @@ object tests {
       conv( List(1,2,3) )
     }
     {
+/*
+      // CURRENTLY VERY VERY SLOW, 1 500 000 rel operators
+        println({
+            // this is all executed in the db
+
+            // filter employees using a scala collection
+            val q1 = for( id <- List(1,2,3,4,5).todb
+                         ;e <- employee
+                         ;if e.id == id
+            ) yield e
+
+            // join workgroup table
+            val q2 = for( e <- q1
+                          ;w <- workgroup
+                          ;if e.workgroup_id == w.id
+            ) yield (e,w)
+
+            // sort by workgroup names, given an ordering (different api than scala collection)
+            val q3 = q2.orderBy(_._2.name desc)
+
+            // project to the employees
+            q3.map(_._1)
+        }.fromdb() )
+*/
+
+        println((
+          for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)
+        ).fromdb())
 
         println(( for( x <- List(1,2,3).todb ) yield x).fromdb() )
         println( employee.fromdb() )
         println(( for( e <- employee ) yield e.name).fromdb() )
-        println(( for( e <- employee ) yield e).fromdb() )
-        println(( for( w <- workgroup ) yield employee.map(_.name)).fromdb() )
+        println(( for( e <- employee.orderBy(_.name asc) ) yield e.name).fromdb() )
+        println(( for( e <- employee.orderBy(_.workgroup_id desc, _.name asc) ) yield e).fromdb() )
+        println(( for( e <- employee.orderBy(_.name desc) ) yield e.name).fromdb() )
+        println(( for( e <- employee ) yield e.name).fromdb() )
+        println(( for( e <- employee ) yield e).orderBy(_ asc).fromdb() )
         println(( for( w <- workgroup ) yield employee.map( e=> (tuple(e.id,e.name),e.workgroup_id) )).fromdb() )
-        println(( for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)).fromdb() )
+        println(( for( w <- workgroup ) yield employee.map(_.name)).fromdb() )
         println(( for( w <- workgroup ) yield employee.withFilter(x => 1 == w.id)).fromdb() )
         println(( for( x <- List("d","e","f").todb ) yield
                    (for (z <- List("a","b","c")) yield z)).fromdb() )
@@ -44,6 +75,9 @@ object tests {
 
         // CURRENTLY NOT SUPPORTED: heterogeneous tuple (mixed Reps and normal types)
         //println(( for( e <- employee ) yield (1,e.name)).fromdb() )
+
+      // NOT SUPPORTED YET:
+      // .map{ case(e,w) => w.name desc }
 
       //(for( x <- List(1,2,3).todb ) yield liftOther(List(1,2,3)))
       //(for( x <- List(1,2,3).todb ) yield tupleize((1,List(1,2,3):Iterable[Int])))
@@ -167,7 +201,7 @@ object tests {
     }
 
     /*{
-      val q = for( c <- CUSTOMER.groupBy(_.C_NATIONKEY).orderBy( _.C_NATIONKEY.the, descending ) )
+      val q = for( c <- CUSTOMER.groupBy(_.C_NATIONKEY).orderBy( _.C_NATIONKEY.the ) )
         yield (i, c.C_NATIONKEY.the, c.C_NATIONKEY.count)
       println( q fromdb );
     }*/
@@ -187,16 +221,19 @@ object tests {
     {
       println( query( for( a <- amounts; e<-employee ) yield(a,e) ) : Iterable[_] )
     }
+/*
+    // order by tuples not supported right now
     {
-      val q = amounts.orderBy( e => (e._1,e._2,e._3), ascending )
+      val q = amounts.orderBy( e => (e._1,e._2,e._3) )
+      println(query( q ):Product)
+    }
+*/
+    {
+      val q = amounts.orderBy( _._2 )
       println(query( q ):Product)
     }
     {
-      val q = amounts.orderBy( _._2, ascending )
-      println(query( q ):Product)
-    }
-    {
-      val q = amounts.orderBy( _._2, descending )
+      val q = amounts.orderBy( _._2 )
       println(query( q ):Product)
     }
     {

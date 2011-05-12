@@ -29,9 +29,13 @@ trait SIQ2FerryCore extends FerryCore with Modules{
             val new_symboltypes = ( variable ->  ( in_.type_.asInstanceOf[FerryCoreTypes.list].element, ROW ) ) :: symboltypes
             val return_ = t( comprehension.element, ROW, new_symboltypes )
             For(
-              variable,
-              in_,
-              if(comprehension.filter.isDefined) If(t(comprehension.filter.get, ROW, new_symboltypes),return_) else return_ // fix implementation type, when adding then, see both ferry thesis
+              variable
+              , in_
+              , if(comprehension.filter.isDefined) If(t(comprehension.filter.get, ROW, new_symboltypes),return_) else return_ // fix implementation type, when adding then, see both ferry thesis
+              , comprehension.orderBy.map{
+                  case Ascending(rep)  => (t(rep,ROW, new_symboltypes),"ASC")
+                  case Descending(rep)  => (t(rep,ROW, new_symboltypes),"DESC")
+              }
             )
           }
           case n:Node[_] => OperatorApplication( n.operator match{
