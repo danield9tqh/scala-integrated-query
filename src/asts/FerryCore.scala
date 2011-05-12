@@ -101,7 +101,7 @@ trait FerryCore{
       variable : String,
       in : Expression,
       returned: Expression,
-      orderBy : Option[Expression] = None
+      orderBy : List[(Expression,String)] = List()
     ) extends Expression( list(returned.type_), TABLE )
 
     type BuiltInFunction = Expression

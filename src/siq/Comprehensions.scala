@@ -1,19 +1,23 @@
 package siq
 
 trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base/
+  trait Order
   // methods for iterables of any type
   implicit def rep2igenerator[T]( r: Rep[Iterable[T]] ) : IGenerator[T]
   trait IGenerator[+T]{
-    def orderBy( f : Rep[T] => Rep[Any], order : Order = ascending ) : Rep[Iterable[T]]
+    def orderBy( orders : (Rep[T] => Order)* ) : Rep[Iterable[T]]
     def map[R]( f : Rep[T] => Rep[R] ) : Rep[Iterable[R]]
     def flatMap[R]( f : Rep[T] => Rep[Iterable[R]] ) : Rep[Iterable[R]]
     def withFilter( f : Rep[T] => Rep[Boolean] ) : Rep[Iterable[T]]
   }
 
-  // asc/desc tokens for use with orderBy
-  trait Order
-  object ascending extends Order
-  object descending extends Order
+  abstract class IOrderable{
+    def asc : Order
+    def desc : Order
+  }
+  implicit def order_enable( r:Rep[Any] ) : IOrderable
+  implicit def defaultOrder( r:Rep[Any] ) : Order
+  // future? implicit def defaultOrder[T <% Rep[Any]]( r:T ) : Order
 
   // transfer scala iterable into literal db table
 //  def todb[T <% Rep[_ >: T]]( i:Iterable[T] ) : Rep[Iterable[T]]
@@ -43,12 +47,11 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   trait Generator[+T] extends Def[Iterable[T]] with IGenerator[T]{
     val element : Rep[T]
     val key = {_query_counter = _query_counter + 1;_query_counter}.toString
-    def orderBy( f : Rep[T] => Rep[Any], order : Order = ascending ) = {
+    def orderBy( orders : (Rep[T] => Order)* ) = {
       new Comprehension[T](
         List[Rep[Iterable[_]]](this)//replace_with_references(toAtom(this),this),
         , element = replace_with_references(element,this)
-        , orderBy = Some(f( replace_with_references(element,this) ))
-        , order = order
+        , orderBy = orders.toList.map( _(replace_with_references(element,this)) )
       )
     }
     def map[S]( f : Rep[T] => Rep[S] ) = {
@@ -68,6 +71,16 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
       )
     }
   }
+  case class Ascending(r:Rep[Any]) extends Order
+  case class Descending(r:Rep[Any]) extends Order
+
+  class Orderable( r:Rep[Any] ) extends IOrderable{
+    def asc : Order = Ascending(r)
+    def desc : Order = Descending(r)
+  }
+  implicit def defaultOrder( r:Rep[Any] ) : Order = Ascending(r:Rep[Any])
+  //future? implicit def defaultOrder[T <% Rep[Any]]( r:T ) : Order = Ascending(r:Rep[Any])
+  implicit def order_enable( r:Rep[Any] ) : Orderable = new Orderable(r)
 
   // as convenience for internal use
   def rep2generator[T]( r: Rep[Iterable[T]] ) : Generator[T] = rep2igenerator(r).asInstanceOf[Generator[T]]
@@ -77,8 +90,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     var tables : List[Rep[Iterable[_]]],
     val element : Rep[R],
     val filter : Option[Rep[Boolean]] = None,
-    val orderBy : Option[Rep[_]] = None,
-    val order : Order = ascending,
+    val orderBy : List[Order] = List(),
     val groupBy : Option[Rep[_]] = None
   ) extends Generator[R]
 

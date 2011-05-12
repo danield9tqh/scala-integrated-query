@@ -208,13 +208,44 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
             itbls_vi
           )
         }
-        val Nested( q_e2, itbls_e2 ) = t( return_, loop_v, (name, Nested(q_v,itbls_e1) ) :: new_itbls )
-        val q_e2_ = Projection(
-          ("outer_"->"iter", "pos_"->"pos", q_e2.data_columns),
-          RowNumber( "pos_", List("iter","pos"),
-            Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map ),
+        val scope_v = (name, Nested(q_v,itbls_e1) ) :: new_itbls
+        val Nested( q_e2, itbls_e2 ) = t( return_, loop_v, scope_v )
+        val q_before_order = Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map )
+        val q_sorted = (if( orderBy.size > 0 ){
+          // create relations for every ordering column
+          val column_results = orderBy.map(_._1)
+                                      .map( e => t(e, loop_v, scope_v ) )
+                                      .map{ case Nested(q,_) => q }
+                                      .zipWithIndex.map{
+                                        case (q,i) => Projection( ("iter"->"orderiter","item1"->("order"+(i+1))), q )
+                                      }
+          // join all these relations with the data that needs to be sorted
+          val q_sortable = column_results.foldLeft[Relation](
+            Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map )
+          )(
+            (left, right) => {
+              val combined = Join(
+                Operator( "=", Variable("iter"), Variable("orderiter") ),
+                left, right
+              )
+              Projection( combined.schema.filter(_ != "orderiter"), combined )
+            }
+          )
+          // sort it
+          val order_column_names = orderBy.zipWithIndex.map(_._2+1).map("order"+_.toString)
+          val column_orders = orderBy.map(_._2)
+          val q_sorted_raw = RowNumber( "pos_", (order_column_names zip column_orders).map(x => x._1.toString +" "+x._2.toString), q_sortable, Some(List("outer_")) ) // FIXME: just appending "ASC" and "DESC" is a hack
+          // remove the ordering columns
+          Projection( q_sorted_raw.schema.diff(order_column_names), q_sorted_raw )
+        } else {
+          RowNumber( "pos_", List("iter","pos"), // FIXME: just appending "ASC" and "DESC" is a hack
+            q_before_order,
             Some(List("outer_"))
           )
+        })
+        val q_e2_ = Projection(
+          ("outer_"->"iter", "pos_"->"pos", q_e2.data_columns),
+          q_sorted
         )
         Nested( q_e2_, itbls_e2 )
       }
