@@ -2,43 +2,40 @@ package siq
 import Predef.{any2stringadd => _, _} // prohibit automatic toString conversion of objects when + method is used
 object tests {
   def main( args:Array[String] ) {
- {
-    import dsl.dsl._
-    import dsl.dsl.tables._
-    import dsl.dsl.implicits._
-    //implicit def tupleize[T1 <% Rep[T1],T2 <% Rep[T2]]( t:(T1,T2) ) : Rep[(T1,T2)] = tuple2rep2((t._1,t._2));
     {
-      // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
-      // these lines just test if it compiles
-      def conv[T <% Rep[_ >: T]]( t:T ) = ()
-      conv( 5 )
-      conv( List(1,2,3) )
-    }
-    {
-/*
-      // CURRENTLY VERY VERY SLOW, 1 500 000 rel operators
-        println({
-            // this is all executed in the db
+      import dsl.dsl._
+      import dsl.dsl.tables._
+      import dsl.dsl.implicits._
+      //implicit def tupleize[T1 <% Rep[T1],T2 <% Rep[T2]]( t:(T1,T2) ) : Rep[(T1,T2)] = tuple2rep2((t._1,t._2));
+      {
+        // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
+        // these lines just test if it compiles
+        def conv[T <% Rep[_ >: T]]( t:T ) = ()
+        conv( 5 )
+        conv( List(1,2,3) )
+      }
+      {
+        {
+          // CURRENTLY VERY VERY SLOW, 1 500 000 rel operators
+          // this is all executed in the db
+          // filter employees using a scala collection
+          val q1 = for( id <- List(1,2,3,4,5).todb
+                           ;e <- employee
+                           ;if e.id == id
+          ) yield e
 
-            // filter employees using a scala collection
-            val q1 = for( id <- List(1,2,3,4,5).todb
-                         ;e <- employee
-                         ;if e.id == id
-            ) yield e
+          // join workgroup table
+          val q2 = for( e <- q1
+                        ;w <- workgroup
+                        ;if e.workgroup_id == w.id
+          ) yield (e,w)
 
-            // join workgroup table
-            val q2 = for( e <- q1
-                          ;w <- workgroup
-                          ;if e.workgroup_id == w.id
-            ) yield (e,w)
+          // sort by workgroup names, given an ordering (different api than scala collection)
+          val q3 = q2.orderBy(_._2.name desc, _._1.name)
 
-            // sort by workgroup names, given an ordering (different api than scala collection)
-            val q3 = q2.orderBy(_._2.name desc)
-
-            // project to the employees
-            q3.map(_._1)
-        }.fromdb() )
-*/
+          // project to the employees
+          println( q3.map(_._1).fromdb() )
+        }
 
         println((
           for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)
@@ -81,11 +78,10 @@ object tests {
 
       //(for( x <- List(1,2,3).todb ) yield liftOther(List(1,2,3)))
       //(for( x <- List(1,2,3).todb ) yield tupleize((1,List(1,2,3):Iterable[Int])))
-
+      }
     }
-  }
-  return ();
-  {
+    return ();
+    {
     import dsl.dsl_old._
     import dsl.dsl_old.tables._
     import dsl.dsl_old.implicits._

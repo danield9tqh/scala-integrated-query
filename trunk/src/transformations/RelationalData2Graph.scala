@@ -1,19 +1,10 @@
 package siq
 
 trait RelationalData2Graph extends FerryCore2Algebra with Algebra2SQL with SQL2RelationalData{
-  def algebra2graph( from:algebra.Nested, filename:String, results:Boolean = true, full:Boolean=false, source_tables:Boolean=false, intermediate:Boolean=false ) {
-    algebra2sql( from ) // <- this populates debug_ferrycore_algebra_association as a side-effect
+  def algebra2graph( from:algebra.Nested, filename:String, show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20 ) {
+    def render_nodes_and_links( from:algebra.Nested ) : String = {
+      val relations = linearize_dependencies(from.relation)
 
-    val output  = "digraph querygraph{\n\n" + render_nodes_and_links( from ) + "\n\n}"
-    
-    var out_file = new java.io.FileOutputStream("graph.gv")
-    var out_stream = new java.io.PrintStream(out_file)
-    out_stream.print(output)
-    out_stream.close
-  }
-
-  def render_nodes_and_links( from:algebra.Nested ) : String = {
-    val relations = flatten_algebra(from.relation)
 """subgraph cluster_plan"""+from.relation.name+"""{
   color = blue;
 """ +
@@ -23,7 +14,7 @@ trait RelationalData2Graph extends FerryCore2Algebra with Algebra2SQL with SQL2R
 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
 <TR><TD COLSPAN="""" + relation.schema.size + """"> """ +
         relation.getOperatorName +  " " + relation.name
-        +"<BR/>"+ debug_ferrycore_algebra_association(relation).getExpressionName+
+        +{if(show_ferry) "<BR/>"+ debug_ferrycore_algebra_association(relation).getExpressionName+
         "("+debug_ferrycore_algebra_association(relation).asInstanceOf[Product].productIterator.map{
           case e:ferry.Expression => e.getExpressionName + "("+e.asInstanceOf[Product].productIterator.map{
             case s:String => s
@@ -33,34 +24,49 @@ trait RelationalData2Graph extends FerryCore2Algebra with Algebra2SQL with SQL2R
           case s:String => s
           case v:Int => v
           case o if o.isInstanceOf[AnyRef] => "_"
-        }.mkString(",").replace(">","") + """)<BR/>
-"""+ /*relation2sql(relation) +*/"""
+        }.mkString(",").replace(">","") + """)""" else ""} +
+        (if(show_sql) "<BR/>" + relation2sql(relation) else "") + """
 </TD></TR>
 """ + "<TR><TD>" + relation.schema.mkString("</TD><TD>") + "</TD></TR>" + {
-sql2relationaldata( algebra2sql(algebra.Nested(relation)) ).data.take(30).map( "<TR><TD>" + _.mkString("</TD><TD>") + "</TD></TR>" ) +
-""
+        if( show_intermediate ){
+          val results = sql2relationaldata( algebra2sql(algebra.Nested(relation)) ).data
+          results.take(intermediate_max).map( "<TR><TD>" + _.mkString("</TD><TD>") + "</TD></TR>" ).mkString("") +
+          (if(results.size > intermediate_max) """<TR><TD COLSPAN="""" + relation.schema.size + """">+ """+(results.size-intermediate_max)+" more</TD></TR>" else "") +
+          ""
+        } else ""
       } + """
 </TABLE>
 </FONT>
 >];
 
 """)
-    .mkString("\n\n") +
-    relations.map{
-      case bin:algebra.BinaryRelationOperator => List(
-        (bin,bin.left),
-        (bin,bin.right)
-      )
-      case un:algebra.UnaryRelationOperator => List((un,un.relation))
-      case _ => List()
-      //case _:algebra.LiteralTable[_] => List(relation)
-      //case _:algebra.Table => List()
-    }.flatten.map{ case (from,to) => to.name + "_" + to.name+" -> "+from.name + "_" + from.name+""" [dir="back"];""" }.mkString("\n") +
-    "\n}\n" +
-    from.itbls.map{
-      case (_,to) => render_nodes_and_links(to) +
-                           "\n\n" + from.relation.name + "_" + from.relation.name +" -> "+to.relation.name + "_" + to.relation.name+""" [dir="back"];"""
-    }.mkString("\n\n")
+      .mkString("\n\n") +
+      relations.map{
+        case bin:algebra.BinaryRelationOperator => List(
+          (bin,bin.left),
+          (bin,bin.right)
+        )
+        case un:algebra.UnaryRelationOperator => List((un,un.relation))
+        case _ => List()
+        //case _:algebra.LiteralTable[_] => List(relation)
+        //case _:algebra.Table => List()
+      }.flatten.map{ case (from,to) => to.name + "_" + to.name+" -> "+from.name + "_" + from.name+""" [dir="back"];""" }.mkString("\n") +
+      "\n}\n" +
+      from.itbls.map{
+        case (_,to) => render_nodes_and_links(to) +
+                             "\n\n" + from.relation.name + "_" + from.relation.name +" -> "+to.relation.name + "_" + to.relation.name+""" [dir="back"];"""
+      }.mkString("\n\n")
+    }
+
+    algebra2sql( from ) // <- this populates debug_ferrycore_algebra_association as a side-effect
+
+    val output  = "digraph querygraph{\n\n" + render_nodes_and_links( from ) + "\n\n}"
+
+    var out_file = new java.io.FileOutputStream("graph.gv")
+    var out_stream = new java.io.PrintStream(out_file)
+    out_stream.print(output)
+    out_stream.close
+
   }
 }
 

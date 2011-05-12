@@ -15,10 +15,10 @@ trait IScalaIntegratedQuery extends ISchema with IModules{
   }
   implicit def query_enable[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m)
   def fromdb[T]( r:Rep[T], debug:Boolean=false )( implicit m: Manifest[T] ) = Queryable(r)(m).fromdb(debug)
-  def dumpgraph[T](r:Rep[T], filename:String = "graph.gv", results:Boolean = true, full:Boolean=false, source_tables:Boolean=false, intermediate:Boolean=false) :Rep[T]
+  def dumpgraph[T](r:Rep[T], filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20) :Rep[T]
   case class GraphDumpable[T]( r:Rep[T] ){
-    def dumpgraph(filename:String = "graph.gv", results:Boolean = true, full:Boolean=false, source_tables:Boolean=false, intermediate:Boolean=false):Rep[T] =
-        IScalaIntegratedQuery.this.dumpgraph(r, filename, results, full, source_tables, intermediate)
+    def dumpgraph(filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20):Rep[T] =
+        IScalaIntegratedQuery.this.dumpgraph(r, filename, show_sql, show_ferry, show_intermediate, intermediate_max )
   }
   implicit def graph_dump_enable[T]( r:Rep[T] ) = GraphDumpable(r)
 }
@@ -33,10 +33,10 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery
     with RelationalData2Graph
     /* with Results*/{
   var debug : Boolean = false
-  def dumpgraph[T](r:Rep[T], filename:String = "graph.gv", results:Boolean=true, full:Boolean=false, source_tables:Boolean=false, intermediate:Boolean=false) :Rep[T] = {
+  def dumpgraph[T](r:Rep[T], filename:String, show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20) :Rep[T] = {
     val ferrycore = siq2ferrycore( r, ferry.ImplementationTypes.TABLE )
     val algebra   = ferrycore2algebra( ferrycore )
-    algebra2graph( algebra, filename, results, full, source_tables, intermediate )
+    algebra2graph( algebra, filename, show_sql, show_ferry, show_intermediate, intermediate_max )
     r
   }
   protected def query[T]( r:Rep[T], debug:Boolean = false )( implicit manifest: Manifest[T] ) : T = {
