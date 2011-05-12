@@ -182,18 +182,19 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
       }
       case ferry.For( name, in_, return_, orderBy ) => {
         val Nested( q_e1, itbls_e1 ) = t(in_)
+        val row_num = RowNumber( "inner_", List("iter","pos"), q_e1 )
         val q_v = Attach(
           1, "pos",
           Projection(
             ( "inner_" -> "iter", q_e1.data_columns ),
-            RowNumber( "inner_", List("iter","pos"), q_e1 )
+            row_num
           )
         )
         val loop_v = Projection( "iter", q_v )
         
         val map = Projection(
           ( "iter" -> "outer_", "inner_" ),
-          RowNumber( "inner_", List("iter","pos"), t(in_).relation ) // inner is already a reserved SQL keyword
+          row_num // inner is already a reserved SQL keyword
         )
         assert( !scope.map(_._1).contains(name) )
         val new_itbls = scope.map{ case (v_i,Nested(q_vi,itbls_vi)) =>

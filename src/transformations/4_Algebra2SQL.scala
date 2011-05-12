@@ -10,32 +10,39 @@ trait Algebra2SQL extends FerryCore2Algebra{
     case _:LiteralTable[_] => List(relation)
     case _:Table => List(relation)
   })*/
-  def flatten_algebra( relation:Relation ) : List[Relation] = relation :: relation_children(relation).map(flatten_algebra _).flatten
-  def relation_children( relation:Relation ) = relation match{
-    case bin:BinaryRelationOperator => List( bin.left, bin.right)
-    case un:UnaryRelationOperator => List(un.relation)
-    case _:LiteralTable[_] => List()
-    case _:Table => List()
+
+  // complete gaps of unregistered relations which were subexpressions when transformin a ferry expression
+  def complete_debug_ferrycore_algebra_association( parent:Relation, child:Relation ){
+    if( !debug_ferrycore_algebra_association.isDefinedAt(child) ){
+      debug_ferrycore_algebra_association.update(child, debug_ferrycore_algebra_association(parent) )
+    }
+  }
+
+  def linearize_dependencies( relation:Relation, already : List[Relation] = List(), parent_debug:Relation= null ) : List[Relation] = {
+    if(!already.contains(relation)) {
+      complete_debug_ferrycore_algebra_association( parent_debug, relation )
+      relation :: {
+        relation match{
+          case bin:BinaryRelationOperator => {
+            val right = linearize_dependencies( bin.right,already, relation )
+            val left  = linearize_dependencies( bin.left, already++right, relation )
+            left ++ right
+          }
+          case un:UnaryRelationOperator => linearize_dependencies(un.relation,already, relation)
+          case _:LiteralTable[_] => List()
+          case _:Table => List()
+        }
+      }
+    } else List()
   }
 
   def algebra2sql( from:Nested ) : NestedSQL = {
-    val relations = flatten_algebra(from.relation)
-
-    // complete gaps of unregistered relations which were subexpressions when transformin a ferry expression
-    def complete_debug_ferrycore_algebra_association( parent:Relation ){
-      relation_children(parent).foreach( child =>
-        if( !debug_ferrycore_algebra_association.isDefinedAt(child) ){
-          debug_ferrycore_algebra_association.update(child, debug_ferrycore_algebra_association(parent) )
-          complete_debug_ferrycore_algebra_association( child )
-        }
-      )
-    }
-    relations.map( complete_debug_ferrycore_algebra_association _ )
+    val relations = linearize_dependencies(from.relation).reverse
 
     // put together complete sql query from component queries
     val sql = "\nWITH\n\ntdummy(x) AS (Values (1),(2))"+
     // distinct is needed to kill multiple occurence of LOOP relation
-    relations.reverse.distinct.map{
+    relations.map{
       case _:Table => ""
       case relation =>
     ",\n\n-- " + relation.getOperatorName + " (created for ferry "+ debug_ferrycore_algebra_association(relation).getExpressionName +")\n" + //debug line
