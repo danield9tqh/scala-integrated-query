@@ -288,6 +288,18 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
           ),
           itbls_i
         )
+      case ferry.Length( e ) =>
+          val Nested( q_e, itbls_e ) = t( e )
+          val q = Aggregation( "count","*", "item1", "iter", q_e )
+          val q_ = Attach( 1, "pos", DisjointUnion(
+            q,
+            Attach( 0, "item1", Difference(
+              loop,
+              Projection( "iter", q )
+            ))
+          ))
+          Nested( q_ )
+
     }
     debug_ferrycore_algebra_association.update( result_ast.relation, from )
     if( !debug_ferrycore_algebra_association.isDefinedAt(loop) ) {

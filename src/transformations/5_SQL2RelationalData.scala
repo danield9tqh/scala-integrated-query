@@ -27,6 +27,6 @@ trait SQL2RelationalData extends Algebra2SQL{
     } catch {
       case e:org.postgresql.util.PSQLException => throw new Exception( (if(true || !this.debug) sql + "\n" else "") + e.getMessage)
     } finally { connection close }
-    NestedRelationalData( results.reverse, sql.data_columns, sql.nested.map(_._1) zip sql.nested.map(_._2).map(sql2relationaldata _) )
+    NestedRelationalData( results.reverse, sql.columns, sql.nested.map(_._1) zip sql.nested.map(_._2).map(sql2relationaldata _) )
   }
 }

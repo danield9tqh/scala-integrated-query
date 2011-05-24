@@ -32,9 +32,10 @@ trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base
   }*/
 
   // operations on comprehensions
-  def infix_count( r:Rep[Iterable[_]] ) : Rep[Int]
+  def infix_length( r:Rep[Iterable[_]] ) : Rep[Int]
+  def infix_size( r:Rep[Iterable[_]] ) = infix_length(r)
   def infix_sum( r:Rep[Iterable[Int]] ) : Rep[Int]
-  def infix_the[T]( r:Rep[Iterable[T]] ) : Rep[T]
+  def infix_one[T]( r:Rep[Iterable[T]] ) : Rep[T]
   def infix_flatten[T]( r:Rep[Iterable[Iterable[T]]] ) : Rep[Iterable[T]]
 }
 
@@ -44,20 +45,22 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     case _ => rep2def(r)
   }).asInstanceOf[IGenerator[T]]
   protected var _query_counter = 0
-  trait Generator[+T] extends Def[Iterable[T]] with IGenerator[T]{
-    val element : Rep[T]
+  abstract class Generator[+T](
+    val element_raw : Rep[T]
+  ) extends Def[Iterable[T]] with IGenerator[T]{
+    val element_references:Rep[T] = replace_with_references[T](element_raw,this)
     val key = {_query_counter = _query_counter + 1;_query_counter}.toString
     def orderBy( orders : (Rep[T] => Order)* ) = {
       new Comprehension[T](
-        List[Rep[Iterable[_]]](this)//replace_with_references(toAtom(this),this),
-        , element = replace_with_references(element,this)
-        , orderBy = orders.toList.map( _(replace_with_references(element,this)) )
+        this
+        , element_references
+        , orderBy = orders.toList.map( _(element_references) )
       )
     }
     def map[S]( f : Rep[T] => Rep[S] ) = {
       new Comprehension[S](
-        List[Rep[Iterable[_]]](this)//replace_with_references(toAtom(this),this),
-        , element = f( replace_with_references(element,this) )
+        this
+        , f( element_references )
       )
     }
     def flatMap[S]( f : Rep[T] => Rep[Iterable[S]] ) = {
@@ -65,9 +68,9 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     }
     def withFilter( f : Rep[T] => Rep[Boolean] ) = {
       new Comprehension[T](
-        List[Rep[Iterable[_]]](this)
-        , element = replace_with_references(element,this)
-        , filter = Some(f( replace_with_references(element,this) ))
+        this
+        , element_references
+        , filter = Some(f(element_references))
       )
     }
   }
@@ -87,12 +90,12 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
 
   // Node to represent a comprehensions
   case class Comprehension[R] (
-    var tables : List[Rep[Iterable[_]]],
-    val element : Rep[R],
+    var inner : Rep[Iterable[_]],
+    val element_ : Rep[R],
     val filter : Option[Rep[Boolean]] = None,
     val orderBy : List[Order] = List(),
     val groupBy : Option[Rep[_]] = None
-  ) extends Generator[R]
+  ) extends Generator[R](element_)
 
 
   //implicit def liftIterableOfReps[T](i:Iterable[Rep[T]]) =
@@ -100,26 +103,31 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     i
   )) // FIXME: restrict to only list of values and list of tuples of values with viewbounds
 //  case class Reference[T]( generator:Generator[_] ) extends Def[T]
-  case class LiteralTable[T/* <% Rep[T]*/]( i: Iterable[T] ) extends Generator[T]{
+  case class LiteralTable[T/* <% Rep[T]*/]( i: Iterable[T] ) extends Generator[T]({
+    // FIXME: this is very VERY hacky
     val values = i.toList
-    val element = replace_with_references[T]((
-      // FIXME: this is very VERY hacky
-      if(values.size > 0 && values(0).isInstanceOf[Product]) toAtom(
+    if(values.size > 0 && values(0).isInstanceOf[Product])
+      toAtom(
         new LiftedTuple(new Product{
           val list = values(0).asInstanceOf[Product].productIterator.map(x => toAtom(new Def[T]{})).toList
           def productElement(n: Int) = list(n)
           def productArity = list.size
           def canEqual( that:Any ) = false
         })
-      ) else new Def[T]{}
-    ),this)
+      )
+    else new Def[T]{}
+  }){
+    val values = i.toList
     def unapply( a:Any ) = Some(Tuple1(values))
   }
 
   // base stuff for db schema
   abstract class TableExp[+T <: Product](
-   val name   : String
-  ) extends Generator[T]/* with Table[T]*/{
+   val name   : String,
+   val element_ : Rep[T]
+  ) extends Generator[T](
+    element_
+  )/* with Table[T]*/{
     val columns : Array[Column[_]]
     val keys : Array[Column[_]]
   }
@@ -138,9 +146,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   ) extends Def[T]
   case class Grouped[T]( // FIXME: get rid of the column attr
     column : Rep[T]
-  ) extends Generator[T]{
-    val element = column
-  }
+  ) extends Generator[T]( column )
 
   // base stuff for Tuples.replace_with_references
   class Counter( var count : Int )
@@ -149,26 +155,23 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
       position : Int,
       referree : Rep[_]
     ) extends Def[Any]
-  class GeneratorReference[T](
-    val reference : FieldReference,
-    counter : Counter
-  ) extends Comprehension[T] (
-    List[Rep[Iterable[_]]](),
-    element = {
-      val generator = rep2generator(reference.referree.asInstanceOf[Rep[Iterable[T]]])
-      val outer_generator = reference.iterable
-      replace_with_references(generator.element,outer_generator,counter)
-    }
+
+  class GeneratorReference(
+     element__ : Rep[Iterable[_]],
+     val fieldref : Rep[Iterable[_]]
+  ) extends Comprehension[Any] (
+    null,
+    rep2generator[Any](element__).element_references
   )
 
-  case class Count( iterable:Rep[Iterable[_]] ) extends Def[Int]
-  def infix_count( r:Rep[Iterable[_]] ) = Count(r)
+  case class Length( iterable:Rep[Iterable[_]] ) extends Def[Int]
+  def infix_length( r:Rep[Iterable[_]] ) = Length(r)
   case class Sum( iterable:Rep[Iterable[Int]] ) extends Def[Int]
   def infix_sum( r:Rep[Iterable[Int]] ) = Sum(r)
-  case class The[T]( iterable:Rep[Iterable[T]] ) extends Def[T]
-  def infix_the[T]( r:Rep[Iterable[T]] ) = The[T](r)
-  case class Flatten[T]( iterable:Rep[Iterable[Iterable[T]]] ) extends Generator[T]{
-    val element = replace_with_references( rep2generator(rep2generator(iterable).element).element, this )
-  }
+  case class One[T]( iterable:Rep[Iterable[T]] ) extends Def[T]
+  def infix_one[T]( r:Rep[Iterable[T]] ) = One[T](r)
+  case class Flatten[T]( iterable:Rep[Iterable[Iterable[T]]] ) extends Generator[T](
+    rep2generator(rep2generator(iterable).element_raw).element_raw
+  )
   def infix_flatten[T]( r:Rep[Iterable[Iterable[T]]] ) = Flatten[T](r)
 }

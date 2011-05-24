@@ -114,14 +114,14 @@ trait RelationalAlgebra{
       left : Relation,
       right : Relation
     ) extends Relation (left.schema) with BinaryRelationOperator{
-      require( left.schema == right.schema )
+      require( left.schema == right.schema, left.schema.toString +" == "+right.schema.toString )
     }
 
     case class Difference(
       left : Relation,
       right : Relation
     ) extends Relation (left.schema) with BinaryRelationOperator{
-      require( left.schema == right.schema )
+      require( left.schema == right.schema, left.schema.toString +" == "+right.schema.toString )
     }
 
     case class Distinct(
@@ -170,9 +170,14 @@ trait RelationalAlgebra{
     case class Variable(
       name : String
     ) extends Expression
-/*    case class Aggregation(
+
+    case class Aggregation(
+      operator : String,
+      aggregate : String,
+      as_ : String,
+      groupBy : String,
       relation : Relation
-    ) extends Relation*/
+    ) extends Relation( List(as_,groupBy) ) with UnaryRelationOperator
 
     case class Table(
       schema_ : List[String],

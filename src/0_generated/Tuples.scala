@@ -128,83 +128,83 @@ trait ITuples extends IModuleBase with OverloadHack{
   trait IGroupable1[T1]{
     def groupBy( f:Tuple1[Rep[T1]] => Rep[_] ) : Rep[Iterable[Tuple1[Iterable[T1]]]]
   }
-  implicit def rep2groupable1[T1]( r: Rep[Iterable[(T1)]] ) : IGroupable1[T1]
+  implicit def rep2groupable1[T1]( r: Rep[Iterable[Tuple1[T1]]] ) : IGroupable1[T1]
   trait IGroupable2[T1,T2]{
     def groupBy( f:Tuple2[Rep[T1],Rep[T2]] => Rep[_] ) : Rep[Iterable[Tuple2[Iterable[T1],Iterable[T2]]]]
   }
-  implicit def rep2groupable2[T1,T2]( r: Rep[Iterable[(T1,T2)]] ) : IGroupable2[T1,T2]
+  implicit def rep2groupable2[T1,T2]( r: Rep[Iterable[Tuple2[T1,T2]]] ) : IGroupable2[T1,T2]
   trait IGroupable3[T1,T2,T3]{
     def groupBy( f:Tuple3[Rep[T1],Rep[T2],Rep[T3]] => Rep[_] ) : Rep[Iterable[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]]]
   }
-  implicit def rep2groupable3[T1,T2,T3]( r: Rep[Iterable[(T1,T2,T3)]] ) : IGroupable3[T1,T2,T3]
+  implicit def rep2groupable3[T1,T2,T3]( r: Rep[Iterable[Tuple3[T1,T2,T3]]] ) : IGroupable3[T1,T2,T3]
   trait IGroupable4[T1,T2,T3,T4]{
     def groupBy( f:Tuple4[Rep[T1],Rep[T2],Rep[T3],Rep[T4]] => Rep[_] ) : Rep[Iterable[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]]]
   }
-  implicit def rep2groupable4[T1,T2,T3,T4]( r: Rep[Iterable[(T1,T2,T3,T4)]] ) : IGroupable4[T1,T2,T3,T4]
+  implicit def rep2groupable4[T1,T2,T3,T4]( r: Rep[Iterable[Tuple4[T1,T2,T3,T4]]] ) : IGroupable4[T1,T2,T3,T4]
   trait IGroupable5[T1,T2,T3,T4,T5]{
     def groupBy( f:Tuple5[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5]] => Rep[_] ) : Rep[Iterable[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]]]
   }
-  implicit def rep2groupable5[T1,T2,T3,T4,T5]( r: Rep[Iterable[(T1,T2,T3,T4,T5)]] ) : IGroupable5[T1,T2,T3,T4,T5]
+  implicit def rep2groupable5[T1,T2,T3,T4,T5]( r: Rep[Iterable[Tuple5[T1,T2,T3,T4,T5]]] ) : IGroupable5[T1,T2,T3,T4,T5]
   trait IGroupable6[T1,T2,T3,T4,T5,T6]{
     def groupBy( f:Tuple6[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6]] => Rep[_] ) : Rep[Iterable[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]]]
   }
-  implicit def rep2groupable6[T1,T2,T3,T4,T5,T6]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6)]] ) : IGroupable6[T1,T2,T3,T4,T5,T6]
+  implicit def rep2groupable6[T1,T2,T3,T4,T5,T6]( r: Rep[Iterable[Tuple6[T1,T2,T3,T4,T5,T6]]] ) : IGroupable6[T1,T2,T3,T4,T5,T6]
   trait IGroupable7[T1,T2,T3,T4,T5,T6,T7]{
     def groupBy( f:Tuple7[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7]] => Rep[_] ) : Rep[Iterable[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]]]
   }
-  implicit def rep2groupable7[T1,T2,T3,T4,T5,T6,T7]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7)]] ) : IGroupable7[T1,T2,T3,T4,T5,T6,T7]
+  implicit def rep2groupable7[T1,T2,T3,T4,T5,T6,T7]( r: Rep[Iterable[Tuple7[T1,T2,T3,T4,T5,T6,T7]]] ) : IGroupable7[T1,T2,T3,T4,T5,T6,T7]
   trait IGroupable8[T1,T2,T3,T4,T5,T6,T7,T8]{
     def groupBy( f:Tuple8[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8]] => Rep[_] ) : Rep[Iterable[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]]]
   }
-  implicit def rep2groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8)]] ) : IGroupable8[T1,T2,T3,T4,T5,T6,T7,T8]
+  implicit def rep2groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( r: Rep[Iterable[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]]] ) : IGroupable8[T1,T2,T3,T4,T5,T6,T7,T8]
   trait IGroupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]{
     def groupBy( f:Tuple9[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9]] => Rep[_] ) : Rep[Iterable[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]]]
   }
-  implicit def rep2groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9)]] ) : IGroupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]
+  implicit def rep2groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r: Rep[Iterable[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]]] ) : IGroupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]
   trait IGroupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]{
     def groupBy( f:Tuple10[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10]] => Rep[_] ) : Rep[Iterable[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]]]
   }
-  implicit def rep2groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10)]] ) : IGroupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]
+  implicit def rep2groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r: Rep[Iterable[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]]] ) : IGroupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]
   trait IGroupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]{
     def groupBy( f:Tuple11[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11]] => Rep[_] ) : Rep[Iterable[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]]]
   }
-  implicit def rep2groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11)]] ) : IGroupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]
+  implicit def rep2groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r: Rep[Iterable[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]]] ) : IGroupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]
   trait IGroupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]{
     def groupBy( f:Tuple12[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12]] => Rep[_] ) : Rep[Iterable[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]]]
   }
-  implicit def rep2groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12)]] ) : IGroupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]
+  implicit def rep2groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r: Rep[Iterable[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]]] ) : IGroupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]
   trait IGroupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]{
     def groupBy( f:Tuple13[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13]] => Rep[_] ) : Rep[Iterable[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]]]
   }
-  implicit def rep2groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13)]] ) : IGroupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]
+  implicit def rep2groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r: Rep[Iterable[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]]] ) : IGroupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]
   trait IGroupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]{
     def groupBy( f:Tuple14[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14]] => Rep[_] ) : Rep[Iterable[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]]]
   }
-  implicit def rep2groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14)]] ) : IGroupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]
+  implicit def rep2groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r: Rep[Iterable[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]]] ) : IGroupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]
   trait IGroupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]{
     def groupBy( f:Tuple15[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15]] => Rep[_] ) : Rep[Iterable[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]]]
   }
-  implicit def rep2groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15)]] ) : IGroupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]
+  implicit def rep2groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r: Rep[Iterable[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]]] ) : IGroupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]
   trait IGroupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]{
     def groupBy( f:Tuple16[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16]] => Rep[_] ) : Rep[Iterable[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]]]
   }
-  implicit def rep2groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16)]] ) : IGroupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]
+  implicit def rep2groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r: Rep[Iterable[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]]] ) : IGroupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]
   trait IGroupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]{
     def groupBy( f:Tuple17[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17]] => Rep[_] ) : Rep[Iterable[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]]]
   }
-  implicit def rep2groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17)]] ) : IGroupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]
+  implicit def rep2groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r: Rep[Iterable[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]]] ) : IGroupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]
   trait IGroupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]{
     def groupBy( f:Tuple18[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18]] => Rep[_] ) : Rep[Iterable[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]]]
   }
-  implicit def rep2groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18)]] ) : IGroupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]
+  implicit def rep2groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r: Rep[Iterable[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]] ) : IGroupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]
   trait IGroupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]{
     def groupBy( f:Tuple19[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19]] => Rep[_] ) : Rep[Iterable[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]]]
   }
-  implicit def rep2groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19)]] ) : IGroupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]
+  implicit def rep2groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r: Rep[Iterable[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]]] ) : IGroupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]
   trait IGroupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]{
     def groupBy( f:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] => Rep[_] ) : Rep[Iterable[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]]]
   }
-  implicit def rep2groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20)]] ) : IGroupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]
+  implicit def rep2groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r: Rep[Iterable[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]]] ) : IGroupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]
 
 
   def zip[T1,T2]( r:Rep[Tuple2[Iterable[T1],Iterable[T2]]] )(implicit o:Overloaded2) : Rep[Iterable[Tuple2[T1,T2]]]
@@ -232,100 +232,100 @@ trait ITuples extends IModuleBase with OverloadHack{
 trait Tuples extends ITuples with ModuleBase{
   this: Comprehensions =>
 
-  case class Zip2[T1,T2]( target:Rep[Tuple2[Iterable[T1],Iterable[T2]]] ) extends Generator[Tuple2[T1,T2]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep2(Tuple2(toAtom(Zipped(target._1)),toAtom(Zipped(target._2))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2]( r:Rep[Tuple2[Iterable[T1],Iterable[T2]]] )(implicit o:Overloaded2) = Zip2(r)
+  case class Zip2[T1,T2]( target:Rep[Tuple2[Iterable[T1],Iterable[T2]]] ) extends Generator[Tuple2[T1,T2]](
+    tuple2rep2(Tuple2(toAtom(Zipped(target._1)),toAtom(Zipped(target._2))))
+  ) with Zip
+  def zip[T1,T2]( r:Rep[Tuple2[Iterable[T1],Iterable[T2]]] )(implicit o:Overloaded2) = toAtom(Zip2(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]] ) = Zip2(Tuple2(i1,i2))
-  case class Zip3[T1,T2,T3]( target:Rep[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]] ) extends Generator[Tuple3[T1,T2,T3]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep3(Tuple3(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3]( r:Rep[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]] )(implicit o:Overloaded3) = Zip3(r)
+  case class Zip3[T1,T2,T3]( target:Rep[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]] ) extends Generator[Tuple3[T1,T2,T3]](
+    tuple2rep3(Tuple3(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3))))
+  ) with Zip
+  def zip[T1,T2,T3]( r:Rep[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]] )(implicit o:Overloaded3) = toAtom(Zip3(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]] ) = Zip3(Tuple3(i1,i2,i3))
-  case class Zip4[T1,T2,T3,T4]( target:Rep[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]] ) extends Generator[Tuple4[T1,T2,T3,T4]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep4(Tuple4(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4]( r:Rep[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]] )(implicit o:Overloaded4) = Zip4(r)
+  case class Zip4[T1,T2,T3,T4]( target:Rep[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]] ) extends Generator[Tuple4[T1,T2,T3,T4]](
+    tuple2rep4(Tuple4(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4))))
+  ) with Zip
+  def zip[T1,T2,T3,T4]( r:Rep[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]] )(implicit o:Overloaded4) = toAtom(Zip4(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]] ) = Zip4(Tuple4(i1,i2,i3,i4))
-  case class Zip5[T1,T2,T3,T4,T5]( target:Rep[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]] ) extends Generator[Tuple5[T1,T2,T3,T4,T5]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep5(Tuple5(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5]( r:Rep[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]] )(implicit o:Overloaded5) = Zip5(r)
+  case class Zip5[T1,T2,T3,T4,T5]( target:Rep[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]] ) extends Generator[Tuple5[T1,T2,T3,T4,T5]](
+    tuple2rep5(Tuple5(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5]( r:Rep[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]] )(implicit o:Overloaded5) = toAtom(Zip5(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]] ) = Zip5(Tuple5(i1,i2,i3,i4,i5))
-  case class Zip6[T1,T2,T3,T4,T5,T6]( target:Rep[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]] ) extends Generator[Tuple6[T1,T2,T3,T4,T5,T6]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep6(Tuple6(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6]( r:Rep[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]] )(implicit o:Overloaded6) = Zip6(r)
+  case class Zip6[T1,T2,T3,T4,T5,T6]( target:Rep[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]] ) extends Generator[Tuple6[T1,T2,T3,T4,T5,T6]](
+    tuple2rep6(Tuple6(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6]( r:Rep[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]] )(implicit o:Overloaded6) = toAtom(Zip6(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]] ) = Zip6(Tuple6(i1,i2,i3,i4,i5,i6))
-  case class Zip7[T1,T2,T3,T4,T5,T6,T7]( target:Rep[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]] ) extends Generator[Tuple7[T1,T2,T3,T4,T5,T6,T7]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep7(Tuple7(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7]( r:Rep[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]] )(implicit o:Overloaded7) = Zip7(r)
+  case class Zip7[T1,T2,T3,T4,T5,T6,T7]( target:Rep[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]] ) extends Generator[Tuple7[T1,T2,T3,T4,T5,T6,T7]](
+    tuple2rep7(Tuple7(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7]( r:Rep[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]] )(implicit o:Overloaded7) = toAtom(Zip7(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]] ) = Zip7(Tuple7(i1,i2,i3,i4,i5,i6,i7))
-  case class Zip8[T1,T2,T3,T4,T5,T6,T7,T8]( target:Rep[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]] ) extends Generator[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep8(Tuple8(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8]( r:Rep[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]] )(implicit o:Overloaded8) = Zip8(r)
+  case class Zip8[T1,T2,T3,T4,T5,T6,T7,T8]( target:Rep[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]] ) extends Generator[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]](
+    tuple2rep8(Tuple8(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8]( r:Rep[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]] )(implicit o:Overloaded8) = toAtom(Zip8(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]] ) = Zip8(Tuple8(i1,i2,i3,i4,i5,i6,i7,i8))
-  case class Zip9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( target:Rep[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]] ) extends Generator[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep9(Tuple9(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r:Rep[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]] )(implicit o:Overloaded9) = Zip9(r)
+  case class Zip9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( target:Rep[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]] ) extends Generator[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]](
+    tuple2rep9(Tuple9(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r:Rep[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]] )(implicit o:Overloaded9) = toAtom(Zip9(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]] ) = Zip9(Tuple9(i1,i2,i3,i4,i5,i6,i7,i8,i9))
-  case class Zip10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( target:Rep[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]] ) extends Generator[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep10(Tuple10(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r:Rep[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]] )(implicit o:Overloaded10) = Zip10(r)
+  case class Zip10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( target:Rep[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]] ) extends Generator[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]](
+    tuple2rep10(Tuple10(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r:Rep[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]] )(implicit o:Overloaded10) = toAtom(Zip10(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]] ) = Zip10(Tuple10(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10))
-  case class Zip11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( target:Rep[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]] ) extends Generator[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep11(Tuple11(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r:Rep[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]] )(implicit o:Overloaded11) = Zip11(r)
+  case class Zip11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( target:Rep[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]] ) extends Generator[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]](
+    tuple2rep11(Tuple11(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r:Rep[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]] )(implicit o:Overloaded11) = toAtom(Zip11(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]] ) = Zip11(Tuple11(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11))
-  case class Zip12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( target:Rep[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]] ) extends Generator[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep12(Tuple12(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r:Rep[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]] )(implicit o:Overloaded12) = Zip12(r)
+  case class Zip12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( target:Rep[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]] ) extends Generator[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]](
+    tuple2rep12(Tuple12(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r:Rep[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]] )(implicit o:Overloaded12) = toAtom(Zip12(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]] ) = Zip12(Tuple12(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12))
-  case class Zip13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( target:Rep[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]] ) extends Generator[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep13(Tuple13(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r:Rep[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]] )(implicit o:Overloaded13) = Zip13(r)
+  case class Zip13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( target:Rep[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]] ) extends Generator[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]](
+    tuple2rep13(Tuple13(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r:Rep[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]] )(implicit o:Overloaded13) = toAtom(Zip13(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]] ) = Zip13(Tuple13(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13))
-  case class Zip14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( target:Rep[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]] ) extends Generator[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep14(Tuple14(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r:Rep[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]] )(implicit o:Overloaded14) = Zip14(r)
+  case class Zip14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( target:Rep[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]] ) extends Generator[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]](
+    tuple2rep14(Tuple14(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r:Rep[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]] )(implicit o:Overloaded14) = toAtom(Zip14(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]] ) = Zip14(Tuple14(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14))
-  case class Zip15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( target:Rep[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]] ) extends Generator[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep15(Tuple15(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r:Rep[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]] )(implicit o:Overloaded15) = Zip15(r)
+  case class Zip15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( target:Rep[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]] ) extends Generator[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]](
+    tuple2rep15(Tuple15(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r:Rep[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]] )(implicit o:Overloaded15) = toAtom(Zip15(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]] ) = Zip15(Tuple15(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15))
-  case class Zip16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( target:Rep[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]] ) extends Generator[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep16(Tuple16(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r:Rep[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]] )(implicit o:Overloaded16) = Zip16(r)
+  case class Zip16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( target:Rep[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]] ) extends Generator[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]](
+    tuple2rep16(Tuple16(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r:Rep[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]] )(implicit o:Overloaded16) = toAtom(Zip16(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]],i16: Rep[Iterable[T16]] ) = Zip16(Tuple16(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16))
-  case class Zip17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( target:Rep[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]] ) extends Generator[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep17(Tuple17(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r:Rep[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]] )(implicit o:Overloaded17) = Zip17(r)
+  case class Zip17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( target:Rep[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]] ) extends Generator[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]](
+    tuple2rep17(Tuple17(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r:Rep[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]] )(implicit o:Overloaded17) = toAtom(Zip17(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]],i16: Rep[Iterable[T16]],i17: Rep[Iterable[T17]] ) = Zip17(Tuple17(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17))
-  case class Zip18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( target:Rep[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]] ) extends Generator[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep18(Tuple18(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r:Rep[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]] )(implicit o:Overloaded18) = Zip18(r)
+  case class Zip18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( target:Rep[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]] ) extends Generator[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]](
+    tuple2rep18(Tuple18(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r:Rep[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]] )(implicit o:Overloaded18) = toAtom(Zip18(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]],i16: Rep[Iterable[T16]],i17: Rep[Iterable[T17]],i18: Rep[Iterable[T18]] ) = Zip18(Tuple18(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18))
-  case class Zip19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( target:Rep[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]] ) extends Generator[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep19(Tuple19(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18)),toAtom(Zipped(target._19))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r:Rep[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]] )(implicit o:Overloaded19) = Zip19(r)
+  case class Zip19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( target:Rep[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]] ) extends Generator[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]](
+    tuple2rep19(Tuple19(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18)),toAtom(Zipped(target._19))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r:Rep[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]] )(implicit o:Overloaded19) = toAtom(Zip19(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]],i16: Rep[Iterable[T16]],i17: Rep[Iterable[T17]],i18: Rep[Iterable[T18]],i19: Rep[Iterable[T19]] ) = Zip19(Tuple19(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19))
-  case class Zip20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( target:Rep[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]] ) extends Generator[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep20(Tuple20(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18)),toAtom(Zipped(target._19)),toAtom(Zipped(target._20))))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r:Rep[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]] )(implicit o:Overloaded20) = Zip20(r)
+  case class Zip20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( target:Rep[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]] ) extends Generator[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]](
+    tuple2rep20(Tuple20(toAtom(Zipped(target._1)),toAtom(Zipped(target._2)),toAtom(Zipped(target._3)),toAtom(Zipped(target._4)),toAtom(Zipped(target._5)),toAtom(Zipped(target._6)),toAtom(Zipped(target._7)),toAtom(Zipped(target._8)),toAtom(Zipped(target._9)),toAtom(Zipped(target._10)),toAtom(Zipped(target._11)),toAtom(Zipped(target._12)),toAtom(Zipped(target._13)),toAtom(Zipped(target._14)),toAtom(Zipped(target._15)),toAtom(Zipped(target._16)),toAtom(Zipped(target._17)),toAtom(Zipped(target._18)),toAtom(Zipped(target._19)),toAtom(Zipped(target._20))))
+  ) with Zip
+  def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r:Rep[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]] )(implicit o:Overloaded20) = toAtom(Zip20(r))
   //not required, because of how scala handles tuples as parameters: //def zip[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( i1: Rep[Iterable[T1]],i2: Rep[Iterable[T2]],i3: Rep[Iterable[T3]],i4: Rep[Iterable[T4]],i5: Rep[Iterable[T5]],i6: Rep[Iterable[T6]],i7: Rep[Iterable[T7]],i8: Rep[Iterable[T8]],i9: Rep[Iterable[T9]],i10: Rep[Iterable[T10]],i11: Rep[Iterable[T11]],i12: Rep[Iterable[T12]],i13: Rep[Iterable[T13]],i14: Rep[Iterable[T14]],i15: Rep[Iterable[T15]],i16: Rep[Iterable[T16]],i17: Rep[Iterable[T17]],i18: Rep[Iterable[T18]],i19: Rep[Iterable[T19]],i20: Rep[Iterable[T20]] ) = Zip20(Tuple20(i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12,i13,i14,i15,i16,i17,i18,i19,i20))
 
   implicit def rep2tuple1[T1]( t:Rep[Tuple1[T1]] ) = {
@@ -531,54 +531,58 @@ trait Tuples extends ITuples with ModuleBase{
   case class LiftedTuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( t:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] ) extends LiftedTuple[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]](t)
   implicit def tuple2rep20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( t:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] ) = toAtom( LiftedTuple20( t ) )
 
-  case class Groupable1[T1]( g:Generator[(T1)] ) extends IGroupable1[T1]{
+  case class Groupable1[T1]( g:Generator[Tuple1[T1]] ) extends IGroupable1[T1]{
     def groupBy( f:Tuple1[Rep[T1]] => Rep[_] ) : Rep[Iterable[Tuple1[Iterable[T1]]]] = {
-      val cols = rep2tuple1(replace_with_references(g.element, g))
+      val t : Rep[Tuple1[T1]] = g.element_raw
+      val cols = rep2tuple1(t)
       val groups = Tuple1(
           toAtom(Grouped(cols._1))
       )
       new Comprehension[ Tuple1[Iterable[T1]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable1[T1]( r: Rep[Iterable[(T1)]] ) = Groupable1[T1](rep2generator(r))
-  case class Groupable2[T1,T2]( g:Generator[(T1,T2)] ) extends IGroupable2[T1,T2]{
+  implicit def rep2groupable1[T1]( r: Rep[Iterable[Tuple1[T1]]] ) = Groupable1[T1](rep2generator(r))
+  case class Groupable2[T1,T2]( g:Generator[Tuple2[T1,T2]] ) extends IGroupable2[T1,T2]{
     def groupBy( f:Tuple2[Rep[T1],Rep[T2]] => Rep[_] ) : Rep[Iterable[Tuple2[Iterable[T1],Iterable[T2]]]] = {
-      val cols = rep2tuple2(replace_with_references(g.element, g))
+      val t : Rep[Tuple2[T1,T2]] = g.element_raw
+      val cols = rep2tuple2(t)
       val groups = Tuple2(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
       )
       new Comprehension[ Tuple2[Iterable[T1],Iterable[T2]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable2[T1,T2]( r: Rep[Iterable[(T1,T2)]] ) = Groupable2[T1,T2](rep2generator(r))
-  case class Groupable3[T1,T2,T3]( g:Generator[(T1,T2,T3)] ) extends IGroupable3[T1,T2,T3]{
+  implicit def rep2groupable2[T1,T2]( r: Rep[Iterable[Tuple2[T1,T2]]] ) = Groupable2[T1,T2](rep2generator(r))
+  case class Groupable3[T1,T2,T3]( g:Generator[Tuple3[T1,T2,T3]] ) extends IGroupable3[T1,T2,T3]{
     def groupBy( f:Tuple3[Rep[T1],Rep[T2],Rep[T3]] => Rep[_] ) : Rep[Iterable[Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]]]] = {
-      val cols = rep2tuple3(replace_with_references(g.element, g))
+      val t : Rep[Tuple3[T1,T2,T3]] = g.element_raw
+      val cols = rep2tuple3(t)
       val groups = Tuple3(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
           ,toAtom(Grouped(cols._3))
       )
       new Comprehension[ Tuple3[Iterable[T1],Iterable[T2],Iterable[T3]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable3[T1,T2,T3]( r: Rep[Iterable[(T1,T2,T3)]] ) = Groupable3[T1,T2,T3](rep2generator(r))
-  case class Groupable4[T1,T2,T3,T4]( g:Generator[(T1,T2,T3,T4)] ) extends IGroupable4[T1,T2,T3,T4]{
+  implicit def rep2groupable3[T1,T2,T3]( r: Rep[Iterable[Tuple3[T1,T2,T3]]] ) = Groupable3[T1,T2,T3](rep2generator(r))
+  case class Groupable4[T1,T2,T3,T4]( g:Generator[Tuple4[T1,T2,T3,T4]] ) extends IGroupable4[T1,T2,T3,T4]{
     def groupBy( f:Tuple4[Rep[T1],Rep[T2],Rep[T3],Rep[T4]] => Rep[_] ) : Rep[Iterable[Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]]]] = {
-      val cols = rep2tuple4(replace_with_references(g.element, g))
+      val t : Rep[Tuple4[T1,T2,T3,T4]] = g.element_raw
+      val cols = rep2tuple4(t)
       val groups = Tuple4(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -586,16 +590,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._4))
       )
       new Comprehension[ Tuple4[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable4[T1,T2,T3,T4]( r: Rep[Iterable[(T1,T2,T3,T4)]] ) = Groupable4[T1,T2,T3,T4](rep2generator(r))
-  case class Groupable5[T1,T2,T3,T4,T5]( g:Generator[(T1,T2,T3,T4,T5)] ) extends IGroupable5[T1,T2,T3,T4,T5]{
+  implicit def rep2groupable4[T1,T2,T3,T4]( r: Rep[Iterable[Tuple4[T1,T2,T3,T4]]] ) = Groupable4[T1,T2,T3,T4](rep2generator(r))
+  case class Groupable5[T1,T2,T3,T4,T5]( g:Generator[Tuple5[T1,T2,T3,T4,T5]] ) extends IGroupable5[T1,T2,T3,T4,T5]{
     def groupBy( f:Tuple5[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5]] => Rep[_] ) : Rep[Iterable[Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]]]] = {
-      val cols = rep2tuple5(replace_with_references(g.element, g))
+      val t : Rep[Tuple5[T1,T2,T3,T4,T5]] = g.element_raw
+      val cols = rep2tuple5(t)
       val groups = Tuple5(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -604,16 +609,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._5))
       )
       new Comprehension[ Tuple5[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable5[T1,T2,T3,T4,T5]( r: Rep[Iterable[(T1,T2,T3,T4,T5)]] ) = Groupable5[T1,T2,T3,T4,T5](rep2generator(r))
-  case class Groupable6[T1,T2,T3,T4,T5,T6]( g:Generator[(T1,T2,T3,T4,T5,T6)] ) extends IGroupable6[T1,T2,T3,T4,T5,T6]{
+  implicit def rep2groupable5[T1,T2,T3,T4,T5]( r: Rep[Iterable[Tuple5[T1,T2,T3,T4,T5]]] ) = Groupable5[T1,T2,T3,T4,T5](rep2generator(r))
+  case class Groupable6[T1,T2,T3,T4,T5,T6]( g:Generator[Tuple6[T1,T2,T3,T4,T5,T6]] ) extends IGroupable6[T1,T2,T3,T4,T5,T6]{
     def groupBy( f:Tuple6[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6]] => Rep[_] ) : Rep[Iterable[Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]]]] = {
-      val cols = rep2tuple6(replace_with_references(g.element, g))
+      val t : Rep[Tuple6[T1,T2,T3,T4,T5,T6]] = g.element_raw
+      val cols = rep2tuple6(t)
       val groups = Tuple6(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -623,16 +629,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._6))
       )
       new Comprehension[ Tuple6[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable6[T1,T2,T3,T4,T5,T6]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6)]] ) = Groupable6[T1,T2,T3,T4,T5,T6](rep2generator(r))
-  case class Groupable7[T1,T2,T3,T4,T5,T6,T7]( g:Generator[(T1,T2,T3,T4,T5,T6,T7)] ) extends IGroupable7[T1,T2,T3,T4,T5,T6,T7]{
+  implicit def rep2groupable6[T1,T2,T3,T4,T5,T6]( r: Rep[Iterable[Tuple6[T1,T2,T3,T4,T5,T6]]] ) = Groupable6[T1,T2,T3,T4,T5,T6](rep2generator(r))
+  case class Groupable7[T1,T2,T3,T4,T5,T6,T7]( g:Generator[Tuple7[T1,T2,T3,T4,T5,T6,T7]] ) extends IGroupable7[T1,T2,T3,T4,T5,T6,T7]{
     def groupBy( f:Tuple7[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7]] => Rep[_] ) : Rep[Iterable[Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]]]] = {
-      val cols = rep2tuple7(replace_with_references(g.element, g))
+      val t : Rep[Tuple7[T1,T2,T3,T4,T5,T6,T7]] = g.element_raw
+      val cols = rep2tuple7(t)
       val groups = Tuple7(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -643,16 +650,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._7))
       )
       new Comprehension[ Tuple7[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable7[T1,T2,T3,T4,T5,T6,T7]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7)]] ) = Groupable7[T1,T2,T3,T4,T5,T6,T7](rep2generator(r))
-  case class Groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8)] ) extends IGroupable8[T1,T2,T3,T4,T5,T6,T7,T8]{
+  implicit def rep2groupable7[T1,T2,T3,T4,T5,T6,T7]( r: Rep[Iterable[Tuple7[T1,T2,T3,T4,T5,T6,T7]]] ) = Groupable7[T1,T2,T3,T4,T5,T6,T7](rep2generator(r))
+  case class Groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( g:Generator[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]] ) extends IGroupable8[T1,T2,T3,T4,T5,T6,T7,T8]{
     def groupBy( f:Tuple8[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8]] => Rep[_] ) : Rep[Iterable[Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]]]] = {
-      val cols = rep2tuple8(replace_with_references(g.element, g))
+      val t : Rep[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]] = g.element_raw
+      val cols = rep2tuple8(t)
       val groups = Tuple8(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -664,16 +672,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._8))
       )
       new Comprehension[ Tuple8[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8)]] ) = Groupable8[T1,T2,T3,T4,T5,T6,T7,T8](rep2generator(r))
-  case class Groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9)] ) extends IGroupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]{
+  implicit def rep2groupable8[T1,T2,T3,T4,T5,T6,T7,T8]( r: Rep[Iterable[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]]] ) = Groupable8[T1,T2,T3,T4,T5,T6,T7,T8](rep2generator(r))
+  case class Groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( g:Generator[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]] ) extends IGroupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]{
     def groupBy( f:Tuple9[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9]] => Rep[_] ) : Rep[Iterable[Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]]]] = {
-      val cols = rep2tuple9(replace_with_references(g.element, g))
+      val t : Rep[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]] = g.element_raw
+      val cols = rep2tuple9(t)
       val groups = Tuple9(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -686,16 +695,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._9))
       )
       new Comprehension[ Tuple9[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9)]] ) = Groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9](rep2generator(r))
-  case class Groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10)] ) extends IGroupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]{
+  implicit def rep2groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9]( r: Rep[Iterable[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]]] ) = Groupable9[T1,T2,T3,T4,T5,T6,T7,T8,T9](rep2generator(r))
+  case class Groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( g:Generator[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]] ) extends IGroupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]{
     def groupBy( f:Tuple10[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10]] => Rep[_] ) : Rep[Iterable[Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]]]] = {
-      val cols = rep2tuple10(replace_with_references(g.element, g))
+      val t : Rep[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]] = g.element_raw
+      val cols = rep2tuple10(t)
       val groups = Tuple10(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -709,16 +719,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._10))
       )
       new Comprehension[ Tuple10[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10)]] ) = Groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](rep2generator(r))
-  case class Groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11)] ) extends IGroupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]{
+  implicit def rep2groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]( r: Rep[Iterable[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]]] ) = Groupable10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](rep2generator(r))
+  case class Groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( g:Generator[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]] ) extends IGroupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]{
     def groupBy( f:Tuple11[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11]] => Rep[_] ) : Rep[Iterable[Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]]]] = {
-      val cols = rep2tuple11(replace_with_references(g.element, g))
+      val t : Rep[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]] = g.element_raw
+      val cols = rep2tuple11(t)
       val groups = Tuple11(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -733,16 +744,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._11))
       )
       new Comprehension[ Tuple11[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11)]] ) = Groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](rep2generator(r))
-  case class Groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12)] ) extends IGroupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]{
+  implicit def rep2groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]( r: Rep[Iterable[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]]] ) = Groupable11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](rep2generator(r))
+  case class Groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( g:Generator[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]] ) extends IGroupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]{
     def groupBy( f:Tuple12[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12]] => Rep[_] ) : Rep[Iterable[Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]]]] = {
-      val cols = rep2tuple12(replace_with_references(g.element, g))
+      val t : Rep[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]] = g.element_raw
+      val cols = rep2tuple12(t)
       val groups = Tuple12(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -758,16 +770,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._12))
       )
       new Comprehension[ Tuple12[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12)]] ) = Groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](rep2generator(r))
-  case class Groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13)] ) extends IGroupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]{
+  implicit def rep2groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]( r: Rep[Iterable[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]]] ) = Groupable12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](rep2generator(r))
+  case class Groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( g:Generator[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]] ) extends IGroupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]{
     def groupBy( f:Tuple13[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13]] => Rep[_] ) : Rep[Iterable[Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]]]] = {
-      val cols = rep2tuple13(replace_with_references(g.element, g))
+      val t : Rep[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]] = g.element_raw
+      val cols = rep2tuple13(t)
       val groups = Tuple13(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -784,16 +797,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._13))
       )
       new Comprehension[ Tuple13[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13)]] ) = Groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](rep2generator(r))
-  case class Groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14)] ) extends IGroupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]{
+  implicit def rep2groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]( r: Rep[Iterable[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]]] ) = Groupable13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](rep2generator(r))
+  case class Groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( g:Generator[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]] ) extends IGroupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]{
     def groupBy( f:Tuple14[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14]] => Rep[_] ) : Rep[Iterable[Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]]]] = {
-      val cols = rep2tuple14(replace_with_references(g.element, g))
+      val t : Rep[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]] = g.element_raw
+      val cols = rep2tuple14(t)
       val groups = Tuple14(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -811,16 +825,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._14))
       )
       new Comprehension[ Tuple14[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14)]] ) = Groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](rep2generator(r))
-  case class Groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15)] ) extends IGroupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]{
+  implicit def rep2groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]( r: Rep[Iterable[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]]] ) = Groupable14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](rep2generator(r))
+  case class Groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( g:Generator[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]] ) extends IGroupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]{
     def groupBy( f:Tuple15[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15]] => Rep[_] ) : Rep[Iterable[Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]]]] = {
-      val cols = rep2tuple15(replace_with_references(g.element, g))
+      val t : Rep[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]] = g.element_raw
+      val cols = rep2tuple15(t)
       val groups = Tuple15(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -839,16 +854,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._15))
       )
       new Comprehension[ Tuple15[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15)]] ) = Groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](rep2generator(r))
-  case class Groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16)] ) extends IGroupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]{
+  implicit def rep2groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]( r: Rep[Iterable[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]]] ) = Groupable15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](rep2generator(r))
+  case class Groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( g:Generator[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]] ) extends IGroupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]{
     def groupBy( f:Tuple16[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16]] => Rep[_] ) : Rep[Iterable[Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]]]] = {
-      val cols = rep2tuple16(replace_with_references(g.element, g))
+      val t : Rep[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]] = g.element_raw
+      val cols = rep2tuple16(t)
       val groups = Tuple16(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -868,16 +884,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._16))
       )
       new Comprehension[ Tuple16[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16)]] ) = Groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16](rep2generator(r))
-  case class Groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17)] ) extends IGroupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]{
+  implicit def rep2groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]( r: Rep[Iterable[Tuple16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16]]] ) = Groupable16[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16](rep2generator(r))
+  case class Groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( g:Generator[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]] ) extends IGroupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]{
     def groupBy( f:Tuple17[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17]] => Rep[_] ) : Rep[Iterable[Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]]]] = {
-      val cols = rep2tuple17(replace_with_references(g.element, g))
+      val t : Rep[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]] = g.element_raw
+      val cols = rep2tuple17(t)
       val groups = Tuple17(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -898,16 +915,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._17))
       )
       new Comprehension[ Tuple17[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17)]] ) = Groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17](rep2generator(r))
-  case class Groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18)] ) extends IGroupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]{
+  implicit def rep2groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]( r: Rep[Iterable[Tuple17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17]]] ) = Groupable17[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17](rep2generator(r))
+  case class Groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( g:Generator[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]] ) extends IGroupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]{
     def groupBy( f:Tuple18[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18]] => Rep[_] ) : Rep[Iterable[Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]]]] = {
-      val cols = rep2tuple18(replace_with_references(g.element, g))
+      val t : Rep[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]] = g.element_raw
+      val cols = rep2tuple18(t)
       val groups = Tuple18(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -929,16 +947,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._18))
       )
       new Comprehension[ Tuple18[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18)]] ) = Groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18](rep2generator(r))
-  case class Groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19)] ) extends IGroupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]{
+  implicit def rep2groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]( r: Rep[Iterable[Tuple18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18]]] ) = Groupable18[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18](rep2generator(r))
+  case class Groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( g:Generator[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]] ) extends IGroupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]{
     def groupBy( f:Tuple19[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19]] => Rep[_] ) : Rep[Iterable[Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]]]] = {
-      val cols = rep2tuple19(replace_with_references(g.element, g))
+      val t : Rep[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]] = g.element_raw
+      val cols = rep2tuple19(t)
       val groups = Tuple19(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -961,16 +980,17 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._19))
       )
       new Comprehension[ Tuple19[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19)]] ) = Groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19](rep2generator(r))
-  case class Groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( g:Generator[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20)] ) extends IGroupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]{
+  implicit def rep2groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]( r: Rep[Iterable[Tuple19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19]]] ) = Groupable19[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19](rep2generator(r))
+  case class Groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( g:Generator[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]] ) extends IGroupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]{
     def groupBy( f:Tuple20[Rep[T1],Rep[T2],Rep[T3],Rep[T4],Rep[T5],Rep[T6],Rep[T7],Rep[T8],Rep[T9],Rep[T10],Rep[T11],Rep[T12],Rep[T13],Rep[T14],Rep[T15],Rep[T16],Rep[T17],Rep[T18],Rep[T19],Rep[T20]] => Rep[_] ) : Rep[Iterable[Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]]]] = {
-      val cols = rep2tuple20(replace_with_references(g.element, g))
+      val t : Rep[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]] = g.element_raw
+      val cols = rep2tuple20(t)
       val groups = Tuple20(
           toAtom(Grouped(cols._1))
           ,toAtom(Grouped(cols._2))
@@ -994,13 +1014,13 @@ trait Tuples extends ITuples with ModuleBase{
           ,toAtom(Grouped(cols._20))
       )
       new Comprehension[ Tuple20[Iterable[T1],Iterable[T2],Iterable[T3],Iterable[T4],Iterable[T5],Iterable[T6],Iterable[T7],Iterable[T8],Iterable[T9],Iterable[T10],Iterable[T11],Iterable[T12],Iterable[T13],Iterable[T14],Iterable[T15],Iterable[T16],Iterable[T17],Iterable[T18],Iterable[T19],Iterable[T20]] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r: Rep[Iterable[(T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20)]] ) = Groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20](rep2generator(r))
+  implicit def rep2groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]( r: Rep[Iterable[Tuple20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20]]] ) = Groupable20[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20](rep2generator(r))
 
     def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(0) ) : Rep[R]= {
       // note: when thinking about changing when counter is incremented, consider what happens when replacing nested tuples like ((a,b),c), as they should still get number ((1,2),3)
@@ -1039,21 +1059,7 @@ trait Tuples extends ITuples with ModuleBase{
             case 20 => tuple2rep20(( f(1), f(2), f(3), f(4), f(5), f(6), f(7), f(8), f(9), f(10), f(11), f(12), f(13), f(14), f(15), f(16), f(17), f(18), f(19), f(20) ))
           }
         }
-        case _:Generator[_] => {
-          /*
-          // why is this not needed?
-          val gen = referree.asInstanceOf[Generator[_]]
-          val refrep = toAtom(ref).asInstanceOf[Rep[Iterable[_]]]
-          toAtom(GeneratorReference[Any](
-            gen, g, counter
-          ))
-
-          //toAtom(ref)*/
-          toAtom(new GeneratorReference(
-            FieldReference(g,counter.count,toAtom(ref)),
-            counter
-          ))
-        }
+        case inner:Generator[_] => toAtom[Any](new GeneratorReference(r.asInstanceOf[Rep[Iterable[_]]],toAtom(ref).asInstanceOf[Rep[Iterable[_]]]))
         case _ => {
           counter.count += 1
           val ref = FieldReference(g,counter.count,r)

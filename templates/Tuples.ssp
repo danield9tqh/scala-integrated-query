@@ -33,7 +33,7 @@ trait ITuples extends IModuleBase with OverloadHack{
   trait IGroupable${i}[${p(i,"T%s")}]{
     def groupBy( f:Tuple${i}[${p(i,"Rep[T%s]")}] => Rep[_] ) : Rep[Iterable[Tuple${i}[${p(i,"Iterable[T%s]")}]]]
   }
-  implicit def rep2groupable${i}[${p(i,"T%s")}]( r: Rep[Iterable[(${p(i,"T%s")})]] ) : IGroupable${i}[${p(i,"T%s")}]
+  implicit def rep2groupable${i}[${p(i,"T%s")}]( r: Rep[Iterable[Tuple${i}[${p(i,"T%s")}]]] ) : IGroupable${i}[${p(i,"T%s")}]
 #end
 
 
@@ -47,10 +47,10 @@ trait Tuples extends ITuples with ModuleBase{
   this: Comprehensions =>
 
 #for (i <- 2 to max_tuple_size)
-  case class Zip${i}[${p(i,"T%s")}]( target:Rep[Tuple${i}[${p(i,"Iterable[T%s]")}]] ) extends Generator[Tuple${i}[${p(i,"T%s")}]] with Zip{
-    val element = /*replace_with_references(*/ tuple2rep${i}(Tuple${i}(${p(i,"toAtom(Zipped(target._%s))")}))/*, this ) */ // FIXME: is there a bug with references here?
-  }
-  def zip[${p(i,"T%s")}]( r:Rep[Tuple${i}[${p(i,"Iterable[T%s]")}]] )(implicit o:Overloaded${i}) = Zip${i}(r)
+  case class Zip${i}[${p(i,"T%s")}]( target:Rep[Tuple${i}[${p(i,"Iterable[T%s]")}]] ) extends Generator[Tuple${i}[${p(i,"T%s")}]](
+    tuple2rep${i}(Tuple${i}(${p(i,"toAtom(Zipped(target._%s))")}))
+  ) with Zip
+  def zip[${p(i,"T%s")}]( r:Rep[Tuple${i}[${p(i,"Iterable[T%s]")}]] )(implicit o:Overloaded${i}) = toAtom(Zip${i}(r))
   //not required, because of how scala handles tuples as parameters: //def zip[${p(i,"T%s")}]( ${p(i,"i%s: Rep[Iterable[T%s]]")} ) = Zip${i}(Tuple${i}(${p(i,"i%s")}))
 #end
 
@@ -72,22 +72,23 @@ trait Tuples extends ITuples with ModuleBase{
 #end
 
 #for (i <- 1 to max_tuple_size)
-  case class Groupable${i}[${p(i,"T%s")}]( g:Generator[(${p(i,"T%s")})] ) extends IGroupable${i}[${p(i,"T%s")}]{
+  case class Groupable${i}[${p(i,"T%s")}]( g:Generator[Tuple${i}[${p(i,"T%s")}]] ) extends IGroupable${i}[${p(i,"T%s")}]{
     def groupBy( f:Tuple${i}[${p(i,"Rep[T%s]")}] => Rep[_] ) : Rep[Iterable[Tuple${i}[${p(i,"Iterable[T%s]")}]]] = {
-      val cols = rep2tuple${i}(replace_with_references(g.element, g))
+      val t : Rep[Tuple${i}[${p(i,"T%s")}]] = g.element_raw
+      val cols = rep2tuple${i}(t)
       val groups = Tuple${i}(
 #for (j <- 1 to i)
           ${if(j>1) "," else ""}toAtom(Grouped(cols._${j}))
 #end
       )
       new Comprehension[ Tuple${i}[${p(i,"Iterable[T%s]")}] ](
-        List[Rep[Iterable[_]]](toAtom(g))
+        toAtom(g)
         , replace_with_references(groups, g)
         , groupBy = Some(f(cols)) // not: groupBy = replace_with_references(f(cols),g) ???
       )
     }
   }
-  implicit def rep2groupable${i}[${p(i,"T%s")}]( r: Rep[Iterable[(${p(i,"T%s")})]] ) = Groupable${i}[${p(i,"T%s")}](rep2generator(r))
+  implicit def rep2groupable${i}[${p(i,"T%s")}]( r: Rep[Iterable[Tuple${i}[${p(i,"T%s")}]]] ) = Groupable${i}[${p(i,"T%s")}](rep2generator(r))
 #end
 
     def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(0) ) : Rep[R]= {
@@ -111,21 +112,7 @@ trait Tuples extends ITuples with ModuleBase{
 #end
           }
         }
-        case _:Generator[_] => {
-          /*
-          // why is this not needed?
-          val gen = referree.asInstanceOf[Generator[_]]
-          val refrep = toAtom(ref).asInstanceOf[Rep[Iterable[_]]]
-          toAtom(GeneratorReference[Any](
-            gen, g, counter
-          ))
-
-          //toAtom(ref)*/
-          toAtom(new GeneratorReference(
-            FieldReference(g,counter.count,toAtom(ref)),
-            counter
-          ))
-        }
+        case inner:Generator[_] => toAtom[Any](new GeneratorReference(r.asInstanceOf[Rep[Iterable[_]]],toAtom(ref).asInstanceOf[Rep[Iterable[_]]]))
         case _ => {
           counter.count += 1
           val ref = FieldReference(g,counter.count,r)

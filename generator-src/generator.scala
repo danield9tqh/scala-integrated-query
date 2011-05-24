@@ -54,115 +54,115 @@ object generator{
         ),
         keys = List("country","branch")
       ),
-      "NATION" -> Meta(
-        table = "NATION",
+      "nation" -> Meta(
+        table = "nation",
         fields = Map(
-          "N_NATIONKEY" -> "Int",
-          "N_NAME" -> "String",
-          "N_REGIONKEY" -> "Int",
-          "N_COMMENT" -> "String"
+          "nationkey" -> "Int",
+          "name" -> "String",
+          "regionkey" -> "Int",
+          "comment" -> "String"
         ),
-        keys = List("N_NATIONKEY")
+        keys = List("nationkey")
       ),
-      "REGION" -> Meta(
-        table = "REGION",
+      "region" -> Meta(
+        table = "region",
         fields = Map(
-          "R_REGIONKEY" -> "Int",
-          "R_NAME" -> "String",
-          "R_COMMENT" -> "String"
+          "regionkey" -> "Int",
+          "name" -> "String",
+          "comment" -> "String"
         ),
-        keys = List("R_REGIONKEY")
+        keys = List("regionkey")
       ),
-      "PART" -> Meta(
-        table = "PART",
+      "part" -> Meta(
+        table = "part",
         fields = Map(
-          "P_PARTKEY" -> "Int",
-          "P_NAME" -> "String",
-          "P_MFGR" -> "String",
-          "P_BRAND" -> "String",
-          "P_TYPE" -> "String",
-          "P_SIZE" -> "Int",
-          "P_CONTAINER" -> "String",
-          "P_RETAILPRICE" -> "Int",
-          "P_COMMENT" -> "String"
+          "partkey" -> "Int",
+          "name" -> "String",
+          "mfgr" -> "String",
+          "brand" -> "String",
+          "type_" -> "String",
+          "size_" -> "Int",
+          "container" -> "String",
+          "retailprice" -> "Int",
+          "comment" -> "String"
         ),
-        keys = List("P_PARTKEY")
+        keys = List("partkey")
       ),
-      "SUPPLIER" -> Meta(
-        table = "SUPPLIER",
+      "supplier" -> Meta(
+        table = "supplier",
         fields = Map(
-          "S_SUPPKEY" -> "Int",
-          "S_NAME" -> "String",
-          "S_ADDRESS" -> "String",
-          "S_NATIONKEY" -> "Int",
-          "S_PHONE" -> "String",
-          "S_ACCTBAL" -> "Int",
-          "S_COMMENT" -> "String"
+          "suppkey" -> "Int",
+          "name" -> "String",
+          "address" -> "String",
+          "nationkey" -> "Int",
+          "phone" -> "String",
+          "acctbal" -> "Int",
+          "comment" -> "String"
         ),
-        keys = List("S_SUPPKEY")
+        keys = List("suppkey")
       ),
-      "PARTSUPP" -> Meta(
-        table = "PARTSUPP",
+      "partsupp" -> Meta(
+        table = "partsupp",
         fields = Map(
-          "PS_PARTKEY" -> "Int",
-          "PS_SUPPKEY" -> "Int",
-          "PS_AVAILQTY" -> "Int",
-          "PS_SUPPLYCOST" -> "Int",
-          "PS_COMMENT" -> "String"
+          "partkey" -> "Int",
+          "suppkey" -> "Int",
+          "availqty" -> "Int",
+          "supplycost" -> "Int",
+          "comment" -> "String"
         ),
-        keys = List("PS_PARTKEY","PS_SUPPKEY")
+        keys = List("partkey","suppkey")
       ),
-      "CUSTOMER" -> Meta(
-        table = "CUSTOMER",
+      "customer" -> Meta(
+        table = "customer",
         fields = Map(
-          "C_CUSTKEY" -> "Int",
-          "C_NAME" -> "String",
-          "C_ADDRESS" -> "String",
-          "C_NATIONKEY" -> "Int",
-          "C_PHONE" -> "String",
-          "C_ACCTBAL" -> "Int",
-          "C_MKTSEGMENT" -> "String",
-          "C_COMMENT" -> "String"
+          "custkey" -> "Int",
+          "name" -> "String",
+          "address" -> "String",
+          "nationkey" -> "Int",
+          "phone" -> "String",
+          "acctbal" -> "Int",
+          "mktsegment" -> "String",
+          "comment" -> "String"
         ),
-        keys = List("C_CUSTKEY")
+        keys = List("custkey")
       ),
-      "ORDERS" -> Meta(
-        table = "ORDERS",
+      "orders" -> Meta(
+        table = "orders",
         fields = Map(
-          "O_ORDERKEY" -> "Int",
-          "O_CUSTKEY" -> "Int",
-          "O_ORDERSTATUS" -> "String",
-          "O_TOTALPRICE" -> "Int",
-          "O_ORDERDATE" -> "String", // DATE
-          "O_ORDERPRIORITY" -> "String",
-          "O_CLERK" -> "String",
-          "O_SHIPPRIORITY" -> "Int",
-          "O_COMMENT" -> "String"
+          "orderkey" -> "Int",
+          "custkey" -> "Int",
+          "orderstatus" -> "String",
+          "totalprice" -> "Int",
+          "orderdate" -> "String", // date
+          "orderpriority" -> "String",
+          "clerk" -> "String",
+          "shippriority" -> "Int",
+          "comment" -> "String"
         ),
-        keys = List("O_ORDERKEY")
+        keys = List("orderkey")
       ),
-      "LINEITEM" -> Meta(
-        table = "LINEITEM",
+      "lineitem" -> Meta(
+        table = "lineitem",
         fields = Map(
-          "L_ORDERKEY" -> "Int",
-          "L_PARTKEY" -> "Int",
-          "L_SUPPKEY" -> "Int",
-          "L_LINENUMBER" -> "Int",
-          "L_QUANTITY" -> "Int",
-          "L_EXTENDEDPRICE" -> "Int",
-          "L_DISCOUNT" -> "Int",
-          "L_TAX" -> "Int",
-          "L_RETURNFLAG" -> "String",
-          "L_LINESTATUS" -> "String",
-          "L_SHIPDATE" -> "String", // DATE
-          "L_COMMITDATE" -> "String", // DATE
-          "L_RECEIPTDATE" -> "String", // DATE
-          "L_SHIPINSTRUCT" -> "String",
-          "L_SHIPMODE" -> "String",
-          "L_COMMENT" -> "String"
-        ),
-        keys = List("L_ORDERKEY","L_LINENUMBER")
-      )
+          "orderkey" -> "Int",
+          "partkey" -> "Int",
+          "suppkey" -> "Int",
+          "linenumber" -> "Int",
+          "quantity" -> "Int",
+          "extendedprice" -> "Int",
+          "discount" -> "Int",
+          "tax" -> "Int",
+          "returnflag" -> "String",
+          "linestatus" -> "String",
+          "shipdate" -> "String", // date
+          "commitdate" -> "String", // date
+          "receiptdate" -> "String", // date
+          "shipinstruct" -> "String",
+          "shipmode" -> "String",
+          "comment" -> "String"
+          ),
+        keys = List("orderkey","linenumber")
+    )
     )))
 
     render("Results")
