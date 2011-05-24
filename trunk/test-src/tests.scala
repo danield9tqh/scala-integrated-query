@@ -16,7 +16,6 @@ object tests {
       }
       {
         {
-          // CURRENTLY VERY VERY SLOW, 1 500 000 rel operators
           // this is all executed in the db
           // filter employees using a scala collection
           val q1 = for( id <- List(1,2,3,4,5).todb
@@ -30,15 +29,19 @@ object tests {
                         ;if e.workgroup_id == w.id
           ) yield (e,w)
 
+
           // sort by workgroup names, given an ordering (different api than scala collection)
           val q3 = q2.orderBy(_._2.name desc, _._1.name)
 
           // project to the employees
-          println( q3.map(_._1).fromdb() )
+          println( q3.map(_._1).length.fromdb() )
         }
+
+        println( List(1,2).todb.map( i => employee.withFilter(_.workgroup_id == i) ).map(_.length).fromdb() )
 
         println((
           for( w <- workgroup ) yield employee.withFilter(_.workgroup_id == w.id)
+          //for (w <- workgroup; e <- employee; if e.workgroup_id == w.id) yield (e,w)
         ).fromdb())
 
         println(( for( x <- List(1,2,3).todb ) yield x).fromdb() )
@@ -111,12 +114,12 @@ object tests {
       q.fromdb.foreach( println(_) )
     }
     {
-      val q = for( c <- CUSTOMER.orderBy(_.C_NATIONKEY).groupBy(_.C_NATIONKEY) ) yield {
-        val country_orders =  for( o <- ORDERS; x <- zip(c.C_CUSTKEY, c.C_MKTSEGMENT); if o.O_CUSTKEY == x._1 ) yield (x._2,o.O_TOTALPRICE)
+      val q = for( c <- customer.orderBy(_.nationkey).groupBy(_.nationkey) ) yield {
+        val country_orders =  for( o <- orders; x <- zip(c.custkey, c.mktsegment); if o.custkey == x._1 ) yield (x._2,o.totalprice)
         val total_price = country_orders.map(_._2).sum
         (
-          c.C_NATIONKEY.the,
-          c.C_NATIONKEY.count,
+          c.nationkey.one,
+          c.nationkey.length,
           total_price
         )
       }
@@ -125,13 +128,13 @@ object tests {
 /*
     {
       val q = for( c <- CUSTOMER.orderBy(_.C_NATIONKEY).groupBy(_.C_NATIONKEY) ) yield (
-        c.C_NATIONKEY.the,
-        c.C_NATIONKEY.count,
+        c.C_NATIONKEY.one,
+        c.C_NATIONKEY.length,
         zip( c.C_CUSTKEY, c.C_MKTSEGMENT ).groupBy(_._2).map( x => (
-          x._2.the,
+          x._2.one,
           x._1,
           for( o <- ORDERS; custkey <- x._1 if o.O_CUSTKEY == custkey ) yield (custkey,o.O_TOTALPRICE)
-        ))  //         (for( x <- c.C_MKTSEGMENT) yield (x,x.(x.count*100)/c._1.count) )
+        ))  //         (for( x <- c.C_MKTSEGMENT) yield (x,x.(x.length*100)/c._1.length) )
       )
       q.fromdb.foreach( println(_) )
     }
@@ -177,13 +180,13 @@ object tests {
       val date_plus = "1994-01-01" // date ':1' + interval '1' year
       val discount = 2// 2. DISCOUNT is randomly selected within [0.02 .. 0.09];
       val quantity = 24 // 3. QUANTITY is randomly selected within [24 .. 25].
-      val q = LINEITEM.withFilter( l =>
-        l.L_SHIPDATE > date // FIXME >=
-        && l.L_SHIPDATE < date_plus
-        && (l.L_DISCOUNT*100) > discount - 1
-        && (l.L_DISCOUNT*100) < discount + 1
-        && l.L_QUANTITY < quantity
-      ).map( l => l.L_EXTENDEDPRICE * 100 * l.L_DISCOUNT * 100 ).sum
+      val q = lineitem.withFilter( l =>
+        l.shipdate > date // FIXME >=
+        && l.shipdate < date_plus
+        && (l.discount*100) > discount - 1
+        && (l.discount*100) < discount + 1
+        && l.quantity < quantity
+      ).map( l => l.extendedprice * 100 * l.discount * 100 ).sum
       println( q fromdb )
     }
     {
@@ -197,15 +200,15 @@ object tests {
     }
 
     /*{
-      val q = for( c <- CUSTOMER.groupBy(_.C_NATIONKEY).orderBy( _.C_NATIONKEY.the ) )
-        yield (i, c.C_NATIONKEY.the, c.C_NATIONKEY.count)
+      val q = for( c <- CUSTOMER.groupBy(_.C_NATIONKEY).orderBy( _.C_NATIONKEY.one ) )
+        yield (i, c.C_NATIONKEY.one, c.C_NATIONKEY.length)
       println( q fromdb );
     }*/
 
 
     /* // SURPRISING RESULT:
     {
-      val last = for( p <- employee; if p._1 == (for(e <- employee.groupBy(_._1)) yield e._1.count) ) yield p
+      val last = for( p <- employee; if p._1 == (for(e <- employee.groupBy(_._1)) yield e._1.length) ) yield p
       println( query(last) : Iterable[_] )
     }
     */
@@ -246,22 +249,22 @@ object tests {
     }
     {
       val q = for ( a <- amounts ) yield (a.country,a.branch)
-      println( q.groupBy(x => "test").map(x => (x._1.the,x._2.the)) exec )
+      println( q.groupBy(x => "test").map(x => (x._1.one,x._2.one)) exec )
     }
     {
-      val q2 = amounts.count
+      val q2 = amounts.length
       println(query( q2 ):Int)
-      val q3 = for( a <- amounts ) yield (amounts.count, a._2)
+      val q3 = for( a <- amounts ) yield (amounts.length, a._2)
       println(query( q3 ):Product)
       val q4 = (for( a <- amounts.groupBy( (a:(Rep[_],Rep[_],Rep[_])) => a._1 ) ) yield
-            ( a._1.the,a._3.sum, for( b <- zip(a) ) yield (b._2,b._3,b._3*200/a._3.sum) )).count
+            ( a._1.one,a._3.sum, for( b <- zip(a) ) yield (b._2,b._3,b._3*200/a._3.sum) )).length
       val result = query(q4)
     }
     {
       Range(1,10).foreach{x=>{
         val startTime = System.currentTimeMillis()
         val q = (for( a <- amounts.groupBy( (a:(Rep[_],Rep[_],Rep[_])) => a._1 ) ) yield
-              ( a._1.the,a._3.sum, for( b <- zip(a) ) yield (b._2,b._3,b._3*200/a._3.sum) )).count
+              ( a._1.one,a._3.sum, for( b <- zip(a) ) yield (b._2,b._3,b._3*200/a._3.sum) )).length
         println(System.currentTimeMillis()-startTime)
         val startTime2 = System.currentTimeMillis()
         val result = query(q)
@@ -278,13 +281,13 @@ object tests {
       for(
         (country,sector,amount) <- amounts.groupBy( a => a._1 )
       ) yield
-            ( country.the, amount.sum, (for(b <- zip(sector,amount)) yield (b._1,b._2,b._2*100/amount.sum) ) )
+            ( country.one, amount.sum, (for(b <- zip(sector,amount)) yield (b._1,b._2,b._2*100/amount.sum) ) )
     }
 */
 
     query(
         for( a <- amounts.groupBy( (a:(Rep[_],Rep[_],Rep[_])) => a._1 ) ) yield
-          ( a._1.the,a._3.sum, for( b <- a._2 ) yield b )
+          ( a._1.one,a._3.sum, for( b <- a._2 ) yield b )
     ).map( x =>println(x) )
 
     query(

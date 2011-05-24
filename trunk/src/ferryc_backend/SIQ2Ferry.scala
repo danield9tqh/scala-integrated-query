@@ -17,7 +17,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
     }
 
     def tables2string( q:Comprehension[_], mapper: Exp[_] => String ) = {
-      val tables = q.tables
+      val tables = List(q.inner)
       tables.map( table_rep => { val table = rep2generator[Any](table_rep);  table match {
         case _ => "q"+ (table.key) + " = " + mapper(table_rep)// + "("+table.toString+")"
       }}).mkString(", ") + " in for " + tables.map( table_rep => { val table = rep2generator[Any](table_rep);  table match {
@@ -27,7 +27,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
           (if(q.filter.isDefined)" where "+ mapper(q.filter.get) else "") +
           (if(q.groupBy.isDefined) " group by " + mapper(q.groupBy.get) else "") +
           //(if(q.orderBy.isDefined) " order by " + mapper(q.orderBy.get) + " " /*+ FIXME: (if( q.order == ascending ) "ascending" else "descending")*/  else "") +
-          "\nreturn "+ render_projection( q.element, tables, mapper )
+          "\nreturn "+ render_projection( q.element_raw, tables, mapper )
   }
   def table2string( table: TableExp[_] )
       = "table " + table.name + " (" + table.columns.map(
@@ -44,9 +44,9 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
   addDefStringMappings( "Ferry", args => args.node match{
     // ferry supported operators: "not" (unary), "*", "/", "+", "-" , "%", "contains", "==", "!=", "<=", "<", ">=", ">", "and", "or" 
     case `+(Int,Int)`(l,r) => args.mapper(l) +"+"+ args.mapper(r)
-    case Count(i) => "count("+args.mapper(i)+")"
+    case Length(i) => "count("+args.mapper(i)+")"
     case _:Zip => "zip"+args.mapper(args.node.asInstanceOf[Zip].target)+""
-    case The(i) => "the("+args.mapper(i)+")"
+    case One(i) => "the("+args.mapper(i)+")"
     case Sum(i) => "sum("+args.mapper(i)+")"
     case Flatten(i) => "concat("+args.mapper(i)+")"
     case Grouped(i) => {args.mapper(i)}
@@ -63,12 +63,9 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
            case _:Generator[_] => rep2def(it).asInstanceOf[Generator[_]].key
            case _ => args.mapper(it)//"<"+rep2def(it).toString+">"
          }
-       }+"."+args.node.asInstanceOf[FieldReference].position//(if(args.node.asInstanceOf[FieldReference].position != 0) "."+args.node.asInstanceOf[FieldReference].position else "")// + " ("+rep2def(args.node.asInstanceOf[FieldReference].referree)+" "+args.node.asInstanceOf[FieldReference].generator+")"
+       }+(if(args.node.asInstanceOf[FieldReference].position != 0) "."+args.node.asInstanceOf[FieldReference].position else "") //(if(args.node.asInstanceOf[FieldReference].position != 0) "."+args.node.asInstanceOf[FieldReference].position else "")// + " ("+rep2def(args.node.asInstanceOf[FieldReference].referree)+" "+args.node.asInstanceOf[FieldReference].generator+")"
     }
-    case q: GeneratorReference[_] => {
-      val ref = q.asInstanceOf[GeneratorReference[_]]
-      args.mapper(toAtom(ref.reference))
-    }
+    case q: GeneratorReference => args.mapper(q.fieldref)
     case q: Comprehension[_] => "(let " + FerryHelpers.tables2string( q, args.mapper ) + ")" // format( args.mapper(q.projection), q.tables.map(t=>t.name+" "+t.alias).mkString(", "), args.mapper(q.filter), args.mapper(q.orderBy) )
     case n:Node[_] => '(' + args.mapper( n.x ) +' '+ (n.operator match{
       case "&&" => "and"

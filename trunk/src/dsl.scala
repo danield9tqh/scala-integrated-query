@@ -4,21 +4,22 @@ object dsl{
   val dsl : IScalaIntegratedQuery = new ScalaIntegratedQuery
 }
 trait IScalaIntegratedQuery extends ISchema with IModules{
-  protected def query[T]( r:Rep[T], debug : Boolean )( implicit manifest: Manifest[T] ) : Any
+  protected def query[T]( r:Rep[T], debug : Boolean )( implicit manifest: Manifest[T] ) : T
   case class Shipable[T /*<% Rep[T]*/]( r:Iterable[T] ){
     def todb = liftIterable( r )
   }
   def todb[T /*<% Rep[T]*/] = liftIterable[T] _
   implicit def ship_enable[T /*<% Rep[T]*/]( r:Iterable[T] ) = Shipable(r)
   case class Queryable[T]( r:Rep[T] )( m: Manifest[T] ){
-    def fromdb(debug:Boolean = false) = query(r,debug)(m)
+    def fromdb(debug:Boolean = false) : T = query(r,debug)(m)
+    def fromdb : T = fromdb(false)
   }
   implicit def query_enable[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m)
   def fromdb[T]( r:Rep[T], debug:Boolean=false )( implicit m: Manifest[T] ) = Queryable(r)(m).fromdb(debug)
-  def dumpgraph[T](r:Rep[T], filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20) :Rep[T]
+  def dumpgraph[T](r:Rep[T], filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20)( implicit manifest: Manifest[T] ) :Rep[T]
   case class GraphDumpable[T]( r:Rep[T] ){
-    def dumpgraph(filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20):Rep[T] =
-        IScalaIntegratedQuery.this.dumpgraph(r, filename, show_sql, show_ferry, show_intermediate, intermediate_max )
+    def dumpgraph(filename:String = "graph.gv", show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20)( implicit manifest: Manifest[T] ):Rep[T] =
+        IScalaIntegratedQuery.this.dumpgraph(r, filename, show_sql, show_ferry, show_intermediate, intermediate_max )(manifest)
   }
   implicit def graph_dump_enable[T]( r:Rep[T] ) = GraphDumpable(r)
 }
@@ -33,8 +34,9 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery
     with RelationalData2Graph
     /* with Results*/{
   var debug : Boolean = false
-  def dumpgraph[T](r:Rep[T], filename:String, show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20) :Rep[T] = {
-    val ferrycore = siq2ferrycore( r, ferry.ImplementationTypes.TABLE )
+  private def _implementation_type[T]( manifest : Manifest[T] ) = if( manifest.toString.startsWith("scala.collection.Iterable")) ferry.ImplementationTypes.TABLE else ferry.ImplementationTypes.ROW
+  def dumpgraph[T](r:Rep[T], filename:String, show_sql:Boolean=false, show_ferry:Boolean=true, show_intermediate:Boolean=true, intermediate_max:Int=20)( implicit manifest: Manifest[T] ) :Rep[T] = {
+    val ferrycore = siq2ferrycore( r, _implementation_type(manifest) )
     val algebra   = ferrycore2algebra( ferrycore )
     algebra2graph( algebra, filename, show_sql, show_ferry, show_intermediate, intermediate_max )
     r
@@ -46,12 +48,13 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery
       println("SIQ:")
       println(r)
     }
-    val ferrycore = siq2ferrycore( r, ferry.ImplementationTypes.TABLE ) // FIXME: not always ROW
+    val ferrycore = siq2ferrycore( r, _implementation_type(manifest) )
     if(debug){
       println("-"*80)
       println("Ferry Core:")
       println(ferrycore)
     }
+
     val algebra   = ferrycore2algebra( ferrycore )
     if(debug){
       println("-"*80)

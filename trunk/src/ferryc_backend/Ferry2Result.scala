@@ -5,14 +5,16 @@ import scala.io.Source
 trait IFerry2Result extends ISIQ2Ferry with IResults
 {
   def query[R]( r:Rep[R] ) : Result[R]
-  case class Shipable[T]( r:Iterable[T] ){
+  case class Shipable[T /*<% Rep[T]*/]( r:Iterable[T] ){
     def todb = liftIterable( r )
   }
-  def todb[T] = liftIterable[T] _
-  implicit def ship_enable[T]( r:Iterable[T] ) = Shipable(r)
+  def todb[T /*<% Rep[T]*/] = liftIterable[T] _
+  implicit def ship_enable[T /*<% Rep[T]*/]( r:Iterable[T] ) = Shipable(r)
   case class Queryable[T]( r:Rep[T] )( m: Manifest[T] ){
     def exec = extract[T]( query( r ))(m)
-    def fromdb = extract[T]( query( r ))(m)
+    def fromdb : T = extract[T]( query( r ))(m)
+    def fromdb(debug:Boolean = false) : T = fromdb
+    def dumpgraph() = r
   }
   implicit def query_enable[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m)
   def exec[T]( r:Rep[T] )( implicit m: Manifest[T] ) = Queryable(r)(m).exec
@@ -55,7 +57,7 @@ trait Ferry2Result extends IFerry2Result with SIQ2Ferry with Results{
     }
     val cmds = List(
       "ferryc -o1 -o2 -o3 -groupByAsMacro +RTS -K256000000 -RTS",
-      "\"C:\\Program Files\\MonetDB\\MonetDB4\\bin\\pf.exe\" -lIS",// -o _",
+      "\"C:\\Program Files\\MonetDB\\MonetDB4\\bin\\pf.exe\" -lIS -o _",
       "cmd /c ferrydb.bat",
       "cmd /c jsonify.bat"
     )

@@ -6,12 +6,15 @@ trait RelationalData2FerryData extends FerryCore with SQL2RelationalData{
     import ferry._
     import ferry.FerryCoreTypes._
     def t = relationaldata2ferrydata _
-    val data_ = nested_data.data.map{
-      case iter::pos::values => RelationalDataRow(iter.toString.toInt,pos.toString.toInt,values)
-      case _ => throw new Exception()
-    }
-    val data = data_.filter(_.iter == iter)
-    val position2column = nested_data.columns.zipWithIndex.map(_.swap).toMap
+
+    val iter_index   = nested_data.columns.indexOf( "iter" )
+    val pos_index    = nested_data.columns.indexOf( "pos" )
+    val data_indices = nested_data.columns.zipWithIndex.filter( _._1.startsWith("item") )
+    val data = nested_data.data.map(
+      row => RelationalDataRow( row(iter_index).toString.toInt, row(pos_index).toString.toInt, data_indices.map(_._2).map(row(_)) )
+    ).filter(_.iter == iter)
+    val position2column = data_indices.map(_._1).zipWithIndex.map(_.swap).toMap
+
     if( nested_data.nested.size == 0 ){
       ferrytype match {
         case a if a == atomic => data(0).values(0)
@@ -29,7 +32,7 @@ trait RelationalData2FerryData extends FerryCore with SQL2RelationalData{
           }
         }.toList
         case list(list(element_type))   => data.map(_.values)/*.flatten*/.zipWithIndex.map{ case (iter,index) =>
-            relationaldata2ferrydata( ListMap(nested_data.nested:_*)(position2column(0)), list(element_type), index+1 )
+            relationaldata2ferrydata( ListMap(nested_data.nested:_*)(data_indices.head._1), list(element_type), index+1 )
         }.toList
 /*        case list(tuple(element_types)) => data.zipWithIndex.map{ case(row,index) =>
           row.values.zip(element_types).zipWithIndex.map{ case ((value,type_), position) =>

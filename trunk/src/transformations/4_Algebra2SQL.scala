@@ -3,7 +3,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
   import algebra._
   val debug_ferrycore_algebra_association: scala.collection.mutable.ListMap[Relation,ferry.Expression] // for better debug info in sql
 //  val t = algebra2sql _
-  case class NestedSQL( sql:String, data_columns:List[String], nested:List[(String,NestedSQL)] )
+  case class NestedSQL( sql:String, columns:List[String], nested:List[(String,NestedSQL)] )
 /*  def flatten_algebra( relation:Relation ) : List[Relation] = (relation match{
     case bin:BinaryRelationOperator => relation :: flatten_algebra(bin.left) ::: flatten_algebra(bin.right)
     case un:UnaryRelationOperator => relation :: flatten_algebra(un.relation)
@@ -25,7 +25,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
         relation match{
           case bin:BinaryRelationOperator => {
             val right = linearize_dependencies( bin.right,already, relation )
-            val left  = linearize_dependencies( bin.left, already++right, relation )
+            val left  = linearize_dependencies( bin.left, right++already, relation )
             left ++ right
           }
           case un:UnaryRelationOperator => linearize_dependencies(un.relation,already, relation)
@@ -54,7 +54,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
     "\n\n"+
     "SELECT * FROM "+from.relation.name+"\n-- "+("-"*77)+"\n"
 //    throw new Exception(from.toString)
-    NestedSQL( sql, from.relation.data_columns, from.itbls.map(_._1) zip from.itbls.map(_._2).map(algebra2sql _) )
+    NestedSQL( sql, from.relation.schema, from.itbls.map(_._1) zip from.itbls.map(_._2).map(algebra2sql _) )
   }
   def expression2sql( from:Expression ) : String = {
     def t = expression2sql _
@@ -92,6 +92,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
       )
       case Join( predicate, left, right ) => "SELECT * FROM " + left.name +","+ right.name + " WHERE " + expression2sql( predicate )
       case DisjointUnion( left, right ) => "SELECT * FROM " + left.name + " UNION ALL SELECT * FROM " + right.name
+      case Difference( left, right ) => "SELECT * FROM " + left.name + " EXCEPT ALL SELECT * FROM " + right.name
       case Attach( value, as, relation ) => "SELECT %s FROM %s".format(
         escape(value) +" AS "+ as + "," + relation.qualified_schema.mkString(",")
         , relation.name
@@ -113,6 +114,11 @@ trait Algebra2SQL extends FerryCore2Algebra{
           as,
           relation.qualify_columns(relation.schema).mkString(","),
           relation.name
+        )
+      case Aggregation( operator, aggregate, as_, groupBy, relation ) =>
+        ("SELECT "+operator+"("+aggregate+") AS "+as_ +","+groupBy+" FROM %s GROUP BY %s").format(
+          relation.name,
+          groupBy
         )
       case LiteralTable( data, schema ) => "VALUES %s".format( data.map( x => x match {
         case p:Product => "(%s)".format( p.productIterator.map(escape _).mkString(",") )

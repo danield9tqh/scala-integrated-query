@@ -11,7 +11,7 @@ trait ISchema extends IComprehensions{
 #for ((table,meta) <- schema)
   class ${table.capitalize}(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
-    ${if(i>0) "," else ""}val ${name_type._1}: ${name_type._2}
+    ${if(i>0) "," else ""}val ${name_type._1} : ${name_type._2}
 #end
   ) extends Tuple${meta.fields.size}( ${meta.fields.keys.mkString(", ")} ){
     override def toString = "${table.capitalize}"+super.toString
@@ -22,7 +22,7 @@ trait ISchema extends IComprehensions{
 #for ((table,meta) <- schema)
   class ${table.capitalize}Schema(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
-    ${if(i>0) "," else ""}val ${name_type._1}: Rep[${name_type._2}]
+    ${if(i>0) "," else ""}val ${name_type._1} : Rep[${name_type._2}]
 #end
   ) extends Tuple${meta.fields.size}( ${meta.fields.keys.mkString(", ")} ) with SchemaBase{
     override def toString = "${table.capitalize}Schema"+super.toString
@@ -33,7 +33,7 @@ trait ISchema extends IComprehensions{
 #for ((table,meta) <- schema)
   class ${table.capitalize}Grouped(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
-    ${if(i>0) "," else ""}val ${name_type._1}: Iterable[${name_type._2}]
+    ${if(i>0) "," else ""}val ${name_type._1} : Iterable[${name_type._2}]
 #end
   ) extends Tuple${meta.fields.size}( ${meta.fields.keys.mkString(", ")} ) with SchemaBase{
     override def toString = "${table.capitalize}Grouped"+super.toString
@@ -44,7 +44,7 @@ trait ISchema extends IComprehensions{
 #for ((table,meta) <- schema)
   class ${table.capitalize}SchemaGrouped(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
-    ${if(i>0) "," else ""}val ${name_type._1}: Rep[Iterable[${name_type._2}]]
+    ${if(i>0) "," else ""}val ${name_type._1} : Rep[Iterable[${name_type._2}]]
 #end
   ) extends Tuple${meta.fields.size}( ${meta.fields.keys.mkString(", ")} ) with SchemaBase{
     override def toString = "${table.capitalize}SchemaGrouped"+super.toString
@@ -75,14 +75,14 @@ trait Schema extends ISchema with Comprehensions{
 <%
 val (table,meta) = table_meta
 %>
-  case class Zip${table.capitalize}( target:Rep[${table.capitalize}Grouped] ) extends Generator[${table.capitalize}] with Zip{
-    val element = toAtom( new LiftedSchema[${table.capitalize}Schema,${table.capitalize}](
+  case class Zip${table.capitalize}( target:Rep[${table.capitalize}Grouped] ) extends Generator[${table.capitalize}](
+    toAtom( new LiftedSchema[${table.capitalize}Schema,${table.capitalize}](
       new ${table.capitalize}Schema(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
         ${if(i>0) "," else ""}toAtom(Zipped(target._${i+1}))
 #end
     )))
-  }
+  ) with Zip
   def zip( r:Rep[${table.capitalize}Grouped] )(implicit o0: Overloaded0, o1: Overloaded${table_index} )  = Zip${table.capitalize}(r)
 #end
 
@@ -91,7 +91,7 @@ val (table,meta) = table_meta
 
   case class ${table.capitalize}Groupable( g:Generator[${table.capitalize}] ) extends I${table.capitalize}Groupable{
     def groupBy( f:${table.capitalize}Schema => Rep[_] ) : Rep[Iterable[${table.capitalize}Grouped]] = {
-        val cols = rep2tuple${meta.fields.size}(replace_with_references(g.element, g))
+        val cols = rep2tuple${meta.fields.size}(g.element_references)
         val groups = Tuple${meta.fields.size}(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
           ${if(i>0) "," else ""}toAtom(Grouped(cols._${i+1}))
@@ -146,23 +146,28 @@ val (table,meta) = table_meta
   val tables = new Tables{
     var alias_counter = 0
 #for ((table,meta) <- schema)
-    def ${table} = new TableExp[${table.capitalize}]( "${meta.table}" ){
-      val schema = new ${table.capitalize}Schema(
+    def ${table} = {
+      val schema_ = new ${table.capitalize}Schema(
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
         ${if(i>0) "," else ""}toAtom(Column[${name_type._2}]( "${name_type._1}", "${name_type._2}" ))
 #end
       )
-      val element = toAtom( new LiftedSchema[${table.capitalize}Schema,${table.capitalize}](schema) )
-      val columns = Array[Column[_]](
+      new TableExp[${table.capitalize}](
+        "${meta.table}",
+        toAtom( new LiftedSchema[${table.capitalize}Schema,${table.capitalize}](schema_) )
+      ){
+        val schema = schema_
+        val columns = Array[Column[_]](
 #for ((name_type,i) <- meta.fields.toList.zipWithIndex)
-        ${if(i>0) "," else ""}rep2def(schema.${name_type._1}).asInstanceOf[Column[_]]
+          ${if(i>0) "," else ""}rep2def(schema.${name_type._1}).asInstanceOf[Column[_]]
 #end
-      )
-      val keys = Array[Column[_]](
+        )
+        val keys = Array[Column[_]](
 #for ((name,i) <- meta.keys.toList.zipWithIndex)
-        ${if(i>0) "," else ""}rep2def(schema.${name}).asInstanceOf[Column[_]]
+          ${if(i>0) "," else ""}rep2def(schema.${name}).asInstanceOf[Column[_]]
 #end
-      )
+        )
+      }
     }
 #end
   }
