@@ -1024,14 +1024,13 @@ trait Tuples extends ITuples with ModuleBase{
 
     def replace_with_references[R]( r:Rep[_], g:Rep[Iterable[_]], counter : Counter = new Counter(0) ) : Rep[R]= {
       // note: when thinking about changing when counter is incremented, consider what happens when replacing nested tuples like ((a,b),c), as they should still get number ((1,2),3)
-      val ref = rep2def(r) match{
-        case _:FieldReference => rep2def(r).asInstanceOf[FieldReference]
+      val ref = r match{
+        case Def(ref_) if ref_.isInstanceOf[FieldReference] => ref_.asInstanceOf[FieldReference]
         case _ => FieldReference(g,counter.count,r)
       }
-      val referree = rep2def(ref.referree)
-      (referree match{
+      (ref.referree match{
         //case _:SchemaBase => replace_with_references_schema( referree, f )
-        case _:LiftedTuple[_] => {
+        case Def(referree) if referree.isInstanceOf[LiftedTuple[_]] => {
           val p = referree.asInstanceOf[LiftedTuple[_]].p
           def f(x:Int) = {
             replace_with_references[Any]( p.productElement(x-1).asInstanceOf[Rep[_]], g, counter )
@@ -1059,7 +1058,11 @@ trait Tuples extends ITuples with ModuleBase{
             case 20 => tuple2rep20(( f(1), f(2), f(3), f(4), f(5), f(6), f(7), f(8), f(9), f(10), f(11), f(12), f(13), f(14), f(15), f(16), f(17), f(18), f(19), f(20) ))
           }
         }
-        case inner:Generator[_] => toAtom[Any](new GeneratorReference(r.asInstanceOf[Rep[Iterable[_]]],toAtom(ref).asInstanceOf[Rep[Iterable[_]]]))
+        case Def(referree) if referree.isInstanceOf[Generator[_]] =>{
+          counter.count += 1
+          val ref = FieldReference(g,counter.count,r)
+          toAtom[Any](new GeneratorReference(r.asInstanceOf[Rep[Iterable[_]]],toAtom(ref).asInstanceOf[Rep[Iterable[_]]]))
+        }
         case _ => {
           counter.count += 1
           val ref = FieldReference(g,counter.count,r)

@@ -12,8 +12,8 @@ trait SIQ2FerryCore extends FerryCore with Modules{
       case _:Sym[_] => {
         val def_ = rep2def(from)
         def_ match{
-          case _:TableExp[_] => {
-            val table = def_.asInstanceOf[TableExp[_ <: Product]]
+          case _:Table[_] => {
+            val table = def_.asInstanceOf[Table[_ <: Product]]
             ferry.TableReference(
               name = table.name,
               columns = table.columns.map( c => (c.name,c.type_.toLowerCase) ).toList,
@@ -44,14 +44,18 @@ trait SIQ2FerryCore extends FerryCore with Modules{
             case "||" => "or"
             case "==" => "="
             case "!=" => "<>"
+            case "+" => n.manifest.toString match {
+              case s if s.endsWith( ".String" ) => "||"
+              case _ => n.operator
+            }
             case _ => n.operator
           }, t(n.x, ROW), t(n.y, ROW) )
-          case tup:LiftedTuple[_] => {
-            def flatten_tuple(a: Def[Any]): List[Def[Any]] = a match{
-              case t:LiftedTuple[_] => t.p.productIterator.map(_.asInstanceOf[Rep[_]]).map(rep2def _).map(flatten_tuple _).toList.flatten
-              case _ => List(a)
+          case _:LiftedTuple[_] => {
+            def flatten_tuple(r: Rep[Any]): List[Rep[Any]] = r match{
+              case Def(t) if t.isInstanceOf[LiftedTuple[_]] => t.asInstanceOf[LiftedTuple[_]].p.productIterator.map(_.asInstanceOf[Rep[_]]).map(flatten_tuple _).toList.flatten
+              case _ => List(r)
             }
-            val flattened = flatten_tuple(tup).map(toAtom _)
+            val flattened = flatten_tuple(from)
             ferry.FerryTuple( flattened.map( v => t(v, ROW) ).toList )
           }
           case _:FieldReference => {
@@ -100,9 +104,13 @@ trait SIQ2FerryCore extends FerryCore with Modules{
           case Flatten( list ) => ferry.Concat(
             t(list,TABLE)
           )
+          case Distinct( list ) => ferry.Distinct(
+            t(list,TABLE)
+          )
           case Length( list ) => ferry.Length(
             t(list,TABLE)
           )
+          //case ToString( x ) => t(x,expected)
         }
       }
     }

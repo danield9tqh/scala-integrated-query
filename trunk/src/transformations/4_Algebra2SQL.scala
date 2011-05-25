@@ -67,7 +67,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
   def relation2sql( from: Relation ) : String = {
     def escape( value: Any ) : String = value match {
       case i:Int => i.toString
-      case s:String   => "'" + s.replace("\\","\\\\").replace("'","\\'") + "'"
+      case s:String   => "('" + s.replace("\\","\\\\").replace("'","\\'") + "'" + "::text)"  // FIXME: POSTGRES requires this cast, but is this comprehensive?
       case s:Char   => escape (s.toString)
       case b:Boolean => (if(b) 1 else 0).toString
     }
@@ -115,10 +115,11 @@ trait Algebra2SQL extends FerryCore2Algebra{
           relation.qualify_columns(relation.schema).mkString(","),
           relation.name
         )
-      case Aggregation( operator, aggregate, as_, groupBy, relation ) =>
-        ("SELECT "+operator+"("+aggregate+") AS "+as_ +","+groupBy+" FROM %s GROUP BY %s").format(
+      case Aggregation( operator, aggregate, as_, select, groupBy, relation ) =>
+        ("SELECT "+operator+"("+aggregate+") AS "+as_ +", %s FROM %s GROUP BY %s").format(
+          select.mkString(","),
           relation.name,
-          groupBy
+          groupBy.mkString(",")
         )
       case LiteralTable( data, schema ) => "VALUES %s".format( data.map( x => x match {
         case p:Product => "(%s)".format( p.productIterator.map(escape _).mkString(",") )

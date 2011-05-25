@@ -18,9 +18,10 @@ trait ModuleBase extends IModuleBase with BaseExp{
     r.asInstanceOf[Sym[T]].inner.asInstanceOf[Def[T]]
   }
 
-  abstract class Node[T]( val operator : String ) extends Def[T]{
+  abstract class Node[T]( val operator : String )(implicit m:Manifest[T]) extends Def[T]{
     val x:Exp[Any]
     val y:Exp[Any]
+    val manifest : Manifest[T] = m
   }
   val implicits = new Implicits{
     implicit def unitAnyVal[T <: AnyVal]( v: T ) = unit(v)

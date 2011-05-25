@@ -27,16 +27,17 @@ trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base
 
   // base stuff for db schema
   trait SchemaBase extends Product
-  /*trait Table[+T <: Product] extends IGenerator[T]{
-    val name   : String
-  }*/
 
   // operations on comprehensions
   def infix_length( r:Rep[Iterable[_]] ) : Rep[Int]
   def infix_size( r:Rep[Iterable[_]] ) = infix_length(r)
   def infix_sum( r:Rep[Iterable[Int]] ) : Rep[Int]
+  def infix_distinct( r:Rep[Iterable[Int]] )(implicit o:Overloaded1) : Rep[Iterable[Int]]
+  def infix_distinct( r:Rep[Iterable[String]] )(implicit o:Overloaded2) : Rep[Iterable[String]]
+  def infix_distinct( r:Rep[Iterable[Boolean]] )(implicit o:Overloaded3) : Rep[Iterable[Boolean]]
   def infix_one[T]( r:Rep[Iterable[T]] ) : Rep[T]
   def infix_flatten[T]( r:Rep[Iterable[Iterable[T]]] ) : Rep[Iterable[T]]
+  //def infix_toString( r:Rep[_] ) : Rep[String]
 }
 
 trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
@@ -122,7 +123,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   }
 
   // base stuff for db schema
-  abstract class TableExp[+T <: Product](
+  abstract class Table[+T <: Product](
    val name   : String,
    val element_ : Rep[T]
   ) extends Generator[T](
@@ -130,6 +131,7 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   )/* with Table[T]*/{
     val columns : Array[Column[_]]
     val keys : Array[Column[_]]
+    override def toString = "Table(%s)".format(name)
   }
   case class Column[T](
     name : String = null,
@@ -168,10 +170,18 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
   def infix_length( r:Rep[Iterable[_]] ) = Length(r)
   case class Sum( iterable:Rep[Iterable[Int]] ) extends Def[Int]
   def infix_sum( r:Rep[Iterable[Int]] ) = Sum(r)
+  case class Distinct[T]( iterable:Rep[Iterable[T]] ) extends Generator[T](
+    rep2generator(iterable).element_raw
+  )
+  def infix_distinct( r:Rep[Iterable[Int]] )(implicit o:Overloaded1) = Distinct(r)
+  def infix_distinct( r:Rep[Iterable[String]] )(implicit o:Overloaded2) = Distinct(r)
+  def infix_distinct( r:Rep[Iterable[Boolean]] )(implicit o:Overloaded3) = Distinct(r)
   case class One[T]( iterable:Rep[Iterable[T]] ) extends Def[T]
   def infix_one[T]( r:Rep[Iterable[T]] ) = One[T](r)
   case class Flatten[T]( iterable:Rep[Iterable[Iterable[T]]] ) extends Generator[T](
     rep2generator(rep2generator(iterable).element_raw).element_raw
   )
   def infix_flatten[T]( r:Rep[Iterable[Iterable[T]]] ) = Flatten[T](r)
+  //case class ToString( r:Rep[_] ) extends Def[String]
+  //def infix_toString ( r:Rep[_] ) : Rep[String] = ToString( r )
 }

@@ -134,6 +134,10 @@ trait FerryCore{
       list : Expression
     ) extends BuiltInFunction( list.type_, TABLE )
 
+    case class Distinct(
+      list : Expression
+    ) extends BuiltInFunction( list.type_, TABLE )
+
     case class Length(
       list : Expression
     ) extends BuiltInFunction( atomic, ROW )

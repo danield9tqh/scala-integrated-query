@@ -6,15 +6,61 @@ object tests {
       import dsl.dsl._
       import dsl.dsl.tables._
       import dsl.dsl.implicits._
-      //implicit def tupleize[T1 <% Rep[T1],T2 <% Rep[T2]]( t:(T1,T2) ) : Rep[(T1,T2)] = tuple2rep2((t._1,t._2));
       {
-        // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
-        // these lines just test if it compiles
-        def conv[T <% Rep[_ >: T]]( t:T ) = ()
-        conv( 5 )
-        conv( List(1,2,3) )
-      }
-      {
+        /*
+          Customers by Country with paritioning in market segments, example output:
+          Customers in Total: 150
+          INDONESIA                 9 (6.0%)
+            AUTOMOBILE 2 (22.2%)
+            BUILDING   1 (11.1%)
+            FURNITURE  1 (11.1%)
+            ...
+          CANADA                    9 (6.0%)
+          ...
+        */
+        {
+          // lifted function, based on parameter types
+          def percent( part:Rep[Iterable[_]], whole:Rep[Iterable[_]] ) = {
+            val permill = part.length * 1000 / whole.length
+            (permill / 10) +"."+ (permill % 10)
+          }
+          // database query definition
+          val q1 = (for(
+                n <- nation
+              ) yield {
+                val nation_customers = customer.withFilter( _.nationkey == n.nationkey )
+                val segments = nation_customers.map(_.mktsegment).distinct.orderBy(x=>x)
+                val customers_by_segment = for( segment <- nation_customers.map(_.mktsegment).distinct.orderBy(x=>x) ) yield {
+                  val segment_customers = nation_customers.withFilter( _.mktsegment == segment )
+                  (
+                    segment
+                    , segment_customers.length
+                    , percent( segment_customers, nation_customers )
+                  )
+                }
+                (
+                  n.name
+                  ,nation_customers.length
+                  ,percent( nation_customers, customer )
+                  ,customers_by_segment
+                 )
+              }).orderBy(_._2 desc)
+          // execute query
+          val (customer_length,per_nation) = tuple( customer.length, q1 ).fromdb()
+          // ---- print results ----
+          println("-"*40)
+          println(" Customers in Total: " + customer_length)
+          println("-"*40)
+          println( per_nation.map( e => {
+            val (name,number,percent,by_segment) = e
+            " %s %s (%s%%)\n".format( name,number,percent) +
+            by_segment.map( s => {
+              val (segment,number,percent) = s
+              "    %s %s (%s%%)".format(segment,number,percent)
+            }).mkString("\n")
+          }).mkString("\n"))
+        }
+        // --------------------------------------------
         {
           // this is all executed in the db
           // filter employees using a scala collection
@@ -33,9 +79,15 @@ object tests {
           // sort by workgroup names, given an ordering (different api than scala collection)
           val q3 = q2.orderBy(_._2.name desc, _._1.name)
 
-          // project to the employees
-          println( q3.map(_._1).length.fromdb() )
+          // project to the employees, execute and print
+          println( q3.map(_._1).fromdb() )
         }
+
+        // --------------------------------------------
+        // a random bunch of queries
+
+        customer.withFilter(_.custkey < 5).map(x => customer.withFilter(_.custkey < 5).map(_.name)).fromdb().foreach(println)
+        customer.withFilter(_.custkey==2).map(x => (unit(1),customer.withFilter(_.custkey == 1).map(_.name))).fromdb().foreach(println)
 
         println( List(1,2).todb.map( i => employee.withFilter(_.workgroup_id == i) ).map(_.length).fromdb() )
 
@@ -63,7 +115,7 @@ object tests {
         println(( for( x <- List("b","a").todb ) yield
                  (for (z <- List("a","b").todb; if z == x ) yield z)).fromdb() )
 
-        // only implemented hackishly
+        // lifting scala lists with tuples is only implemented hackishly
         println(( for( x <- List(("a","b"),("b","a")).todb ) yield x).fromdb(/*debug=true*/) )
         println(( for( x <- List(("a","b"),("b","a")).todb ) yield x._2).fromdb(/*debug=true*/) )
         println(( for( w <- workgroup; e<-employee; if e.workgroup_id == w.id) yield e).fromdb() )
@@ -73,7 +125,7 @@ object tests {
         // test viral positional access
         println(( employee.map( e => (tuple(e.id,e.name),e.workgroup_id) ).map( x => (x._1,x._1._2,x._2)) ).fromdb())
 
-        // CURRENTLY NOT SUPPORTED: heterogeneous tuple (mixed Reps and normal types)
+        // CURRENTLY NOT SUPPORTED: heterogeneous tuple (mixed Reps and normal types, needs explicit cast)
         //println(( for( e <- employee ) yield (1,e.name)).fromdb() )
 
       // NOT SUPPORTED YET:
@@ -82,8 +134,18 @@ object tests {
       //(for( x <- List(1,2,3).todb ) yield liftOther(List(1,2,3)))
       //(for( x <- List(1,2,3).todb ) yield tupleize((1,List(1,2,3):Iterable[Int])))
       }
+      {
+        // a type class for Rep's the lower bound >:T allows Lists to be converted to Rep[Iterable]
+        // these lines just test if it compiles, switching to view bounds could improve implementation in the future
+        def conv[T <% Rep[_ >: T]]( t:T ) = ()
+        conv( 5 )
+        conv( List(1,2,3) )
+      }
     }
+    //implicit def tupleize[T1 <% Rep[T1],T2 <% Rep[T2]]( t:(T1,T2) ) : Rep[(T1,T2)] = tuple2rep2((t._1,t._2));
     return ();
+
+    // the following tests are rather old and are mainly in here to avoid regressions with compilation
     {
     import dsl.dsl_old._
     import dsl.dsl_old.tables._

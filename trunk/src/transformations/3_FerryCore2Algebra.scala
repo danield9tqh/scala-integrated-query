@@ -135,12 +135,13 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
       case ferry.PositionalAccess( tuple, position ) => {
         val Nested(q_e,itbls_e) = t(tuple)
         val c_old = "item"+position
+        val itbls_e_map = ListMap(itbls_e:_*)
         Nested(
           Projection(
             ("iter","pos",c_old -> "item1"),
             q_e
           ),
-          if( itbls_e.contains(c_old) ) List( "item0" -> ListMap(itbls_e:_*)(c_old) ) else List() //FIXME: is this item0 thing correct?
+          if( itbls_e_map.contains(c_old) ) List( "item1" -> itbls_e_map(c_old) ) else List() //FIXME: is this item0 thing correct?
         )
       }
       case ferry.VariableAccess( name, _, _ ) => ListMap(scope:_*)(name)
@@ -290,7 +291,7 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
         )
       case ferry.Length( e ) =>
           val Nested( q_e, itbls_e ) = t( e )
-          val q = Aggregation( "count","*", "item1", "iter", q_e )
+          val q = Aggregation( "count","*", "item1", List("iter"), List("iter"), q_e )
           val q_ = Attach( 1, "pos", DisjointUnion(
             q,
             Attach( 0, "item1", Difference(
@@ -299,6 +300,18 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
             ))
           ))
           Nested( q_ )
+      case ferry.Distinct( e ) => // TODO: extends this to work with tuples or even better: arbitrarily nested values
+          val Nested( q_e, itbls_e ) = t( e )
+          val q = Aggregation( "","item1", "item1", List("iter"), List("iter","item1"), q_e )
+          /*val q_ = Attach( 1, "pos", DisjointUnion(
+            q,
+            Attach( 0, "item1", Difference(
+              loop,
+              Projection( "iter", q )
+            ))
+          ))*/
+          val q_ = RowNumber( "pos", List("iter"), q ) // FIXME: this should be based on the previous pos, currently order is wrong
+          Nested( q_ ) // when extending, make sure to handle itbls here correctly
 
     }
     debug_ferrycore_algebra_association.update( result_ast.relation, from )

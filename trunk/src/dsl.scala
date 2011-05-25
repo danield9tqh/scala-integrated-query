@@ -47,45 +47,49 @@ class ScalaIntegratedQuery extends IScalaIntegratedQuery
       println("-"*80)
       println("SIQ:")
       println(r)
+      println("-"*80)
     }
     val ferrycore = siq2ferrycore( r, _implementation_type(manifest) )
     if(debug){
-      println("-"*80)
       println("Ferry Core:")
       println(ferrycore)
+      println("-"*80)
     }
 
     val algebra   = ferrycore2algebra( ferrycore )
     if(debug){
-      println("-"*80)
       println("Relational Algebra:")
       println(algebra)
+      println("-"*80)
     }
 
     val sql       = algebra2sql( algebra )
     if(debug){
-      println("-"*80)
       println("SQL:")
       println(sql)
+      println("-"*80)
     }
 
     val relational_data = sql2relationaldata( sql )
     if(debug){
-      println("-"*80)
       println("Result (via postgres jdbc):")
       println("")
       println(relational_data)
+      println("-"*80)
+      println("Expected Ferry Type:")
+      println("")
+      println( ferrycore.type_ )
+      println("-"*80)
     }
     val ferry_data = relationaldata2ferrydata( relational_data, ferrycore.type_ )
     if(debug){
-      println("-"*80)
       println("Ferry Result:")
       println("")
       println(ferry_data)
+      println("-"*80)
     }
     val data = ferrydata2scala[T]( ferry_data )(manifest)
     if(debug){
-      println("-"*80)
       println("Scala Result:")
       println("")
       println(data)

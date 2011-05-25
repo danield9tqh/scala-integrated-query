@@ -1325,7 +1325,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "discount", "Int" ))
         ,toAtom(Column[String]( "shipdate", "String" ))
       )
-      new TableExp[Lineitem](
+      new Table[Lineitem](
         "lineitem",
         toAtom( new LiftedSchema[LineitemSchema,Lineitem](schema_) )
       ){
@@ -1361,7 +1361,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "regionkey", "Int" ))
         ,toAtom(Column[String]( "comment", "String" ))
       )
-      new TableExp[Nation](
+      new Table[Nation](
         "nation",
         toAtom( new LiftedSchema[NationSchema,Nation](schema_) )
       ){
@@ -1383,7 +1383,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[String]( "name", "String" ))
         ,toAtom(Column[Int]( "workgroup_id", "Int" ))
       )
-      new TableExp[Employee](
+      new Table[Employee](
         "employee",
         toAtom( new LiftedSchema[EmployeeSchema,Employee](schema_) )
       ){
@@ -1408,7 +1408,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "acctbal", "Int" ))
         ,toAtom(Column[String]( "phone", "String" ))
       )
-      new TableExp[Supplier](
+      new Table[Supplier](
         "supplier",
         toAtom( new LiftedSchema[SupplierSchema,Supplier](schema_) )
       ){
@@ -1438,7 +1438,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "acctbal", "Int" ))
         ,toAtom(Column[String]( "phone", "String" ))
       )
-      new TableExp[Customer](
+      new Table[Customer](
         "customer",
         toAtom( new LiftedSchema[CustomerSchema,Customer](schema_) )
       ){
@@ -1463,7 +1463,7 @@ trait Schema extends ISchema with Comprehensions{
         toAtom(Column[Int]( "id", "Int" ))
         ,toAtom(Column[String]( "name", "String" ))
       )
-      new TableExp[Workgroup](
+      new Table[Workgroup](
         "workgroup",
         toAtom( new LiftedSchema[WorkgroupSchema,Workgroup](schema_) )
       ){
@@ -1489,7 +1489,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "totalprice", "Int" ))
         ,toAtom(Column[String]( "orderpriority", "String" ))
       )
-      new TableExp[Orders](
+      new Table[Orders](
         "orders",
         toAtom( new LiftedSchema[OrdersSchema,Orders](schema_) )
       ){
@@ -1516,7 +1516,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[String]( "name", "String" ))
         ,toAtom(Column[String]( "comment", "String" ))
       )
-      new TableExp[Region](
+      new Table[Region](
         "region",
         toAtom( new LiftedSchema[RegionSchema,Region](schema_) )
       ){
@@ -1543,7 +1543,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[String]( "comment", "String" ))
         ,toAtom(Column[String]( "type_", "String" ))
       )
-      new TableExp[Part](
+      new Table[Part](
         "part",
         toAtom( new LiftedSchema[PartSchema,Part](schema_) )
       ){
@@ -1572,7 +1572,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[Int]( "availqty", "Int" ))
         ,toAtom(Column[String]( "comment", "String" ))
       )
-      new TableExp[Partsupp](
+      new Table[Partsupp](
         "partsupp",
         toAtom( new LiftedSchema[PartsuppSchema,Partsupp](schema_) )
       ){
@@ -1596,7 +1596,7 @@ trait Schema extends ISchema with Comprehensions{
         ,toAtom(Column[String]( "branch", "String" ))
         ,toAtom(Column[Int]( "amount", "Int" ))
       )
-      new TableExp[Amounts](
+      new Table[Amounts](
         "countries_budgets",
         toAtom( new LiftedSchema[AmountsSchema,Amounts](schema_) )
       ){

@@ -152,7 +152,7 @@ val (table,meta) = table_meta
         ${if(i>0) "," else ""}toAtom(Column[${name_type._2}]( "${name_type._1}", "${name_type._2}" ))
 #end
       )
-      new TableExp[${table.capitalize}](
+      new Table[${table.capitalize}](
         "${meta.table}",
         toAtom( new LiftedSchema[${table.capitalize}Schema,${table.capitalize}](schema_) )
       ){
