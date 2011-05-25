@@ -30,7 +30,7 @@ trait RelationalData2Graph extends FerryCore2Algebra with Algebra2SQL with SQL2R
 """ + "<TR><TD>" + relation.schema.mkString("</TD><TD>") + "</TD></TR>" + {
         if( show_intermediate ){
           val results = sql2relationaldata( algebra2sql(algebra.Nested(relation)) ).data
-          results.take(intermediate_max).map( "<TR><TD>" + _.mkString("</TD><TD>") + "</TD></TR>" ).mkString("") +
+          results.take(intermediate_max).map( row => "<TR><TD>" + relation.schema.map(col => row(col)).mkString("</TD><TD>") + "</TD></TR>" ).mkString("") +
           (if(results.size > intermediate_max) """<TR><TD COLSPAN="""" + relation.schema.size + """">+ """+(results.size-intermediate_max)+" more</TD></TR>" else "") +
           ""
         } else ""

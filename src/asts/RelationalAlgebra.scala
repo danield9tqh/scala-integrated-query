@@ -175,9 +175,10 @@ trait RelationalAlgebra{
       operator : String,
       aggregate : String,
       as_ : String,
-      groupBy : String,
+      select : List[String],
+      groupBy : List[String],
       relation : Relation
-    ) extends Relation( List(as_,groupBy) ) with UnaryRelationOperator
+    ) extends Relation( as_ :: select ) with UnaryRelationOperator
 
     case class Table(
       schema_ : List[String],

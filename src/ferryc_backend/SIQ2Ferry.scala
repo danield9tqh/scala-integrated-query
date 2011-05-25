@@ -21,7 +21,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
       tables.map( table_rep => { val table = rep2generator[Any](table_rep);  table match {
         case _ => "q"+ (table.key) + " = " + mapper(table_rep)// + "("+table.toString+")"
       }}).mkString(", ") + " in for " + tables.map( table_rep => { val table = rep2generator[Any](table_rep);  table match {
-        case t:TableExp[_] => "i" + table.key + " in " + "q" + table.key
+        case t:Table[_] => "i" + table.key + " in " + "q" + table.key
         case _ => "i"+ (table.key) + " in " + "q"+ (table.key)
       }}).mkString(", ") +
           (if(q.filter.isDefined)" where "+ mapper(q.filter.get) else "") +
@@ -29,7 +29,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
           //(if(q.orderBy.isDefined) " order by " + mapper(q.orderBy.get) + " " /*+ FIXME: (if( q.order == ascending ) "ascending" else "descending")*/  else "") +
           "\nreturn "+ render_projection( q.element_raw, tables, mapper )
   }
-  def table2string( table: TableExp[_] )
+  def table2string( table: Table[_] )
       = "table " + table.name + " (" + table.columns.map(
       c => c.name + " " + c.type_.toLowerCase
     ).mkString(", ") + ")" +
@@ -54,7 +54,7 @@ trait SIQ2Ferry extends ISIQ2Ferry with Modules{
       case _:Product => "("+x.asInstanceOf[Product].productIterator.map(Const(_)).map(args.mapper).mkString(",")+")"
       case _=> args.mapper(Const(x))
     }).mkString(",")) +  "]"
-    case t:TableExp[_] => FerryHelpers.table2string(args.node.asInstanceOf[TableExp[_]].asInstanceOf[TableExp[_]])
+    case t:Table[_] => FerryHelpers.table2string(args.node.asInstanceOf[Table[_]].asInstanceOf[Table[_]])
     case f:FieldReference => rep2def(args.node.asInstanceOf[FieldReference].referree) match{
        case _:LiftedTuple[_] => "("+(rep2def(args.node.asInstanceOf[FieldReference].referree).asInstanceOf[LiftedTuple[_]].p.productIterator.map(x => args.mapper(x.asInstanceOf[Rep[_]])).mkString(","))+")"
        case _ => "i"+{
