@@ -4,8 +4,20 @@ import lms._
 trait IModuleBase extends Base with OverloadHack{
   def print_manifest[T](v:T)( implicit m:Manifest[T] ){ println(m) }
   def get_manifest[T](v:T)( implicit m:Manifest[T] ) = m
+
+  // valid types type class
+  abstract class ValidType
+  implicit def validInt( v:Int ) : ValidType = null
+  implicit def validString( v:String ) : ValidType = null
+  implicit def validBoolean( v:Boolean ) : ValidType = null
+
+  def infix_todb( v:Boolean ) : Rep[Boolean]
+  def infix_todb[ T <% ValidType ]( v:T ) : Rep[T]
+//  def Rep( b:Boolean ) : Rep[Boolean]
+
   trait Implicits{
-    implicit def unitAnyVal[T <: AnyVal]( v: T ) : Rep[T]
+    //implicit def unitAnyVal[T <: AnyVal]( v: T ) : Rep[T]
+    implicit def unitInt( v: Int ) : Rep[Int]
     implicit def unitString( v: String ) : Rep[String]
   }
   val implicits : Implicits
@@ -13,9 +25,11 @@ trait IModuleBase extends Base with OverloadHack{
 
 trait ModuleBase extends IModuleBase with BaseExp{
   def rep2def[T]( r:Rep[T] ) : Def[T] = {
+    val Def(d) = r
+    d
     //val Some(TP(_,e)) = findDefinition( r.asInstanceOf[Sym[T]] )
     //e
-    r.asInstanceOf[Sym[T]].inner.asInstanceOf[Def[T]]
+    //r.asInstanceOf[Sym[T]].deff.asInstanceOf[Def[T]]
   }
 
   abstract class Node[T]( val operator : String )(implicit m:Manifest[T]) extends Def[T]{
@@ -23,9 +37,13 @@ trait ModuleBase extends IModuleBase with BaseExp{
     val y:Exp[Any]
     val manifest : Manifest[T] = m
   }
+//  def Rep( b:Boolean ) : Rep[Boolean] = Const(b)
+  def infix_todb[ T <% ValidType ]( v:T ) : Rep[T] = Const(v)
+  def infix_todb( v:Boolean ) : Rep[Boolean] = Const(v)
   val implicits = new Implicits{
-    implicit def unitAnyVal[T <: AnyVal]( v: T ) = unit(v)
-    implicit def unitString( v: String ) = unit(v)
+//    implicit def unitAnyVal[T <: AnyVal]( v: T ) = unit(v)
+    implicit def unitInt( v: Int ) = Const(v)
+    implicit def unitString( v: String ) = Const(v)
   }
   class NoMappingException extends Exception
   type Transformation = TransformationArgs => Def[_]
@@ -77,7 +95,7 @@ trait ModuleBase extends IModuleBase with BaseExp{
         throw new Exception("siq-error: nesting too deep")
       }
       r match {
-        case s@Sym(id)   => {
+        case s@Sym(id,_)   => {
           for( node_mapper <- transformations ){
             try{
               return toAtom(node_mapper( TransformationArgs(sym2def(s), s.id, transform_closure(depth+1)) )) // FIXME: why is toAtom needed here?
@@ -126,7 +144,7 @@ trait ModuleBase extends IModuleBase with BaseExp{
   def render( target:String, r: Exp[_], const_mapper: ConstGeneratorArgs => String ) : String = {
     def transform_closure( depth: Int = 0 )( r: Exp[_] ) : String = {
       val returnme = r match {
-        case s@Sym(id)   => {
+        case s@Sym(id,_)   => {
           for( node_mapper <- def_string_mappings(target) ){
             try{
               return node_mapper( DefGeneratorArgs(sym2def(s), transform_closure(depth+1), depth) )

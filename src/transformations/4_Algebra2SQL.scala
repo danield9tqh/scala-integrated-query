@@ -1,5 +1,5 @@
 package siq
-trait Algebra2SQL extends FerryCore2Algebra{
+trait Algebra2SQL extends FerryCore2Algebra {
   import algebra._
   val debug_ferrycore_algebra_association: scala.collection.mutable.ListMap[Relation,ferry.Expression] // for better debug info in sql
 //  val t = algebra2sql _
@@ -36,24 +36,24 @@ trait Algebra2SQL extends FerryCore2Algebra{
     } else List()
   }
 
-  def algebra2sql( from:Nested ) : NestedSQL = {
-    val relations = linearize_dependencies(from.relation).reverse
+  def relation2sql( relation:Relation ) = {
+    val relations = linearize_dependencies(relation).reverse
+    "\nWITH\n\ntdummy(x) AS (Values (1),(2))"+
+      relations.map{
+        case _:Table => ""
+        case relation =>
+      ",\n\n" + "-- " + relation.getOperatorName + " (created for ferry "+ debug_ferrycore_algebra_association(relation).getExpressionName +")\n" + //debug line
+      "%s(%s) AS\n(%s)".format(
+        relation.name
+        ,relation.schema.mkString(",")
+        ,operator2sql(relation)
+      )}.filter( s => !(s=="") ).mkString("") +
+      "\n\n"+
+      "SELECT * FROM "+relation.name+"\n-- "+("-"*77)+"\n"
+  }
 
-    // put together complete sql query from component queries
-    val sql = "\nWITH\n\ntdummy(x) AS (Values (1),(2))"+
-    // distinct is needed to kill multiple occurence of LOOP relation
-    relations.map{
-      case _:Table => ""
-      case relation =>
-    ",\n\n-- " + relation.getOperatorName + " (created for ferry "+ debug_ferrycore_algebra_association(relation).getExpressionName +")\n" + //debug line
-    "%s(%s) AS\n(%s)".format(
-      relation.name
-      ,relation.schema.mkString(",")
-      ,relation2sql(relation)
-    )}.filter( s => !(s=="") ).mkString("") +
-    "\n\n"+
-    "SELECT * FROM "+from.relation.name+"\n-- "+("-"*77)+"\n"
-//    throw new Exception(from.toString)
+  def algebra2sql( from:Nested ) : NestedSQL = {
+    val sql = relation2sql( from.relation )
     NestedSQL( sql, from.relation.schema, from.itbls.map(_._1) zip from.itbls.map(_._2).map(algebra2sql _) )
   }
   def expression2sql( from:Expression ) : String = {
@@ -64,7 +64,7 @@ trait Algebra2SQL extends FerryCore2Algebra{
     }
   }
 
-  def relation2sql( from: Relation ) : String = {
+  def operator2sql( from: Relation ) : String = {
     def escape( value: Any ) : String = value match {
       case i:Int => i.toString
       case s:String   => "('" + s.replace("\\","\\\\").replace("'","\\'") + "'" + "::text)"  // FIXME: POSTGRES requires this cast, but is this comprehensive?

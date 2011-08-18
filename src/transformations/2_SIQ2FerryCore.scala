@@ -67,40 +67,22 @@ trait SIQ2FerryCore extends FerryCore with Modules{
               }
             }
             val access = ferry.VariableAccess( name, ListMap(symboltypes:_*)(name)._1, ListMap(symboltypes:_*)(name)._2 )
-//            rep2def(ref.referree) match{
- //             case _ if ref.position == 0 => access
-//               case _:LiftedTuple[_] => t(ref.referree, ROW)
-//               case _ => {
                   ListMap(symboltypes:_*)(name)._1 match {
                     case FerryCoreTypes.atomic => access// ??
                     case _:FerryCoreTypes.list => access
                     case _:FerryCoreTypes.tuple =>{
-                      //println(access)
-                      //println(ref.position-1)
-                      //val z = access.type_.asInstanceOf[ferry.FerryCoreTypes.tuple].elements(ref.position-1)
-                      //println(z)
                       ferry.PositionalAccess(
                         access
                         , ref.position
                       )
                     }
-//                  }
-//              }
             }
           }
 
           case LiteralTable( values ) => ferry.FerryList(
             values.toList,
             if( values.toList.size > 0 && values.toList(0).isInstanceOf[Product]) FerryCoreTypes.tuple( values.toList(0).asInstanceOf[Product].productIterator.map(x=>FerryCoreTypes.atomic).toList ) else FerryCoreTypes.atomic
-          )//.map( x => FerryList(Some(x)) ).reduceRight[Expression]( Append(_,_) )
-          //case LiteralTable( values ) => FerryList( values.map(t(_,ROW)) )
-          /*
-          case _:[_] => {
-            val  = def_.asInstanceOf[[_]]
-
-          }
-          */
-
+          )
           case Flatten( list ) => ferry.Concat(
             t(list,TABLE)
           )
@@ -110,7 +92,6 @@ trait SIQ2FerryCore extends FerryCore with Modules{
           case Length( list ) => ferry.Length(
             t(list,TABLE)
           )
-          //case ToString( x ) => t(x,expected)
         }
       }
     }

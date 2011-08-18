@@ -55,7 +55,6 @@ trait Results extends IResults{
         } else throw new Exception("unexpected column type: "+manifest.toString)
       }
     })
-//    parsed_value.asInstanceOf[A] // FIXME: there is a scala bug here, not assigning to parsed_value lead to runtime cast exception
   }
   implicit def extract[A]( r:Result[A] )( implicit m: Manifest[A] ) = {
     getValue( _stackified(r.value)(m) )( m ).asInstanceOf[A]

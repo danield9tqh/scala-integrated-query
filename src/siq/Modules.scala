@@ -1,9 +1,9 @@
 package siq
 
 trait IModules extends IGeneratedModules
-    with IEqual
+    with IStrongEqual
     with IComprehensions
 
 trait Modules extends GeneratedModules
-    with Equal
+    with StrongEqual
     with Comprehensions
