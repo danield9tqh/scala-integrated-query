@@ -1,8 +1,8 @@
 package siq
 import scala.collection.immutable.ListMap
-trait RelationalData2FerryData extends FerryCore with SQL2RelationalData{
+trait RelationalData2FerryData extends SQL2RelationalData{
   case class FerryRow( iter : Any, pos: Any, data:Map[String,Any] )
-  def relationaldata2ferrydata( nested_data : NestedRelationalData, ferrytype : ferry.FerryCoreTypes.FerryCoreType, iter: Any = "1" ) : Any = { // FIXME: return type
+  def relationaldata2ferrydata( nested_data : NestedRelationalData, ferrytype : ferry.FerryCoreTypes.FerryCoreType, iter: Any = "1" ) : Any = {
     import ferry._
     import ferry.FerryCoreTypes._
     def t = relationaldata2ferrydata _

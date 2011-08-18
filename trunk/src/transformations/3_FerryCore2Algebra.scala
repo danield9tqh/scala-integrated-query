@@ -223,7 +223,7 @@ trait FerryCore2Algebra extends RelationalAlgebra with FerryCore{
                                       }
           // join all these relations with the data that needs to be sorted
           val q_sortable = column_results.foldLeft[Relation](
-            Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map )
+            q_before_order  //Join( Operator( "=", Variable("iter"), Variable("inner_") ), q_e2, map )
           )(
             (left, right) => {
               val combined = Join(

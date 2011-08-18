@@ -1,17 +1,13 @@
 package siq.lms
 
 trait Base extends EmbeddedControls {
-
   type Rep[+T]
-  def unit[T](x: T): Rep[T]
-
+//  def unit[T](x: T): Rep[T]
 }
 
 trait BaseExp extends Base with Expressions {
-
   type Rep[+T] = Exp[T]
   def unit[T](x: T) = Const(x)
-
 }
 
 trait Expressions {
@@ -20,16 +16,12 @@ trait Expressions {
 
   case class Const[T](x: T) extends Exp[T]
 
-  case class Sym[T](val id: Int) extends Exp[T]{
-    var inner : Any = null
+  case class Sym[T](val id: Int, val def_ : Any) extends Exp[T]{
+    override def toString = this match { case Def(d) => d.toString }
   }
 
   var nVars = 0
-  def fresh[T](inner: Any) = {
-    val s = Sym[T]{ nVars += 1; nVars -1 }
-    s.inner = inner
-    s
-  }
+  def fresh[T](deff: Any) = Sym[T]({ nVars += 1; nVars -1 }, deff)
   trait Def[+T] // operations (composite)
 
   case class TP[T](sym: Sym[T], rhs: Def[T]) 
@@ -59,7 +51,7 @@ trait Expressions {
 
   object Def {
     def unapply[T](e: Exp[T]): Option[Def[T]] = e match { // really need to test for sym?
-      case s @ Sym(_) =>
+      case s @ Sym(_,_) =>
         findDefinition(s).map(_.rhs)
       case _ =>
         None

@@ -1,7 +1,6 @@
 package siq
 
 trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base/
-  trait Order
   // methods for iterables of any type
   implicit def rep2igenerator[T]( r: Rep[Iterable[T]] ) : IGenerator[T]
   trait IGenerator[+T]{
@@ -11,12 +10,13 @@ trait IComprehensions extends IModuleBase with ITuples { //FIXME: s/BaseExp/Base
     def withFilter( f : Rep[T] => Rep[Boolean] ) : Rep[Iterable[T]]
   }
 
+  trait Order
   abstract class IOrderable{
     def asc : Order
     def desc : Order
   }
-  implicit def order_enable( r:Rep[Any] ) : IOrderable
-  implicit def defaultOrder( r:Rep[Any] ) : Order
+  implicit def order_enable[T <% ValidType]( r:Rep[T] ) : IOrderable
+  implicit def defaultOrder[T <% ValidType]( r:Rep[T] ) : Order
   // future? implicit def defaultOrder[T <% Rep[Any]]( r:T ) : Order
 
   // transfer scala iterable into literal db table
@@ -82,9 +82,9 @@ trait Comprehensions extends IComprehensions with ModuleBase with Tuples{
     def asc : Order = Ascending(r)
     def desc : Order = Descending(r)
   }
-  implicit def defaultOrder( r:Rep[Any] ) : Order = Ascending(r:Rep[Any])
+  implicit def defaultOrder[T <% ValidType]( r:Rep[T] ) : Order = Ascending(r:Rep[T])
   //future? implicit def defaultOrder[T <% Rep[Any]]( r:T ) : Order = Ascending(r:Rep[Any])
-  implicit def order_enable( r:Rep[Any] ) : Orderable = new Orderable(r)
+  implicit def order_enable[T <% ValidType]( r:Rep[T] ) : Orderable = new Orderable(r)
 
   // as convenience for internal use
   def rep2generator[T]( r: Rep[Iterable[T]] ) : Generator[T] = rep2igenerator(r).asInstanceOf[Generator[T]]

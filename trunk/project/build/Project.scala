@@ -3,6 +3,10 @@ import java.io.File
 
 class Project(info: ProjectInfo) extends DefaultProject(info)
 {
+    override def fork = Some(new ForkScalaRun {
+        override def runJVMOptions = super.runJVMOptions ++ Seq("-Xmx1536m")
+        override def scalaJars = Seq(buildLibraryJar.asFile, buildCompilerJar.asFile)
+    })
   // define a root-level environment file local.properties
   // from which scala.virtualized.home will be read
   lazy val local = new BasicEnvironment {
